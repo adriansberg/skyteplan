@@ -1,451 +1,331 @@
 <script lang="ts">
-	import { formatNorwegianDate, formatNorwegianTime } from '$lib/utils/formatters';
+	import type { Event, Shooter } from '$lib/graphql/types';
+	import { formatNorwegianDate, formatNorwegianTime, getDateLabel } from '$lib/utils/formatters';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	console.log('data.shooters', JSON.stringify(data.shooters, null, 2));
-
 	$: shooters = data.shooters;
 	$: error = data.error;
+
+	// Helper function to determine event status
+	function getEventStatus(event: Event & { shooter: Shooter }) {
+		const now = new Date();
+		const shootingTime = new Date(event.shootingDateTime);
+		const resultTime = event.resultDateTime ? new Date(event.resultDateTime) : null;
+
+		// Check for partial results - sum is a string, so check if it's not empty
+		const hasPartialResults =
+			event.series &&
+			event.series.length > 0 &&
+			event.series.some(
+				(series) =>
+					(series.sum && series.sum.toString().trim() !== '') ||
+					(series.shots && series.shots.length > 0)
+			);
+
+		// If there's a result timestamp and it's in the past, event is completed
+		if (resultTime && resultTime <= now) {
+			return 'completed';
+		}
+
+		// If there are partial results (any series with non-empty sum), the event has started
+		if (hasPartialResults) {
+			return 'ongoing';
+		}
+
+		// If shooting time has passed but no results yet, it's ongoing
+		if (shootingTime <= now) {
+			return 'ongoing';
+		}
+
+		// Otherwise it's upcoming
+		return 'upcoming';
+	}
+
+	// Process and group events by date
+	$: groupedEvents = shooters
+		? (() => {
+				// Flatten all events with shooter info and group Felt-related events
+				const allEvents: (Event & {
+					shooter: Shooter;
+					subEvents?: (Event & { shooter: Shooter })[];
+				})[] = [];
+
+				shooters.forEach((shooter) => {
+					const feltEvent = shooter.events.find((e) => e.name === 'Felt');
+					const relatedEvents = shooter.events.filter(
+						(e) =>
+							['Minne', 'Felthurtig', 'Stang'].includes(e.name) &&
+							e.shootingDateTime === feltEvent?.shootingDateTime
+					);
+
+					shooter.events.forEach((event) => {
+						if (event.name === 'Felt' && relatedEvents.length > 0) {
+							// Add Felt event with sub-events
+							allEvents.push({
+								...event,
+								shooter,
+								subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
+							});
+						} else if (
+							!['Minne', 'Felthurtig', 'Stang'].includes(event.name) ||
+							!feltEvent ||
+							event.shootingDateTime !== feltEvent.shootingDateTime
+						) {
+							// Add standalone events (not part of Felt grouping)
+							allEvents.push({ ...event, shooter });
+						}
+					});
+				});
+
+				// Sort by shooting date/time
+				allEvents.sort(
+					(a, b) => new Date(a.shootingDateTime).getTime() - new Date(b.shootingDateTime).getTime()
+				);
+
+				// Group by date
+				const grouped: Record<
+					string,
+					(Event & {
+						shooter: Shooter;
+						subEvents?: (Event & { shooter: Shooter })[];
+					})[]
+				> = {};
+				allEvents.forEach((event) => {
+					const dateKey = formatNorwegianDate(event.shootingDateTime);
+					if (!grouped[dateKey]) {
+						grouped[dateKey] = [];
+					}
+					grouped[dateKey].push(event);
+				});
+
+				return grouped;
+			})()
+		: {};
 </script>
+
+<svelte:head>
+	<title>Skyteplan - Stordalen Skytterlag</title>
+</svelte:head>
 
 {#if !shooters && !error}
 	<div class="flex min-h-96 items-center justify-center">
-		<div class="text-lg text-gray-600">Loading shooters data...</div>
+		<div class="text-lg text-gray-600">Laster skyteplan...</div>
 	</div>
 {:else if error}
 	<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
-		<h2 class="mb-2 text-xl font-semibold text-red-800">Error loading data:</h2>
-		<span class="text-red-600">Error: {error}</span>
+		<h2 class="mb-2 text-xl font-semibold text-red-800">Feil ved lasting av data:</h2>
+		<span class="text-red-600">Feil: {error}</span>
 	</div>
 {:else if shooters}
 	<div class="container mx-auto px-2 py-4 sm:px-4 sm:py-6">
 		<div class="mb-4 sm:mb-6">
-			<h1 class="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">Stordalen Skytterlag</h1>
+			<h1 class="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">Skyteplan</h1>
 			<div class="flex items-center gap-2 text-sm text-gray-600 sm:gap-4">
-				<span class="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 sm:px-3 sm:text-sm">
-					Skyttere: {shooters.length || 'N/A'}
-				</span>
 				<a
-					href="/schedule"
+					href="/shooters"
 					class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-800 transition-colors hover:bg-gray-200 sm:px-3 sm:text-sm"
 				>
-					📅 Skyteplan
+					Skyttere
 				</a>
 			</div>
 		</div>
 
-		<!-- Shooters List -->
-		{#if shooters.length > 0}
-			<div class="grid gap-4 sm:gap-6">
-				{#each shooters as shooter}
-					{@const eventsWithResults = shooter.events.filter((e) => e.series && e.series.length > 0)}
-					{@const upcomingEvents = shooter.events.filter(
-						(e) => !e.resultDateTime && new Date(e.shootingDateTime) > new Date()
-					)}
-					{@const nextEvent = upcomingEvents.sort(
-						(a, b) =>
-							new Date(a.shootingDateTime).getTime() - new Date(b.shootingDateTime).getTime()
-					)[0]}
-					{@const eventScores = eventsWithResults
-						.map((event) => {
-							const lastSeries = event.series[event.series.length - 1];
-							return lastSeries.sum !== ''
-								? { eventName: event.name, score: lastSeries.sum }
-								: undefined;
-						})
-						.filter(Boolean)}
-
-					<details
-						class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg [&_summary::-webkit-details-marker]:hidden [&_summary::marker]:hidden"
+		<!-- Schedule by Date -->
+		{#if Object.keys(groupedEvents).length > 0}
+			<div class="space-y-4 sm:space-y-8">
+				{#each Object.entries(groupedEvents) as [date, events]}
+					<div
+						class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg"
 					>
-						<!-- Shooter Header -->
-						<summary
-							class="cursor-pointer border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-3 transition-colors hover:from-blue-100 hover:to-indigo-100 sm:px-6 sm:py-4"
+						<!-- Date Header -->
+						<div
+							class="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-3 sm:px-6 sm:py-4"
 						>
-							<div class="flex items-start justify-between">
-								<div class="min-w-0 flex-1">
-									<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-										<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">{shooter.name}</h2>
-										<span class="w-fit rounded bg-gray-100 px-2 py-1 text-xs sm:text-sm"
-											>Klasse {shooter.defaultClassOrganizationId}</span
-										>
-									</div>
+							<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">
+								{getDateLabel(events[0].shootingDateTime)}
+								<span class="ml-2 text-xs font-normal text-gray-600 sm:text-sm">
+									({events.length} skytter{events.length !== 1 ? 'e' : ''})
+								</span>
+							</h2>
+						</div>
 
-									<!-- Mobile: Compact info display -->
-									<div class="mt-2 flex flex-col items-start space-y-2">
-										<!-- Next event info - compact at top -->
-										{#if nextEvent}
-											<div
-												class="flex gap-2 rounded border border-orange-200 bg-orange-50 px-2 py-1"
-											>
-												<span class="text-xs font-medium text-orange-800">
-													Neste: {nextEvent.name}
-												</span>
-												<span class="text-xs text-orange-600">
-													{formatNorwegianDate(nextEvent.shootingDateTime)} kl. {formatNorwegianTime(
-														nextEvent.shootingDateTime
-													)}
-												</span>
-											</div>
-										{/if}
+						<!-- Events for this date -->
+						<div class="p-3 sm:p-6">
+							<div class="space-y-3 sm:space-y-4">
+								{#each events as event}
+									{@const status = getEventStatus(event)}
+									{@const finalSeries =
+										event.series && event.series.length > 0
+											? event.series[event.series.length - 1]
+											: null}
+									{@const finalScore = finalSeries?.sum?.toString() || null}
 
-										<!-- Always show all results -->
-										<div class="flex flex-wrap items-center gap-1">
-											{#if eventScores.length > 0}
-												{#each eventScores as eventScore}
-													<span
-														class="rounded border border-green-300 bg-green-100 px-2 py-1 text-xs text-green-700"
-													>
-														{eventScore?.eventName}: {eventScore?.score}
-													</span>
-												{/each}
-											{:else}
-												<span class="px-2 text-xs text-gray-400 italic">Ingen resultater enda</span>
-											{/if}
-										</div>
-
-										<!-- Event count at bottom - smaller -->
-										<div class="px-2 text-xs text-gray-500">
-											{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''}
-										</div>
-
-										<!-- Desktop: Full info display -->
-										<div class="hidden sm:block">
-											<!-- Next event - compact at top -->
-											{#if nextEvent}
-												<div
-													class="mb-2 inline-block rounded border border-orange-200 bg-orange-50 px-2 py-1"
-												>
-													<span class="text-xs font-medium text-orange-800">
-														Neste: {nextEvent.name}
-													</span>
-													<span class="text-xs text-orange-600">
-														{formatNorwegianDate(nextEvent.shootingDateTime)} kl. {formatNorwegianTime(
-															nextEvent.shootingDateTime
-														)}
-													</span>
-												</div>
-											{/if}
-
-											<!-- Always show all results prominently -->
-											<div class="mb-2">
-												{#if eventScores.length > 0}
-													<div class="flex flex-wrap gap-1">
-														{#each eventScores as eventScore}
-															<span
-																class="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs text-blue-700"
-															>
-																{eventScore?.eventName}: {eventScore?.score}
+									<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4">
+										<!-- Mobile-first compact layout -->
+										<div class="space-y-3">
+											<!-- Main event header - always visible -->
+											<div class="flex items-start justify-between">
+												<div class="min-w-0 flex-1">
+													<h3 class="text-sm font-semibold text-gray-900 sm:text-lg">
+														{event.name}
+														{#if event.subEvents && event.subEvents.length > 0}
+															<span class="ml-1 text-xs text-gray-500">
+																(+ {event.subEvents.length})
 															</span>
-														{/each}
-													</div>
-												{:else}
-													<span class="px-2 text-xs text-gray-400 italic"
-														>Ingen resultater enda</span
-													>
-												{/if}
-											</div>
-
-											<!-- Other upcoming events if any -->
-											{#if upcomingEvents.length > 1}
-												<div class="mb-2">
-													<div class="mb-1 text-xs text-gray-600">Andre kommende:</div>
-													<div class="flex flex-wrap gap-1">
-														{#each upcomingEvents.slice(1) as upcomingEvent}
-															<span
-																class="rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
-															>
-																{upcomingEvent.name} - {formatNorwegianTime(
-																	upcomingEvent.shootingDateTime
-																)}
-															</span>
-														{/each}
-													</div>
-												</div>
-											{/if}
-
-											<!-- Event count at bottom -->
-											<div class="text-xs text-gray-500">
-												{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''} totalt
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
-									<div
-										class="hidden rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 sm:block"
-									>
-										{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''}
-									</div>
-									<div class="flex h-6 w-6 items-center justify-center">
-										<span class="arrow text-gray-400 transition-transform duration-200"> ▼ </span>
-									</div>
-								</div>
-							</div>
-						</summary>
-
-						<!-- Events List -->
-						{#if shooter.events.length > 0}
-							<div class="p-3 sm:p-6">
-								<h3 class="mb-3 text-base font-medium text-gray-900 sm:mb-4 sm:text-lg">
-									Events & Results
-								</h3>
-								<div class="space-y-3 sm:space-y-4">
-									{#each shooter.events as event}
-										<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4">
-											<!-- Mobile: Compact layout -->
-											<div class="space-y-3 sm:hidden">
-												<!-- Event header -->
-												<div>
-													<h4 class="text-sm font-medium text-gray-900">{event.name}</h4>
-													<p class="text-xs text-gray-600">{event.className}</p>
-													<p class="text-xs text-gray-500">
-														Skive {event.targetNumber} • Lag {event.relayNumber}
+														{/if}
+													</h3>
+													<p class="truncate text-base font-medium text-gray-600">
+														{event.shooter.name}
 													</p>
+													<div class="flex items-center gap-2 text-xs text-gray-500">
+														<span>{event.shooter.defaultClassOrganizationId}</span>
+														<span>•</span>
+														<span>Skive {event.targetNumber}</span>
+														<span>•</span>
+														<span>Lag {event.relayNumber}</span>
+													</div>
 												</div>
+												<!-- Status badge -->
+												<div class="ml-2 flex-shrink-0">
+													{#if status === 'completed'}
+														<span
+															class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
+														>
+															✓
+														</span>
+													{:else if status === 'ongoing'}
+														<span
+															class="inline-flex animate-pulse items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800"
+														>
+															🔴
+														</span>
+													{:else}
+														<span
+															class="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800"
+														>
+															⏱️
+														</span>
+													{/if}
+												</div>
+											</div>
 
-												<!-- Compact timing -->
+											<!-- Time and result in compact row -->
+											<div class="flex items-center justify-between">
 												<div class="text-xs text-gray-600">
 													<span>{formatNorwegianTime(event.checkinDateTime)}</span>
-													<span class="text-gray-400"> • </span>
-													<span>{formatNorwegianDate(event.checkinDateTime)}</span>
 												</div>
-
-												<!-- Results summary -->
-												{#if event.series && event.series.length > 0}
-													{@const lastSeries = event.series[event.series.length - 1]}
-													{#if lastSeries.sum !== ''}
-														<div class="flex items-center justify-between">
-															<span class="text-xs text-gray-500">Resultat:</span>
-															<div class="text-right">
-																<div class="text-sm font-bold text-blue-600">{lastSeries.sum}</div>
-																<div class="text-xs text-green-600">
-																	Sentrum: {lastSeries.sumInner}
-																</div>
+												<div class="text-right">
+													{#if status === 'completed' && finalScore && finalScore.trim() !== ''}
+														<div class="text-lg font-bold text-blue-600">{finalScore}</div>
+														{#if finalSeries && finalSeries.sumInner && event.name !== 'Felt'}
+															<div class="text-xs text-green-600">
+																Sentrum: {finalSeries.sumInner}
 															</div>
+														{/if}
+													{:else if status === 'ongoing' && finalScore && finalScore.trim() !== ''}
+														<div class="text-sm font-medium text-blue-600">
+															{finalScore}
 														</div>
+													{:else if status === 'ongoing'}
+														<div class="text-xs text-yellow-600 italic">Pågår...</div>
+													{:else}
+														<div class="text-xs text-gray-400 italic">Ikke startet</div>
 													{/if}
-												{:else}
-													<div class="px-2 text-xs text-gray-400 italic">Ingen resultater enda</div>
-												{/if}
-
-												<!-- Expandable full details -->
-												<details class="mt-2">
-													<summary
-														class="cursor-pointer text-xs text-blue-600 select-none hover:text-blue-800"
-													>
-														Vis alle detaljer
-													</summary>
-													<div class="mt-3 space-y-3 border-t border-gray-200 pt-3">
-														<!-- Full timing info -->
-														<div class="space-y-2 text-xs">
-															<div>
-																<span class="text-gray-500">Oppropstid:</span>
-																<div class="rounded border bg-white px-2 py-1">
-																	{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
-																		event.checkinDateTime
-																	)}
-																</div>
-															</div>
-															<div>
-																<span class="text-gray-500">Skytetid:</span>
-																<div class="rounded border bg-white px-2 py-1">
-																	{formatNorwegianDate(event.shootingDateTime)}, kl. {formatNorwegianTime(
-																		event.shootingDateTime
-																	)}
-																</div>
-															</div>
-														</div>
-
-														<!-- Series results -->
-														{#if event.series && event.series.length > 0}
-															<div>
-																<h5 class="mb-2 text-xs font-medium text-gray-900">
-																	Series Results
-																</h5>
-																<div class="space-y-2">
-																	{#each event.series as series}
-																		<div
-																			class="rounded p-2 {series.seriesType === 'SUB_SERIES'
-																				? 'my-4 border-2 border-blue-300 bg-blue-50'
-																				: 'border border-gray-200 bg-white'}"
-																		>
-																			<div class="mb-1 flex items-center justify-between">
-																				<span class="text-xs font-medium">{series.name}</span>
-																			</div>
-																			<div class="grid grid-cols-2 gap-2 text-xs">
-																				<div class="flex items-center gap-1">
-																					<span class="text-gray-500">Total:</span>
-																					<span class="font-bold text-blue-600">{series.sum}</span>
-																				</div>
-																				<div class="flex items-center gap-1">
-																					<span class="text-gray-500">Sentrum:</span>
-																					<span class="font-semibold text-green-600"
-																						>{series.sumInner}</span
-																					>
-																				</div>
-																			</div>
-																			{#if series.shots && series.shots.length > 0}
-																				<div class="mt-2 border-t border-gray-100 pt-2">
-																					<div class="mb-1 text-xs text-gray-500">Shots:</div>
-																					<div class="flex flex-wrap gap-1">
-																						{#each series.shots as shot}
-																							<span
-																								class="inline-block rounded bg-gray-100 px-1 py-0.5 text-xs text-gray-700"
-																							>
-																								{shot.valueInt}.{shot.valueDec}
-																							</span>
-																						{/each}
-																					</div>
-																				</div>
-																			{/if}
-																		</div>
-																	{/each}
-																</div>
-															</div>
-														{/if}
-													</div>
-												</details>
+												</div>
 											</div>
+										</div>
 
-											<!-- Desktop: Original layout -->
-											<div class="hidden sm:block">
-												<div class="grid gap-4 md:grid-cols-3">
-													<!-- Event Info -->
-													<div>
-														<h4 class="mb-2 font-medium text-gray-900">{event.name}</h4>
-														<p class="mb-1 text-sm text-gray-600">
-															<span class="font-medium">{event.className}</span>
-														</p>
-														<p class="text-sm text-gray-600">
-															Skive: <span class="font-medium">{event.targetNumber}</span> | Lag:
-															<span class="font-medium">{event.relayNumber}</span>
-														</p>
-													</div>
+										<!-- Sub-events (Minne, Felthurtig, Stang) -->
+										{#if event.subEvents && event.subEvents.length > 0}
+											<details class="mt-3">
+												<summary
+													class="cursor-pointer text-sm text-blue-600 select-none hover:text-blue-800"
+												>
+													Vis {event.subEvents.length} del{event.subEvents.length !== 1 ? 'er' : ''}
+													av {event.name}
+												</summary>
+												<div class="mt-3 space-y-2 border-l-2 border-blue-200 pl-3">
+													{#each event.subEvents as subEvent}
+														{@const subFinalSeries =
+															subEvent.series && subEvent.series.length > 0
+																? subEvent.series.find(
+																		(s) =>
+																			s.seriesType === 'SUB_SERIES' &&
+																			s.sum &&
+																			s.sum.toString().trim() !== ''
+																	) || subEvent.series[subEvent.series.length - 1]
+																: null}
+														{@const subFinalScore = subFinalSeries?.sum?.toString() || null}
 
-													<!-- Timing Info -->
-													<div class="space-y-2">
-														<div class="text-sm">
-															<div class="text-gray-500">Oppropstid:</div>
-															<div class="rounded border bg-white px-2 py-1 text-xs">
-																{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
-																	event.checkinDateTime
-																)}
-															</div>
-														</div>
-														<div class="text-sm">
-															<div class="text-gray-500">Skytetid:</div>
-															<div class="rounded border bg-white px-2 py-1 text-xs">
-																{formatNorwegianDate(event.shootingDateTime)}, kl. {formatNorwegianTime(
-																	event.shootingDateTime
-																)}
-															</div>
-														</div>
-														{#if event.resultDateTime}
-															<div class="text-sm">
-																<div class="text-gray-500">Results:</div>
-																<div
-																	class="rounded border border-green-200 bg-green-50 px-2 py-1 text-xs"
-																>
-																	{formatNorwegianDate(event.resultDateTime)} kl. {formatNorwegianTime(
-																		event.resultDateTime
-																	)}
+														<div class="rounded border bg-white p-2">
+															<div class="flex justify-between">
+																<div class="min-w-0 flex-1">
+																	<h4 class="truncate text-sm font-medium text-gray-800">
+																		{subEvent.name}
+																	</h4>
 																</div>
-															</div>
-														{/if}
-													</div>
-
-													<!-- Results -->
-													<div>
-														{#if event.series && event.series.length > 0}
-															<h5 class="mb-2 text-sm font-medium text-gray-900">Series Results</h5>
-															<div class="space-y-2">
-																{#each event.series as series}
-																	<div
-																		class="rounded p-3 {series.seriesType === 'SUB_SERIES'
-																			? 'my-4 border-2 border-blue-300 bg-blue-50'
-																			: 'border border-gray-200 bg-white'}"
-																	>
-																		<div class="mb-2 flex items-center justify-between">
-																			<span class="text-sm font-medium">{series.name}</span>
+																<div class="flex flex-shrink-0 items-center gap-2">
+																	<!-- Sub-event result -->
+																	<div class="min-w-0 text-right">
+																		<div class="text-sm font-bold text-blue-600">
+																			{subFinalScore}
 																		</div>
-																		<div class="grid grid-cols-2 justify-center gap-2 text-sm">
-																			<div class="flex items-center gap-2">
-																				<span class="text-gray-500">Total:</span>
-																				<span class="text-lg font-bold text-blue-600"
-																					>{series.sum}</span
-																				>
-																			</div>
-																			<div class="flex items-center gap-2">
-																				<span class="text-gray-500">Sentrum:</span>
-																				<span class="font-semibold text-green-600"
-																					>{series.sumInner}</span
-																				>
-																			</div>
-																		</div>
-																		{#if series.shots && series.shots.length > 0}
-																			<div class="mt-2 border-t border-gray-100 pt-2">
-																				<div class="mb-1 text-xs text-gray-500">Shots:</div>
-																				<div class="flex flex-wrap gap-1">
-																					{#each series.shots as shot}
-																						<span
-																							class="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700"
-																						>
-																							{shot.valueInt}.{shot.valueDec}
-																						</span>
-																					{/each}
-																				</div>
+																		{#if subFinalSeries && subFinalSeries.sumInner}
+																			<div class="text-xs text-green-600">
+																				{subFinalSeries.sumInner}
 																			</div>
 																		{/if}
 																	</div>
-																{/each}
+																</div>
 															</div>
-														{:else}
-															<div class="text-sm text-gray-500 italic">No results yet</div>
-														{/if}
-													</div>
+														</div>
+													{/each}
 												</div>
-											</div>
-										</div>
-									{/each}
-								</div>
+											</details>
+										{/if}
+
+										<!-- Detailed results for completed main events -->
+										{#if status === 'completed' && event.series && event.series.length > 1}
+											<details class="mt-3">
+												<summary
+													class="cursor-pointer text-sm text-blue-600 select-none hover:text-blue-800"
+												>
+													Vis detaljerte resultater
+												</summary>
+												<div class="mt-3 space-y-1">
+													{#each event.series as series}
+														<div
+															class="rounded p-2 {series.seriesType === 'SUB_SERIES'
+																? 'my-2 border-2 border-blue-300 bg-blue-50'
+																: 'border border-gray-200 bg-white'}"
+														>
+															<div class="flex items-center justify-between">
+																<span class="truncate text-sm font-medium">{series.name}</span>
+																<div class="flex flex-shrink-0 gap-3 text-xs">
+																	<span>Total: <strong>{series.sum}</strong></span>
+																	{#if event.name !== 'Felt'}
+																		<span>Sentrum: <strong>{series.sumInner}</strong></span>
+																	{/if}
+																</div>
+															</div>
+														</div>
+													{/each}
+												</div>
+											</details>
+										{/if}
+									</div>
+								{/each}
 							</div>
-						{:else}
-							<div class="p-4 text-center text-gray-500 sm:p-6">
-								<p>No events scheduled</p>
-							</div>
-						{/if}
-					</details>
+						</div>
+					</div>
 				{/each}
+			</div>
+		{:else}
+			<div class="py-8 text-center sm:py-12">
+				<p class="text-gray-500">Ingen skytinger funnet</p>
 			</div>
 		{/if}
 	</div>
 {/if}
-
-<style>
-	details[open] summary .arrow {
-		transform: rotate(180deg);
-	}
-
-	/* Hide default details markers across all browsers */
-	details summary::-webkit-details-marker {
-		display: none;
-	}
-
-	details summary::marker {
-		display: none;
-	}
-
-	/* Firefox specific - hide the details marker */
-	details summary::-moz-list-bullet {
-		list-style-type: none;
-		display: none;
-	}
-
-	/* Additional fallback for Firefox */
-	details summary {
-		list-style: none;
-	}
-</style>

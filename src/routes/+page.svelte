@@ -3,7 +3,9 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	
+
+	console.log('data.shooters', JSON.stringify(data.shooters, null, 2));
+
 	$: shooters = data.shooters;
 	$: error = data.error;
 </script>
@@ -45,7 +47,7 @@
 					{@const eventScores = eventsWithResults
 						.map((event) => {
 							const lastSeries = event.series[event.series.length - 1];
-							return lastSeries.sum > 0
+							return lastSeries.sum !== ''
 								? { eventName: event.name, score: lastSeries.sum }
 								: undefined;
 						})
@@ -89,7 +91,7 @@
 										<!-- Results Summary -->
 										{#if eventsWithResults.length > 0}
 											<div class="flex items-center gap-2">
-												{#if eventScores.length > 1}
+												{#if eventScores.length > 0}
 													<div class="flex flex-wrap gap-1">
 														{#each eventScores as eventScore}
 															<span
@@ -173,19 +175,23 @@
 														<h5 class="mb-2 text-sm font-medium text-gray-900">Series Results</h5>
 														<div class="space-y-2">
 															{#each event.series as series}
-																<div class="rounded border border-gray-200 bg-white p-3">
+																<div
+																	class="rounded p-3 {series.seriesType === 'SUB_SERIES'
+																		? 'my-4 border-2 border-blue-300  bg-blue-50'
+																		: 'border border-gray-200 bg-white'}"
+																>
 																	<div class="mb-2 flex items-center justify-between">
 																		<span class="text-sm font-medium">{series.name}</span>
 																	</div>
-																	<div class="grid grid-cols-2 gap-2 text-sm">
-																		<div>
+																	<div class="grid grid-cols-2 justify-center gap-2 text-sm">
+																		<div class="flex items-center gap-2">
 																			<span class="text-gray-500">Total:</span>
 																			<span class="text-lg font-bold text-blue-600"
 																				>{series.sum}</span
 																			>
 																		</div>
-																		<div>
-																			<span class="text-gray-500">Inner:</span>
+																		<div class="flex items-center gap-2">
+																			<span class="text-gray-500">Sentrum:</span>
 																			<span class="font-semibold text-green-600"
 																				>{series.sumInner}</span
 																			>

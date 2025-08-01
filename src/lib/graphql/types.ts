@@ -1,13 +1,13 @@
 export type Shot = {
-	valueInt: number;
-	valueDec: number;
+	valueInt: string;
+	valueDec: string;
 };
 
 export type Series = {
 	name: string;
 	seriesType: string;
-	sum: number;
-	sumInner: number;
+	sum: string;
+	sumInner: string;
 	visualId: string;
 	shots: Shot[];
 };

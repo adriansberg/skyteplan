@@ -5,7 +5,6 @@
 	// Use svelte-query with the GraphQL client that has built-in auth headers
 	const shooters = useQuery('shooters', () => getShootersByClub('10782'));
 
-	console.log('shooters', shooters);
 
 	// Helper function to format dates with leading zeros
 	function formatNorwegianDate(date: string) {
@@ -39,9 +38,15 @@
 				<span class="rounded-full bg-blue-100 px-3 py-1 text-blue-800">
 					Skyttere: {$shooters.data.length || 'N/A'}
 				</span>
+				<a
+					href="/schedule"
+					class="rounded-full bg-gray-100 px-3 py-1 text-gray-800 transition-colors hover:bg-gray-200"
+				>
+					📅 Skyteplan
+				</a>
 				{#if $shooters.isFetching}
 					<span class="animate-pulse rounded-full bg-yellow-100 px-3 py-1 text-yellow-800">
-						Updating...
+						Oppdaterer...
 					</span>
 				{/if}
 			</div>

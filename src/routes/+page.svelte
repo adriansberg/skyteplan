@@ -1,42 +1,29 @@
 <script lang="ts">
-	import { useQuery } from '@sveltestack/svelte-query';
-	import { getShootersByClub } from '$lib';
+	import { formatNorwegianDate, formatNorwegianTime } from '$lib/utils/formatters';
+	import type { PageData } from './$types';
 
-	// Use svelte-query with the GraphQL client that has built-in auth headers
-	const shooters = useQuery('shooters', () => getShootersByClub('10782'));
-
-
-	// Helper function to format dates with leading zeros
-	function formatNorwegianDate(date: string) {
-		const d = new Date(date);
-		const day = d.getDate().toString().padStart(2, '0');
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-		const year = d.getFullYear();
-		return `${day}.${month}.${year}`;
-	}
-
-	// Helper function to format time in Norwegian format
-	function formatNorwegianTime(date: string) {
-		return new Date(date).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
-	}
+	export let data: PageData;
+	
+	$: shooters = data.shooters;
+	$: error = data.error;
 </script>
 
-{#if $shooters.status === 'loading'}
+{#if !shooters && !error}
 	<div class="flex min-h-96 items-center justify-center">
 		<div class="text-lg text-gray-600">Loading shooters data...</div>
 	</div>
-{:else if $shooters.status === 'error'}
+{:else if error}
 	<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
 		<h2 class="mb-2 text-xl font-semibold text-red-800">Error loading data:</h2>
-		<span class="text-red-600">Error: {$shooters.error}</span>
+		<span class="text-red-600">Error: {error}</span>
 	</div>
-{:else if $shooters.data}
+{:else if shooters}
 	<div class="container mx-auto px-4 py-6">
 		<div class="mb-6">
 			<h1 class="mb-2 text-3xl font-bold text-gray-900">Stordalen Skytterlag</h1>
 			<div class="flex items-center gap-4 text-sm text-gray-600">
 				<span class="rounded-full bg-blue-100 px-3 py-1 text-blue-800">
-					Skyttere: {$shooters.data.length || 'N/A'}
+					Skyttere: {shooters.length || 'N/A'}
 				</span>
 				<a
 					href="/schedule"
@@ -44,18 +31,13 @@
 				>
 					📅 Skyteplan
 				</a>
-				{#if $shooters.isFetching}
-					<span class="animate-pulse rounded-full bg-yellow-100 px-3 py-1 text-yellow-800">
-						Oppdaterer...
-					</span>
-				{/if}
 			</div>
 		</div>
 
 		<!-- Shooters List -->
-		{#if $shooters.data.length > 0}
+		{#if shooters.length > 0}
 			<div class="grid gap-6">
-				{#each $shooters.data as shooter}
+				{#each shooters as shooter}
 					{@const eventsWithResults = shooter.events.filter((e) => e.series && e.series.length > 0)}
 					{@const upcomingEvents = shooter.events.filter(
 						(e) => !e.resultDateTime && new Date(e.shootingDateTime) > new Date()

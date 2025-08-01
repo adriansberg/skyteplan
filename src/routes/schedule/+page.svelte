@@ -1,64 +1,12 @@
 <script lang="ts">
-	import { useQuery } from '@sveltestack/svelte-query';
-	import { getShootersByClub } from '$lib';
 	import type { Event, Shooter } from '$lib/graphql/types';
+	import { formatNorwegianDate, formatNorwegianTime, getDateLabel } from '$lib/utils/formatters';
+	import type { PageData } from './$types';
 
-	// Use svelte-query with the GraphQL client that has built-in auth headers
-	const shooters = useQuery('shooters', () => getShootersByClub('10782'));
-	console.log('shooters', $shooters.data);
-
-	// Helper function to format dates with leading zeros
-	function formatNorwegianDate(date: string) {
-		// Parse the date string and format manually since timestamps are already in local time
-		const d = new Date(date);
-		const day = d.getUTCDate().toString().padStart(2, '0');
-		const month = (d.getUTCMonth() + 1).toString().padStart(2, '0');
-		const year = d.getUTCFullYear();
-		return `${day}.${month}.${year}`;
-	}
-
-	// Helper function to format time in Norwegian format
-	function formatNorwegianTime(date: string) {
-		// Parse the date string and format manually since timestamps are already in local time
-		const d = new Date(date);
-		const hours = d.getUTCHours().toString().padStart(2, '0');
-		const minutes = d.getUTCMinutes().toString().padStart(2, '0');
-		return `${hours}:${minutes}`;
-	}
-
-	// Helper function to get relative date label
-	function getDateLabel(date: string) {
-		const eventDate = new Date(date);
-		const today = new Date();
-		const tomorrow = new Date(today);
-		tomorrow.setDate(today.getDate() + 1);
-		const yesterday = new Date(today);
-		yesterday.setDate(today.getDate() - 1);
-
-		// Reset time for comparison using UTC methods since timestamps are in local time
-		const eventDateOnly = new Date(
-			eventDate.getUTCFullYear(),
-			eventDate.getUTCMonth(),
-			eventDate.getUTCDate()
-		);
-		const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-		const tomorrowOnly = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-		const yesterdayOnly = new Date(
-			yesterday.getFullYear(),
-			yesterday.getMonth(),
-			yesterday.getDate()
-		);
-
-		if (eventDateOnly.getTime() === todayOnly.getTime()) {
-			return 'I dag';
-		} else if (eventDateOnly.getTime() === tomorrowOnly.getTime()) {
-			return 'I morgen';
-		} else if (eventDateOnly.getTime() === yesterdayOnly.getTime()) {
-			return 'I går';
-		} else {
-			return formatNorwegianDate(date);
-		}
-	}
+	export let data: PageData;
+	
+	$: shooters = data.shooters;
+	$: error = data.error;
 
 	// Helper function to determine event status
 	function getEventStatus(event: Event & { shooter: Shooter }) {
@@ -96,7 +44,7 @@
 	}
 
 	// Process and group events by date
-	$: groupedEvents = $shooters.data
+	$: groupedEvents = shooters
 		? (() => {
 				// Flatten all events with shooter info and group Felt-related events
 				const allEvents: (Event & {
@@ -104,7 +52,7 @@
 					subEvents?: (Event & { shooter: Shooter })[];
 				})[] = [];
 
-				$shooters.data.forEach((shooter) => {
+				shooters.forEach((shooter) => {
 					const feltEvent = shooter.events.find((e) => e.name === 'Felt');
 					const relatedEvents = shooter.events.filter(
 						(e) =>
@@ -161,16 +109,16 @@
 	<title>Skyteplan - Stordalen Skytterlag</title>
 </svelte:head>
 
-{#if $shooters.status === 'loading'}
+{#if !shooters && !error}
 	<div class="flex min-h-96 items-center justify-center">
 		<div class="text-lg text-gray-600">Laster skyteplan...</div>
 	</div>
-{:else if $shooters.status === 'error'}
+{:else if error}
 	<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
 		<h2 class="mb-2 text-xl font-semibold text-red-800">Feil ved lasting av data:</h2>
-		<span class="text-red-600">Feil: {$shooters.error}</span>
+		<span class="text-red-600">Feil: {error}</span>
 	</div>
-{:else if $shooters.data}
+{:else if shooters}
 	<div class="container mx-auto px-4 py-6">
 		<div class="mb-6">
 			<h1 class="mb-2 text-3xl font-bold text-gray-900">Skyteplan</h1>
@@ -181,11 +129,6 @@
 				>
 					← Tilbake til skytterliste
 				</a>
-				{#if $shooters.isFetching}
-					<span class="animate-pulse rounded-full bg-yellow-100 px-3 py-1 text-yellow-800">
-						Oppdaterer...
-					</span>
-				{/if}
 			</div>
 		</div>
 

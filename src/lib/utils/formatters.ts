@@ -10,10 +10,12 @@
 export function formatNorwegianDate(date: string): string {
 	// Parse the date string and format manually since timestamps are already in local time
 	const d = new Date(date);
-	return d.toLocaleDateString('nb-NO', {
-		month: 'short',
-		day: 'numeric'
-	});
+	return d
+		.toLocaleDateString('nb-NO', {
+			month: 'short',
+			day: 'numeric'
+		})
+		.padStart(2, '0');
 }
 
 /**

@@ -234,7 +234,7 @@
 														<div class="text-2xl font-bold text-blue-600">{finalScore}</div>
 														{#if finalSeries && finalSeries.sumInner}
 															<div class="text-xs text-green-600">
-																Inner: {finalSeries.sumInner}
+																Sentrum: {finalSeries.sumInner}
 															</div>
 														{/if}
 													</div>
@@ -315,7 +315,7 @@
 																			</div>
 																			{#if subFinalSeries && subFinalSeries.sumInner}
 																				<div class="text-xs text-green-600">
-																					Inner: {subFinalSeries.sumInner}
+																					Sentrum: {subFinalSeries.sumInner}
 																				</div>
 																			{/if}
 																		{:else if subStatus === 'ongoing' && subFinalScore && subFinalScore.trim() !== ''}
@@ -347,7 +347,9 @@
 																<span class="text-sm font-medium">{series.name}</span>
 																<div class="flex gap-4 text-sm">
 																	<span>Total: <strong>{series.sum}</strong></span>
-																	<span>Inner: <strong>{series.sumInner}</strong></span>
+																	{#if event.name !== 'Felt'}
+																		<span>Sentrum: <strong>{series.sumInner}</strong></span>
+																	{/if}
 																</div>
 															</div>
 														</div>

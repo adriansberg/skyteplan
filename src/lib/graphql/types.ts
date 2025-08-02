@@ -14,6 +14,7 @@ export type Series = {
 
 export type Event = {
 	name: string;
+	eventType: 'MAIN' | 'FINALE';
 	className: string;
 	checkinDateTime: string;
 	shootingDateTime: string;

@@ -22,6 +22,7 @@ export async function getShootersByClub(clubId: string) {
 					defaultClassOrganizationId
 					events {
 						name
+						eventType
 						className
 						checkinDateTime
 						shootingDateTime

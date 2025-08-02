@@ -272,7 +272,10 @@
 												<div class="grid gap-4 md:grid-cols-3">
 													<!-- Event Info -->
 													<div>
-														<h4 class="mb-2 font-medium text-gray-900">{event.name}</h4>
+														<h4 class="mb-2 font-medium text-gray-900">
+															{event.name}
+															{event.eventType === 'FINALE' ? '(Finale)' : ''}
+														</h4>
 														<p class="mb-1 text-sm text-gray-600">
 															<span class="font-medium">{event.className}</span>
 														</p>

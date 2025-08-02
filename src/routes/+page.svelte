@@ -145,7 +145,7 @@
 			<!-- Schedule by Date -->
 			{#if Object.keys(groupedEvents).length > 0}
 				<div class="space-y-4 sm:space-y-8">
-					{#each Object.entries(groupedEvents) as [date, events]}
+					{#each Object.entries(groupedEvents) as [_, events]}
 						{@const dateLabel = getDateLabel(events[0].shootingDateTime)}
 						{@const isToday = dateLabel === 'I dag'}
 						<div
@@ -183,6 +183,7 @@
 													<div class="min-w-0 flex-1">
 														<h3 class="text-sm font-semibold text-gray-900 sm:text-lg">
 															{event.name}
+															{event.eventType === 'FINALE' ? ' (Finale)' : ''}
 															{#if event.subEvents && event.subEvents.length > 0}
 																<span class="ml-1 text-xs text-gray-500">
 																	(+{event.subEvents.length})

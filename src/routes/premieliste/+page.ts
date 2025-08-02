@@ -1,19 +1,21 @@
 import type { PageLoad } from './$types';
 import { getShootersWithDistinctions } from '$lib/graphql/queries';
 
-export const load: PageLoad = async () => {
+export const load: PageLoad = async ({ url }) => {
+	// Get club ID from query parameter or use default
+	const clubId = url.searchParams.get('c') || '10782';
 	try {
-		// Using the same club ID as in other pages
-		const clubId = '10782';
 		const shootersWithDistinctions = await getShootersWithDistinctions(clubId);
 
 		return {
-			shootersWithDistinctions
+			shootersWithDistinctions,
+			clubId
 		};
 	} catch (error) {
 		console.error('Error loading distinctions:', error);
 		return {
-			shootersWithDistinctions: []
+			shootersWithDistinctions: [],
+			clubId
 		};
 	}
 };

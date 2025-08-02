@@ -38,6 +38,8 @@ export function hasAllResults(event: {
 	);
 }
 
+const THREE_HOURS_IN_MS = 3 * 60 * 60 * 1000;
+const EIGHT_HOURS_IN_MS = 8 * 60 * 60 * 1000;
 /**
  * Determine the status of an event based on its timing and results
  * @param event - Event object with datetime and series data
@@ -61,17 +63,26 @@ export function getEventStatus(event: {
 		return 'completed';
 	}
 
-	// If there are partial results (any series with non-empty sum), the event has started
-	if (eventHasPartialResults) {
-		return 'ongoing';
-	}
-
+	const timeSinceCheckin = now.getTime() - checkinTime.getTime();
 	// If long time has passed since checkin time, and there are no results,
 	// it's considered as did not start
-	if (now.getTime() - checkinTime.getTime() > 3 * 60 * 60 * 1000) {
+	if (timeSinceCheckin > THREE_HOURS_IN_MS) {
 		if (!eventHasPartialResults) {
 			return 'did_not_start';
 		}
+	}
+
+	// If long time has passed since checkin time, but there are only partial results,
+	// it is considered completed,
+	if (timeSinceCheckin > EIGHT_HOURS_IN_MS) {
+		if (eventHasPartialResults && !eventHasAllResults) {
+			return 'completed';
+		}
+	}
+
+	// If there are partial results (any series with non-empty sum), the event has started
+	if (eventHasPartialResults) {
+		return 'ongoing';
 	}
 
 	// If shooting time has passed but no results yet, it's ongoing

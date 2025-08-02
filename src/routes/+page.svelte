@@ -228,8 +228,10 @@
 															</div>
 														{:else if status === 'ongoing'}
 															<div class="text-xs text-yellow-600 italic">Pågår...</div>
-														{:else}
+														{:else if status === 'did_not_start'}
 															<div class="text-xs text-gray-400 italic">Ikke skutt</div>
+														{:else}
+															<div class="text-xs text-gray-400 italic">Ikke startet</div>
 														{/if}
 													</div>
 												</div>

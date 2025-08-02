@@ -253,7 +253,7 @@
 															<span
 																class="inline-flex animate-pulse items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800"
 															>
-																🔴
+																🎯
 															</span>
 														{:else}
 															<span

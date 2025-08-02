@@ -3,13 +3,13 @@
 		formatNorwegianDate,
 		formatNorwegianTime,
 		getDateLabel,
-		parseAsLocalTime,
-		hasPartialResults,
-		hasAllResults
+		parseAsLocalTime
 	} from '$lib/utils/formatters';
+	import { hasPartialResults, getEventStatus } from '$lib/utils/helpers';
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
+	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
 	import type { Shooter, Event } from '$lib/graphql/types';
 	import { onMount } from 'svelte';
 
@@ -36,36 +36,6 @@
 				}
 			}
 		};
-	}
-
-	// Helper function to determine event status
-	function getEventStatus(event: Event & { shooter: Shooter }) {
-		const now = new Date();
-		// Parse the datetime string as local time by treating it as if it has no timezone
-		// This assumes the datetime strings are already in local time
-		const checkinTime = parseAsLocalTime(event.checkinDateTime);
-
-		// Use utility functions for checking results
-		const eventHasPartialResults = hasPartialResults(event);
-		const eventHasAllResults = hasAllResults(event);
-
-		// If there's a result timestamp and it's in the past, event is completed
-		if (eventHasAllResults) {
-			return 'completed';
-		}
-
-		// If there are partial results (any series with non-empty sum), the event has started
-		if (eventHasPartialResults) {
-			return 'ongoing';
-		}
-
-		// If shooting time has passed but no results yet, it's ongoing
-		if (checkinTime <= now) {
-			return 'ongoing';
-		}
-
-		// Otherwise it's upcoming
-		return 'upcoming';
 	}
 
 	// Process and group events by date
@@ -243,25 +213,7 @@
 													</div>
 													<!-- Status badge -->
 													<div class="ml-2 flex-shrink-0">
-														{#if status === 'completed'}
-															<span
-																class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
-															>
-																✓
-															</span>
-														{:else if status === 'ongoing'}
-															<span
-																class="inline-flex animate-pulse items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800"
-															>
-																🎯
-															</span>
-														{:else}
-															<span
-																class="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800"
-															>
-																⏱️
-															</span>
-														{/if}
+														<EventStatusBadge {event} />
 													</div>
 												</div>
 
@@ -285,7 +237,7 @@
 														{:else if status === 'ongoing'}
 															<div class="text-xs text-yellow-600 italic">Pågår...</div>
 														{:else}
-															<div class="text-xs text-gray-400 italic">Ikke startet</div>
+															<div class="text-xs text-gray-400 italic">Ikke skutt</div>
 														{/if}
 													</div>
 												</div>

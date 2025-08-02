@@ -8,6 +8,7 @@
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
 	import type { Shooter, Event } from '$lib/graphql/types';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
@@ -15,6 +16,24 @@
 	$: error = data.error;
 
 	let showSplash = false;
+	let todaySectionElement: HTMLElement | undefined;
+
+	// Svelte action to register the today section element
+	function registerTodaySection(element: HTMLElement, isToday: boolean) {
+		if (isToday) {
+			todaySectionElement = element;
+		}
+
+		return {
+			update(newIsToday: boolean) {
+				if (newIsToday) {
+					todaySectionElement = element;
+				} else if (todaySectionElement === element) {
+					todaySectionElement = undefined;
+				}
+			}
+		};
+	}
 
 	// Helper function to determine event status
 	function getEventStatus(event: Event & { shooter: Shooter }) {
@@ -123,6 +142,28 @@
 				return grouped;
 			})()
 		: {};
+
+	// Auto-scroll to today's section when page loads
+	onMount(() => {
+		// Wait for splash screen to finish and DOM to be ready
+		const checkAndScroll = () => {
+			if (!showSplash && todaySectionElement) {
+				// Small delay to ensure proper rendering
+				setTimeout(() => {
+					todaySectionElement?.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}, 300);
+			} else {
+				// If splash is still showing, check again after a short delay
+				setTimeout(checkAndScroll, 100);
+			}
+		};
+
+		// Initial check after a short delay
+		setTimeout(checkAndScroll, 100);
+	});
 </script>
 
 <svelte:head>
@@ -155,15 +196,18 @@
 			{#if Object.keys(groupedEvents).length > 0}
 				<div class="space-y-4 sm:space-y-8">
 					{#each Object.entries(groupedEvents) as [date, events]}
+						{@const dateLabel = getDateLabel(events[0].shootingDateTime)}
+						{@const isToday = dateLabel === 'I dag'}
 						<div
-							class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg"
+							use:registerTodaySection={isToday}
+							class="scroll-mt-20 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg"
 						>
 							<!-- Date Header -->
 							<div
 								class="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-3 sm:px-6 sm:py-4"
 							>
 								<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">
-									{getDateLabel(events[0].shootingDateTime)}
+									{dateLabel}
 									<span class="ml-1 text-xs font-normal text-gray-600 sm:text-sm">
 										({events.length} skytter{events.length !== 1 ? 'e' : ''})
 									</span>

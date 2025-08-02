@@ -3,7 +3,9 @@
 		formatNorwegianDate,
 		formatNorwegianTime,
 		getDateLabel,
-		parseAsLocalTime
+		parseAsLocalTime,
+		hasPartialResults,
+		hasAllResults
 	} from '$lib/utils/formatters';
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
@@ -42,32 +44,17 @@
 		// This assumes the datetime strings are already in local time
 		const checkinTime = parseAsLocalTime(event.checkinDateTime);
 
-		// Check for partial results - sum is a string, so check if it's not empty
-		const hasPartialResults =
-			event.series &&
-			event.series.length > 0 &&
-			event.series.some(
-				(series) =>
-					(series.sum && series.sum.toString().trim() !== '') ||
-					(series.shots && series.shots.length > 0)
-			);
-
-		const hasAllResults =
-			event.series &&
-			event.series.length > 0 &&
-			event.series.every(
-				(series) =>
-					(series.sum && series.sum.toString().trim() !== '') ||
-					(series.shots && series.shots.length > 0)
-			);
+		// Use utility functions for checking results
+		const eventHasPartialResults = hasPartialResults(event);
+		const eventHasAllResults = hasAllResults(event);
 
 		// If there's a result timestamp and it's in the past, event is completed
-		if (hasAllResults) {
+		if (eventHasAllResults) {
 			return 'completed';
 		}
 
 		// If there are partial results (any series with non-empty sum), the event has started
-		if (hasPartialResults) {
+		if (eventHasPartialResults) {
 			return 'ongoing';
 		}
 
@@ -352,7 +339,7 @@
 											{/if}
 
 											<!-- Detailed results for completed main events -->
-											{#if status === 'completed' && event.series && event.series.length > 1}
+											{#if hasPartialResults(event)}
 												<details class="mt-3">
 													<summary
 														class="cursor-pointer text-sm text-blue-600 select-none hover:text-blue-800"

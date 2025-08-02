@@ -9,6 +9,7 @@
 	} from '$lib/utils/formatters';
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
+	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import type { Shooter, Event } from '$lib/graphql/types';
 	import { onMount } from 'svelte';
 
@@ -226,9 +227,12 @@
 																</span>
 															{/if}
 														</h3>
-														<p class="truncate text-base font-medium text-gray-600">
-															{event.shooter.name}
-														</p>
+														<div class="flex items-center gap-2">
+															<p class="truncate text-base font-medium text-gray-600">
+																{event.shooter.name}
+															</p>
+															<ShooterExternalLink shooterName={event.shooter.name} />
+														</div>
 														<div class="flex items-center gap-2 text-xs text-gray-500">
 															<span>{event.shooter.defaultClassOrganizationId}</span>
 															<span>•</span>

@@ -4,6 +4,7 @@
 		formatNorwegianTime,
 		parseAsLocalTime
 	} from '$lib/utils/formatters';
+	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -78,7 +79,10 @@
 							<div class="flex items-start justify-between">
 								<div class="min-w-0 flex-1">
 									<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-										<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">{shooter.name}</h2>
+										<div class="flex items-center gap-2">
+											<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">{shooter.name}</h2>
+											<ShooterExternalLink shooterName={shooter.name} />
+										</div>
 										<span class="w-fit rounded bg-gray-100 px-2 py-1 text-xs sm:text-sm"
 											>Klasse {shooter.defaultClassOrganizationId}</span
 										>

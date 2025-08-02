@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { formatNorwegianDate, formatNorwegianTime } from '$lib/utils/formatters';
+	import {
+		formatNorwegianDate,
+		formatNorwegianTime,
+		parseAsLocalTime
+	} from '$lib/utils/formatters';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -44,13 +48,16 @@
 		{#if shooters.length > 0}
 			<div class="grid gap-4 sm:gap-6">
 				{#each shooters as shooter}
-					{@const eventsWithResults = shooter.events.filter((e) => e.series && e.series.length > 0)}
+					{@const eventsWithResults = shooter.events.filter((e) =>
+						e.series.every((s) => s.sum !== '')
+					)}
 					{@const upcomingEvents = shooter.events.filter(
-						(e) => !e.resultDateTime && new Date(e.shootingDateTime) > new Date()
+						(e) => !e.resultDateTime && parseAsLocalTime(e.shootingDateTime) > new Date()
 					)}
 					{@const nextEvent = upcomingEvents.sort(
 						(a, b) =>
-							new Date(a.shootingDateTime).getTime() - new Date(b.shootingDateTime).getTime()
+							parseAsLocalTime(a.shootingDateTime).getTime() -
+							parseAsLocalTime(b.shootingDateTime).getTime()
 					)[0]}
 					{@const eventScores = eventsWithResults
 						.map((event) => {
@@ -312,16 +319,18 @@
 																					>{series.sum}</span
 																				>
 																			</div>
-																			<div class="flex items-center gap-2">
-																				<span class="text-gray-500">Sentrum:</span>
-																				<span class="font-semibold text-green-600"
-																					>{series.sumInner}</span
-																				>
-																			</div>
+																			{#if event.name !== 'Felt'}
+																				<div class="flex items-center gap-2">
+																					<span class="text-gray-500">Sentrum:</span>
+																					<span class="font-semibold text-green-600"
+																						>{series.sumInner}</span
+																					>
+																				</div>
+																			{/if}
 																		</div>
 																		{#if series.shots && series.shots.length > 0}
 																			<div class="mt-2 border-t border-gray-100 pt-2">
-																				<div class="mb-1 text-xs text-gray-500">Shots:</div>
+																				<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																				<div class="flex flex-wrap gap-1">
 																					{#each series.shots as shot}
 																						<span

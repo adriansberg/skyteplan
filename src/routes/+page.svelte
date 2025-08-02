@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { Event, Shooter } from '$lib/graphql/types';
-	import { formatNorwegianDate, formatNorwegianTime, getDateLabel } from '$lib/utils/formatters';
+	import {
+		formatNorwegianDate,
+		formatNorwegianTime,
+		getDateLabel,
+		parseAsLocalTime
+	} from '$lib/utils/formatters';
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
+	import type { Shooter, Event } from '$lib/graphql/types';
 
 	export let data: PageData;
 
@@ -14,8 +19,9 @@
 	// Helper function to determine event status
 	function getEventStatus(event: Event & { shooter: Shooter }) {
 		const now = new Date();
-		const shootingTime = new Date(event.shootingDateTime);
-		const resultTime = event.resultDateTime ? new Date(event.resultDateTime) : null;
+		// Parse the datetime string as local time by treating it as if it has no timezone
+		// This assumes the datetime strings are already in local time
+		const checkinTime = parseAsLocalTime(event.checkinDateTime);
 
 		// Check for partial results - sum is a string, so check if it's not empty
 		const hasPartialResults =
@@ -27,8 +33,17 @@
 					(series.shots && series.shots.length > 0)
 			);
 
+		const hasAllResults =
+			event.series &&
+			event.series.length > 0 &&
+			event.series.every(
+				(series) =>
+					(series.sum && series.sum.toString().trim() !== '') ||
+					(series.shots && series.shots.length > 0)
+			);
+
 		// If there's a result timestamp and it's in the past, event is completed
-		if (resultTime && resultTime <= now) {
+		if (hasAllResults) {
 			return 'completed';
 		}
 
@@ -38,7 +53,7 @@
 		}
 
 		// If shooting time has passed but no results yet, it's ongoing
-		if (shootingTime <= now) {
+		if (checkinTime <= now) {
 			return 'ongoing';
 		}
 
@@ -84,7 +99,9 @@
 
 				// Sort by shooting date/time
 				allEvents.sort(
-					(a, b) => new Date(a.shootingDateTime).getTime() - new Date(b.shootingDateTime).getTime()
+					(a, b) =>
+						parseAsLocalTime(a.shootingDateTime).getTime() -
+						parseAsLocalTime(b.shootingDateTime).getTime()
 				);
 
 				// Group by date

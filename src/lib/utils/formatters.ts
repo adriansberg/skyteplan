@@ -3,13 +3,23 @@
  */
 
 /**
+ * Parse a date string as local time, avoiding UTC interpretation issues.
+ * Removes timezone indicators to ensure the date is interpreted in local time.
+ * @param dateString - ISO date string that might have UTC timezone indicator
+ * @returns Date object parsed in local time
+ */
+export function parseAsLocalTime(dateString: string): Date {
+	// Remove timezone indicators (Z, +00:00, etc.) to force local time interpretation
+	return new Date(dateString.replace(/Z$|[+-]\d{2}:\d{2}$/, ''));
+}
+
+/**
  * Format dates with leading zeros in Norwegian format (DD.MM.YYYY)
  * @param date - ISO date string
  * @returns Formatted date string
  */
 export function formatNorwegianDate(date: string): string {
-	// Parse the date string and format manually since timestamps are already in local time
-	const d = new Date(date);
+	const d = parseAsLocalTime(date);
 	return d
 		.toLocaleDateString('nb-NO', {
 			month: 'short',
@@ -38,10 +48,9 @@ export function formatNorwegianDateLocal(date: string): string {
  * @returns Formatted time string
  */
 export function formatNorwegianTime(date: string): string {
-	// Parse the date string and format manually since timestamps are already in local time
-	const d = new Date(date);
-	const hours = d.getUTCHours().toString().padStart(2, '0');
-	const minutes = d.getUTCMinutes().toString().padStart(2, '0');
+	const d = parseAsLocalTime(date);
+	const hours = d.getHours().toString().padStart(2, '0');
+	const minutes = d.getMinutes().toString().padStart(2, '0');
 	return `${hours}:${minutes}`;
 }
 
@@ -61,18 +70,18 @@ export function formatNorwegianTimeLocale(date: string): string {
  * @returns Relative date label in Norwegian
  */
 export function getDateLabel(date: string): string {
-	const eventDate = new Date(date);
+	const eventDate = parseAsLocalTime(date);
 	const today = new Date();
 	const tomorrow = new Date(today);
 	tomorrow.setDate(today.getDate() + 1);
 	const yesterday = new Date(today);
 	yesterday.setDate(today.getDate() - 1);
 
-	// Reset time for comparison using UTC methods since timestamps are in local time
+	// Reset time for comparison using local time methods
 	const eventDateOnly = new Date(
-		eventDate.getUTCFullYear(),
-		eventDate.getUTCMonth(),
-		eventDate.getUTCDate()
+		eventDate.getFullYear(),
+		eventDate.getMonth(),
+		eventDate.getDate()
 	);
 	const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 	const tomorrowOnly = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());

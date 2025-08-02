@@ -28,18 +28,12 @@
 	</div>
 {:else if shooters}
 	<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
-		<div class="mb-4 sm:mb-6">
+		<div class="mb-4 flex items-center gap-4 sm:mb-6">
 			<h1 class="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">Skyttere</h1>
 			<div class="flex items-center gap-2 text-sm text-gray-600 sm:gap-4">
 				<span class="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 sm:px-3 sm:text-sm">
-					Skyttere: {shooters.length || 'N/A'}
+					Antall: {shooters.length || 'N/A'}
 				</span>
-				<a
-					href="/"
-					class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-800 transition-colors hover:bg-gray-200 sm:px-3 sm:text-sm"
-				>
-					← Tilbake til skyteplan
-				</a>
 			</div>
 		</div>
 

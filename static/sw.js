@@ -1,7 +1,8 @@
 const CACHE_NAME = 'stordalen-v1';
 const STATIC_ASSETS = [
 	'/',
-	'/shooters',
+	'/skyttere',
+  '/premieliste',
 	'/stordalen.jpg',
 	'/favicon.ico'
 ];

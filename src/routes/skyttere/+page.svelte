@@ -5,11 +5,9 @@
 		parseAsLocalTime
 	} from '$lib/utils/formatters';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
-	import type { PageData } from './$types';
+	import type { PageData } from '../skyttere/$types';
 
 	export let data: PageData;
-
-	console.log('data.shooters', JSON.stringify(data.shooters, null, 2));
 
 	$: shooters = data.shooters;
 	$: error = data.error;

@@ -12,7 +12,7 @@
 
 	// Check if current path matches the given route
 	const isSchedulePage = $derived(page.url.pathname === '/');
-	const isShootersPage = $derived(page.url.pathname === '/shooters');
+	const isShootersPage = $derived(page.url.pathname === '/skyttere');
 	const isPremielistePage = $derived(page.url.pathname === '/premieliste');
 
 	// Initialize PWA functionality on client side
@@ -44,7 +44,7 @@
 				📅 Skyteplan
 			</a>
 			<a
-				href="/shooters"
+				href="/skyttere"
 				class="rounded-full px-2 py-1 text-xs font-medium transition-colors sm:px-3 sm:text-sm {isShootersPage
 					? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
 					: 'bg-gray-100 text-gray-800 hover:bg-gray-200'}"

@@ -25,10 +25,10 @@
 	<meta name="description" content="Skyttere som har oppnådd premier" />
 </svelte:head>
 
-<div class="container mx-auto p-2 sm:p-4">
+<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
 	<!-- Header -->
-	<div class="mb-6 sm:mb-8">
-		<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">🏆 Premieliste</h1>
+	<div class="mb-4 sm:mb-6">
+		<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Premieliste</h1>
 		<p class="mt-2 text-sm text-gray-600 sm:text-base">Skyttere som har oppnådd premier</p>
 	</div>
 

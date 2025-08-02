@@ -267,7 +267,7 @@
 
 												<!-- Time and result in compact row -->
 												<div class="flex items-center justify-between">
-													<div class="text-xs text-gray-600">
+													<div class="text-gray-600">
 														<span>{formatNorwegianTime(event.checkinDateTime)}</span>
 													</div>
 													<div class="text-right">

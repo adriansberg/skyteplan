@@ -150,7 +150,7 @@
 						{@const isToday = dateLabel === 'I dag'}
 						<div
 							use:registerTodaySection={isToday}
-							class="scroll-mt-20 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg"
+							class="scroll-mt-14 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:scroll-mt-20 sm:rounded-xl sm:shadow-lg"
 						>
 							<!-- Date Header -->
 							<div

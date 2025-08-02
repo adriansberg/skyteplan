@@ -110,70 +110,30 @@
 											{/if}
 										</div>
 
-										<!-- Event count at bottom - smaller -->
-										<div class="px-2 text-xs text-gray-500">
-											{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''}
-										</div>
-
 										<!-- Desktop: Full info display -->
 										<div class="hidden sm:block">
-											<!-- Next event - compact at top -->
-											{#if nextEvent}
-												<div
-													class="mb-2 inline-block rounded border border-orange-200 bg-orange-50 px-2 py-1"
-												>
-													<span class="text-xs font-medium text-orange-800">
-														Neste: {nextEvent.name}
-													</span>
-													<span class="text-xs text-orange-600">
-														{formatNorwegianDate(nextEvent.shootingDateTime)} kl. {formatNorwegianTime(
-															nextEvent.shootingDateTime
-														)}
-													</span>
-												</div>
-											{/if}
-
-											<!-- Always show all results prominently -->
-											<div class="mb-2">
-												{#if eventScores.length > 0}
-													<div class="flex flex-wrap gap-1">
-														{#each eventScores as eventScore}
-															<span
-																class="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs text-blue-700"
-															>
-																{eventScore?.eventName}: {eventScore?.score}
-															</span>
-														{/each}
-													</div>
-												{:else}
-													<span class="px-2 text-xs text-gray-400 italic"
-														>Ingen resultater enda</span
-													>
-												{/if}
-											</div>
-
 											<!-- Other upcoming events if any -->
 											{#if upcomingEvents.length > 1}
-												<div class="mb-2">
-													<div class="mb-1 text-xs text-gray-600">Andre kommende:</div>
+												<div>
+													<div class="mb-1 px-2 text-xs text-gray-600">Andre kommende:</div>
 													<div class="flex flex-wrap gap-1">
 														{#each upcomingEvents.slice(1) as upcomingEvent}
 															<span
-																class="rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
+																class="ml-2 rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
 															>
-																{upcomingEvent.name} - {formatNorwegianTime(
+																{upcomingEvent.name}: {formatNorwegianDate(
 																	upcomingEvent.shootingDateTime
-																)}
+																)} kl. {formatNorwegianTime(upcomingEvent.shootingDateTime)}
 															</span>
 														{/each}
 													</div>
 												</div>
 											{/if}
+										</div>
 
-											<!-- Event count at bottom -->
-											<div class="text-xs text-gray-500">
-												{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''} totalt
-											</div>
+										<!-- Event count at bottom -->
+										<div class="px-2 text-xs text-gray-500">
+											{shooter.events.length} skyting{shooter.events.length !== 1 ? 'er' : ''} totalt
 										</div>
 									</div>
 								</div>
@@ -193,9 +153,6 @@
 						<!-- Events List -->
 						{#if shooter.events.length > 0}
 							<div class="p-3 sm:p-6">
-								<h3 class="mb-3 text-base font-medium text-gray-900 sm:mb-4 sm:text-lg">
-									Events & Results
-								</h3>
 								<div class="space-y-3 sm:space-y-4">
 									{#each shooter.events as event}
 										<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4">
@@ -204,7 +161,6 @@
 												<!-- Event header -->
 												<div>
 													<h4 class="text-sm font-medium text-gray-900">{event.name}</h4>
-													<p class="text-xs text-gray-600">{event.className}</p>
 													<p class="text-xs text-gray-500">
 														Skive {event.targetNumber} • Lag {event.relayNumber}
 													</p>
@@ -225,9 +181,11 @@
 															<span class="text-xs text-gray-500">Resultat:</span>
 															<div class="text-right">
 																<div class="text-sm font-bold text-blue-600">{lastSeries.sum}</div>
-																<div class="text-xs text-green-600">
-																	Sentrum: {lastSeries.sumInner}
-																</div>
+																{#if event.name !== 'Felt'}
+																	<div class="text-xs text-green-600">
+																		Sentrum: {lastSeries.sumInner}
+																	</div>
+																{/if}
 															</div>
 														</div>
 													{/if}
@@ -247,17 +205,9 @@
 														<div class="space-y-2 text-xs">
 															<div>
 																<span class="text-gray-500">Oppropstid:</span>
-																<div class="rounded border bg-white px-2 py-1">
+																<div>
 																	{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
 																		event.checkinDateTime
-																	)}
-																</div>
-															</div>
-															<div>
-																<span class="text-gray-500">Skytetid:</span>
-																<div class="rounded border bg-white px-2 py-1">
-																	{formatNorwegianDate(event.shootingDateTime)}, kl. {formatNorwegianTime(
-																		event.shootingDateTime
 																	)}
 																</div>
 															</div>
@@ -266,9 +216,7 @@
 														<!-- Series results -->
 														{#if event.series && event.series.length > 0}
 															<div>
-																<h5 class="mb-2 text-xs font-medium text-gray-900">
-																	Series Results
-																</h5>
+																<h5 class="mb-2 text-xs font-medium text-gray-900">Serier</h5>
 																<div class="space-y-2">
 																	{#each event.series as series}
 																		<div
@@ -284,16 +232,18 @@
 																					<span class="text-gray-500">Total:</span>
 																					<span class="font-bold text-blue-600">{series.sum}</span>
 																				</div>
-																				<div class="flex items-center gap-1">
-																					<span class="text-gray-500">Sentrum:</span>
-																					<span class="font-semibold text-green-600"
-																						>{series.sumInner}</span
-																					>
-																				</div>
+																				{#if event.name !== 'Felt'}
+																					<div class="flex items-center gap-1">
+																						<span class="text-gray-500">Sentrum:</span>
+																						<span class="font-semibold text-green-600"
+																							>{series.sumInner}</span
+																						>
+																					</div>
+																				{/if}
 																			</div>
 																			{#if series.shots && series.shots.length > 0}
 																				<div class="mt-2 border-t border-gray-100 pt-2">
-																					<div class="mb-1 text-xs text-gray-500">Shots:</div>
+																					<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																					<div class="flex flex-wrap gap-1">
 																						{#each series.shots as shot}
 																							<span
@@ -333,38 +283,18 @@
 													<div class="space-y-2">
 														<div class="text-sm">
 															<div class="text-gray-500">Oppropstid:</div>
-															<div class="rounded border bg-white px-2 py-1 text-xs">
+															<div>
 																{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
 																	event.checkinDateTime
 																)}
 															</div>
 														</div>
-														<div class="text-sm">
-															<div class="text-gray-500">Skytetid:</div>
-															<div class="rounded border bg-white px-2 py-1 text-xs">
-																{formatNorwegianDate(event.shootingDateTime)}, kl. {formatNorwegianTime(
-																	event.shootingDateTime
-																)}
-															</div>
-														</div>
-														{#if event.resultDateTime}
-															<div class="text-sm">
-																<div class="text-gray-500">Results:</div>
-																<div
-																	class="rounded border border-green-200 bg-green-50 px-2 py-1 text-xs"
-																>
-																	{formatNorwegianDate(event.resultDateTime)} kl. {formatNorwegianTime(
-																		event.resultDateTime
-																	)}
-																</div>
-															</div>
-														{/if}
 													</div>
 
 													<!-- Results -->
 													<div>
 														{#if event.series && event.series.length > 0}
-															<h5 class="mb-2 text-sm font-medium text-gray-900">Series Results</h5>
+															<h5 class="mb-2 text-sm font-medium text-gray-900">Serier</h5>
 															<div class="space-y-2">
 																{#each event.series as series}
 																	<div

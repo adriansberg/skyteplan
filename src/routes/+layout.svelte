@@ -3,6 +3,8 @@
 	import stordalenLogo from '$lib/assets/stordalen.jpg';
 	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+	import InstallPrompt from '$lib/components/InstallPrompt.svelte';
 
 	const queryClient = new QueryClient();
 
@@ -11,6 +13,11 @@
 	// Check if current path matches the given route
 	const isSchedulePage = $derived($page.url.pathname === '/');
 	const isShootersPage = $derived($page.url.pathname === '/shooters');
+
+	// Initialize PWA functionality on client side
+	if (browser) {
+		import('$lib/pwa');
+	}
 </script>
 
 <svelte:head>
@@ -52,3 +59,6 @@
 <QueryClientProvider client={queryClient}>
 	{@render children?.()}
 </QueryClientProvider>
+
+<!-- Install prompt for PWA -->
+<InstallPrompt />

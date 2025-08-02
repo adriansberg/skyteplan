@@ -1,0 +1,27 @@
+{
+	"name": "Stordalen Skytterlag",
+	"short_name": "Stordalen",
+	"description": "Skyteprogram og skyttere for Stordalen Skytterlag",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#1f2937",
+	"orientation": "portrait",
+	"scope": "/",
+	"icons": [
+		{
+			"src": "/stordalen.jpg",
+			"sizes": "192x192",
+			"type": "image/jpeg",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/stordalen.jpg",
+			"sizes": "512x512",
+			"type": "image/jpeg",
+			"purpose": "any maskable"
+		}
+	],
+	"categories": ["sports", "lifestyle"],
+	"lang": "no"
+}

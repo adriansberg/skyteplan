@@ -5,6 +5,7 @@
 	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import InstallPrompt from '$lib/components/InstallPrompt.svelte';
+	import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 
 	const queryClient = new QueryClient();
 
@@ -67,4 +68,8 @@
 	{@render children?.()}
 </QueryClientProvider>
 
+<!-- Pull to refresh functionality -->
+<PullToRefresh />
+
+<!-- Install prompt for PWA -->
 <InstallPrompt />

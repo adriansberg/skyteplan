@@ -6,6 +6,7 @@
 	import { browser } from '$app/environment';
 	import InstallPrompt from '$lib/components/InstallPrompt.svelte';
 	import PullToRefresh from '$lib/components/PullToRefresh.svelte';
+	import RefreshButton from '$lib/components/RefreshButton.svelte';
 
 	const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@
 		</a>
 
 		<nav class="flex items-center space-x-2 sm:space-x-4">
+			<RefreshButton />
 			<a
 				href="/"
 				class="rounded-full px-2 py-1 text-xs font-medium transition-colors sm:px-3 sm:text-sm {isSchedulePage

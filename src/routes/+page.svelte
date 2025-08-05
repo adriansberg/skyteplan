@@ -48,29 +48,61 @@
 				})[] = [];
 
 				shooters.forEach((shooter) => {
-					const feltEvent = shooter.events.find((e) => e.name === 'Felt');
-					const relatedEvents = shooter.events.filter(
-						(e) =>
-							['Minne', 'Felthurtig', 'Stang'].includes(e.name) &&
-							e.shootingDateTime === feltEvent?.shootingDateTime
-					);
+					// Track which events we've already processed to avoid duplicates
+					const processedEvents = new Set<string>();
 
 					shooter.events.forEach((event) => {
-						if (event.name === 'Felt' && relatedEvents.length > 0) {
-							// Add Felt event with sub-events
-							allEvents.push({
-								...event,
-								shooter,
-								subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
-							});
-						} else if (
-							!['Minne', 'Felthurtig', 'Stang'].includes(event.name) ||
-							!feltEvent ||
-							event.shootingDateTime !== feltEvent.shootingDateTime
-						) {
-							// Add standalone events (not part of Felt grouping)
-							allEvents.push({ ...event, shooter });
+						const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`;
+
+						if (processedEvents.has(eventKey)) {
+							return; // Skip if already processed
 						}
+
+						if (event.name === 'Felt') {
+							// For Felt events, look for related sub-events at the same time
+							const relatedEvents = shooter.events.filter(
+								(e) =>
+									['Minne', 'Felthurtig', 'Stang'].includes(e.name) &&
+									e.shootingDateTime === event.shootingDateTime &&
+									e.targetNumber === event.targetNumber &&
+									e.relayNumber === event.relayNumber
+							);
+
+							if (relatedEvents.length > 0) {
+								// Add Felt event with sub-events
+								allEvents.push({
+									...event,
+									shooter,
+									subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
+								});
+
+								// Mark related events as processed
+								relatedEvents.forEach((e) => {
+									const relatedKey = `${e.name}-${e.shootingDateTime}-${e.targetNumber}-${e.relayNumber}`;
+									processedEvents.add(relatedKey);
+								});
+							} else {
+								// Add standalone Felt event
+								allEvents.push({ ...event, shooter });
+							}
+						} else {
+							// For non-Felt events, check if they're part of a Felt group
+							const correspondingFelt = shooter.events.find(
+								(e) =>
+									e.name === 'Felt' &&
+									e.shootingDateTime === event.shootingDateTime &&
+									e.targetNumber === event.targetNumber &&
+									e.relayNumber === event.relayNumber
+							);
+
+							// Only add as standalone if there's no corresponding Felt event
+							if (!correspondingFelt) {
+								allEvents.push({ ...event, shooter });
+							}
+							// If there is a corresponding Felt event, it will be handled when we process the Felt event
+						}
+
+						processedEvents.add(eventKey);
 					});
 				});
 

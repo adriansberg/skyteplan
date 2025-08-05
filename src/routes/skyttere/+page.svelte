@@ -45,12 +45,12 @@
 						e.series.every((s) => s.sum !== '')
 					)}
 					{@const upcomingEvents = shooter.events.filter(
-						(e) => !e.resultDateTime && parseAsLocalTime(e.shootingDateTime) > new Date()
+						(e) => !e.resultDateTime && parseAsLocalTime(e.checkinDateTime) > new Date()
 					)}
 					{@const nextEvent = upcomingEvents.sort(
 						(a, b) =>
-							parseAsLocalTime(a.shootingDateTime).getTime() -
-							parseAsLocalTime(b.shootingDateTime).getTime()
+							parseAsLocalTime(a.checkinDateTime).getTime() -
+							parseAsLocalTime(b.checkinDateTime).getTime()
 					)[0]}
 					{@const eventScores = eventsWithResults
 						.map((event) => {
@@ -89,10 +89,11 @@
 											>
 												<span class="text-xs font-medium text-orange-800">
 													Neste: {nextEvent.name}
+													{nextEvent.eventType === 'FINALE' ? '(Finale)' : ''}
 												</span>
 												<span class="text-xs text-orange-600">
-													{formatNorwegianDate(nextEvent.shootingDateTime)} kl. {formatNorwegianTime(
-														nextEvent.shootingDateTime
+													{formatNorwegianDate(nextEvent.checkinDateTime)} kl. {formatNorwegianTime(
+														nextEvent.checkinDateTime
 													)}
 												</span>
 											</div>
@@ -125,8 +126,8 @@
 																class="ml-2 rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
 															>
 																{upcomingEvent.name}: {formatNorwegianDate(
-																	upcomingEvent.shootingDateTime
-																)} kl. {formatNorwegianTime(upcomingEvent.shootingDateTime)}
+																	upcomingEvent.checkinDateTime
+																)} kl. {formatNorwegianTime(upcomingEvent.checkinDateTime)}
 															</span>
 														{/each}
 													</div>

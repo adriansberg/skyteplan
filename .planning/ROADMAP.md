@@ -7,7 +7,7 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
 ## Phases
 
 - [x] **Phase 1: Cleanup & Dependencies** - Remove dead code, upgrade deps in mandatory sequence
-- [ ] **Phase 2: Security & Tech Debt** - Server-side GraphQL, rune migration, error handling
+- [x] **Phase 2: Security & Tech Debt** - Server-side GraphQL, rune migration, error handling (completed 2026-05-17)
 - [ ] **Phase 3: UX Redesign** - Bottom tabs, outdoor palette, solid badges, sticky headers
 - [ ] **Phase 4: Polish** - Skeleton screens, iOS meta, automated SW cache versioning
 
@@ -60,11 +60,11 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 02-01-PLAN.md — SEC-01 + SEC-02 + DEBT-02: create `$lib/server/graphql/`, rename all three loaders to `+page.server.ts`, validate `?c=` with `/^\d+$/`, add error field to premieliste loader, delete legacy files and barrel export
+- [x] 02-01-PLAN.md — SEC-01 + SEC-02 + DEBT-02: create `$lib/server/graphql/`, rename all three loaders to `+page.server.ts`, validate `?c=` with `/^\d+$/`, add error field to premieliste loader, delete legacy files and barrel export
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 02-02-PLAN.md — DEBT-01 + DEBT-03: extract `groupFeltEvents` to `$lib/utils/helpers`, migrate `+page.svelte`, `skyttere/+page.svelte`, and `Splash.svelte` to Svelte 5 runes (`$props`, `$derived`, `$state`, `$bindable`)
-- [ ] 02-03-PLAN.md — DEBT-04: create `+error.svelte` with Norwegian message, replicated nav header, conditional `$page.error.message`, and `href="/"` retry link
+- [x] 02-02-PLAN.md — DEBT-01 + DEBT-03: extract `groupFeltEvents` to `$lib/utils/helpers`, migrate `+page.svelte`, `skyttere/+page.svelte`, and `Splash.svelte` to Svelte 5 runes (`$props`, `$derived`, `$state`, `$bindable`)
+- [x] 02-03-PLAN.md — DEBT-04: create `+error.svelte` with Norwegian message, replicated nav header, conditional `$page.error.message`, and `href="/"` retry link
 **UI hint**: yes
 
 ### Phase 3: UX Redesign
@@ -96,6 +96,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
-| 2. Security & Tech Debt | 0/3 | Not started | - |
+| 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

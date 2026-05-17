@@ -37,7 +37,7 @@ Plans:
 - [x] 01-03-PLAN.md — DEPS-02: @sveltejs/kit 2.22 → 2.59.1
 
 **Wave 4** *(blocked on Wave 3 completion)*
-- [ ] 01-04-PLAN.md — DEPS-03: Vite 7→8, vite-plugin-svelte 6→7, adapter-vercel 5→6 (single wave)
+- [x] 01-04-PLAN.md — DEPS-03: Vite 7→8, vite-plugin-svelte 6→7, adapter-vercel 5→6 (single wave)
 
 **Wave 5** *(blocked on Wave 4 completion)*
 - [ ] 01-05-PLAN.md — DEPS-04: TypeScript 5 → 6.0.3 (with tsconfig types-array contingency)
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cleanup & Dependencies | 2/5 | In Progress|  |
+| 1. Cleanup & Dependencies | 3/5 | In Progress|  |
 | 2. Security & Tech Debt | 0/TBD | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

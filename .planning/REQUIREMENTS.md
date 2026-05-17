@@ -22,7 +22,7 @@
 
 - [ ] **DEPS-01**: All patch/minor dependency bumps applied (svelte, svelte-check, graphql-request, eslint, prettier, @vercel/analytics)
 - [x] **DEPS-02**: SvelteKit bumped from 2.22 to 2.59 (required prerequisite for Vite 8)
-- [ ] **DEPS-03**: Vite bumped from 7 to 8 and `@sveltejs/adapter-vercel` bumped to 6; vite.config.ts updated for Rolldown/renamed config keys; build passes
+- [x] **DEPS-03**: Vite bumped from 7 to 8 and `@sveltejs/adapter-vercel` bumped to 6; vite.config.ts updated for Rolldown/renamed config keys; build passes
 - [ ] **DEPS-04**: TypeScript bumped from 5 to 6; tsconfig updated for new `types` defaults; type-check passes
 
 ### Tech Debt
@@ -79,7 +79,7 @@
 | SEC-03 | Phase 1 | Complete |
 | DEPS-01 | Phase 1 | Pending |
 | DEPS-02 | Phase 1 | Complete |
-| DEPS-03 | Phase 1 | Pending |
+| DEPS-03 | Phase 1 | Complete |
 | DEPS-04 | Phase 1 | Pending |
 | DEBT-01 | Phase 2 | Pending |
 | DEBT-02 | Phase 2 | Pending |

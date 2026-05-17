@@ -5,12 +5,12 @@
 		parseAsLocalTime
 	} from '$lib/utils/formatters';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
-	import type { PageData } from '../skyttere/$types';
+	import type { PageData } from './$types';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props()
 
-	$: shooters = data.shooters;
-	$: error = data.error;
+	let shooters = $derived(data.shooters)
+	let error = $derived(data.error)
 </script>
 
 <svelte:head>

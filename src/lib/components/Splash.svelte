@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import stordalenLogo from '$lib/assets/stordalen.jpg';
 
-	export let show = false;
-	let minimumSplashTime = 1500; // Show splash for at least 1.5 seconds
+	let { show = $bindable(false) } = $props()
+	let minimumSplashTime = 1500;
 
 	onMount(() => {
 		// Check if this is the first visit of this session

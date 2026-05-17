@@ -56,7 +56,15 @@ Plans:
   3. All three route pages use `$props`, `$derived`, `$state` — no `export let` or `$:` reactive statements remain
   4. The premieliste route returns an `error` field on API failure so the UI can show a distinct error state (not empty results)
   5. An unhandled load failure on any route renders the Norwegian-language `+error.svelte` page, not a blank screen
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+**Wave 1**
+- [ ] 02-01-PLAN.md — SEC-01 + SEC-02 + DEBT-02: create `$lib/server/graphql/`, rename all three loaders to `+page.server.ts`, validate `?c=` with `/^\d+$/`, add error field to premieliste loader, delete legacy files and barrel export
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 02-02-PLAN.md — DEBT-01 + DEBT-03: extract `groupFeltEvents` to `$lib/utils/helpers`, migrate `+page.svelte`, `skyttere/+page.svelte`, and `Splash.svelte` to Svelte 5 runes (`$props`, `$derived`, `$state`, `$bindable`)
+- [ ] 02-03-PLAN.md — DEBT-04: create `+error.svelte` with Norwegian message, replicated nav header, conditional `$page.error.message`, and `href="/"` retry link
 **UI hint**: yes
 
 ### Phase 3: UX Redesign
@@ -88,6 +96,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
-| 2. Security & Tech Debt | 0/TBD | Not started | - |
+| 2. Security & Tech Debt | 0/3 | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

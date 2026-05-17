@@ -2,25 +2,27 @@
 	import {
 		formatNorwegianDate,
 		formatNorwegianTime,
-		getDateLabel,
-		parseAsLocalTime
+		getDateLabel
 	} from '$lib/utils/formatters';
-	import { hasPartialResults, getEventStatus } from '$lib/utils/helpers';
+	import {
+		hasPartialResults,
+		getEventStatus,
+		groupFeltEvents,
+		type EventWithShooter
+	} from '$lib/utils/helpers';
 	import type { PageData } from './$types';
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
-	import type { Shooter, Event } from '$lib/graphql/types';
 	import { onMount } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props()
 
-	$: shooters = data.shooters;
-	$: error = data.error;
+	let shooters = $derived(data.shooters)
+	let error = $derived(data.error)
 
-	let showSplash = false;
-	let todaySectionElement: HTMLElement | undefined;
+	let showSplash = $state(false)
+	let todaySectionElement = $state<HTMLElement | undefined>(undefined)
 
 	// Svelte action to register the today section element
 	function registerTodaySection(element: HTMLElement, isToday: boolean) {
@@ -39,100 +41,19 @@
 		};
 	}
 
-	// Process and group events by date
-	$: groupedEvents = shooters
-		? (() => {
-				// Flatten all events with shooter info and group Felt-related events
-				const allEvents: (Event & {
-					shooter: Shooter;
-					subEvents?: (Event & { shooter: Shooter })[];
-				})[] = [];
-
-				shooters.forEach((shooter) => {
-					// Track which events we've already processed to avoid duplicates
-					const processedEvents = new SvelteSet<string>();
-
-					shooter.events.forEach((event) => {
-						const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`;
-
-						if (processedEvents.has(eventKey)) {
-							return; // Skip if already processed
-						}
-
-						if (event.name === 'Felt') {
-							// For Felt events, look for related sub-events at the same time
-							const relatedEvents = shooter.events.filter(
-								(e) =>
-									['Minne', 'Felthurtig', 'Stang'].includes(e.name) &&
-									e.shootingDateTime === event.shootingDateTime &&
-									e.targetNumber === event.targetNumber &&
-									e.relayNumber === event.relayNumber
-							);
-
-							if (relatedEvents.length > 0) {
-								// Add Felt event with sub-events
-								allEvents.push({
-									...event,
-									shooter,
-									subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
-								});
-
-								// Mark related events as processed
-								relatedEvents.forEach((e) => {
-									const relatedKey = `${e.name}-${e.shootingDateTime}-${e.targetNumber}-${e.relayNumber}`;
-									processedEvents.add(relatedKey);
-								});
-							} else {
-								// Add standalone Felt event
-								allEvents.push({ ...event, shooter });
-							}
-						} else {
-							// For non-Felt events, check if they're part of a Felt group
-							const correspondingFelt = shooter.events.find(
-								(e) =>
-									e.name === 'Felt' &&
-									e.shootingDateTime === event.shootingDateTime &&
-									e.targetNumber === event.targetNumber &&
-									e.relayNumber === event.relayNumber
-							);
-
-							// Only add as standalone if there's no corresponding Felt event
-							if (!correspondingFelt) {
-								allEvents.push({ ...event, shooter });
-							}
-							// If there is a corresponding Felt event, it will be handled when we process the Felt event
-						}
-
-						processedEvents.add(eventKey);
-					});
-				});
-
-				// Sort by shooting date/time
-				allEvents.sort(
-					(a, b) =>
-						parseAsLocalTime(a.shootingDateTime).getTime() -
-						parseAsLocalTime(b.shootingDateTime).getTime()
-				);
-
-				// Group by date
-				const grouped: Record<
-					string,
-					(Event & {
-						shooter: Shooter;
-						subEvents?: (Event & { shooter: Shooter })[];
-					})[]
-				> = {};
-				allEvents.forEach((event) => {
-					const dateKey = formatNorwegianDate(event.shootingDateTime);
-					if (!grouped[dateKey]) {
-						grouped[dateKey] = [];
-					}
-					grouped[dateKey].push(event);
-				});
-
-				return grouped;
-			})()
-		: {};
+	let groupedEvents = $derived(
+		(() => {
+			if (!shooters) return {} as Record<string, EventWithShooter[]>
+			const allEvents = groupFeltEvents(shooters)
+			const grouped: Record<string, EventWithShooter[]> = {}
+			allEvents.forEach((event) => {
+				const dateKey = formatNorwegianDate(event.shootingDateTime)
+				if (!grouped[dateKey]) grouped[dateKey] = []
+				grouped[dateKey].push(event)
+			})
+			return grouped
+		})()
+	)
 
 	// Auto-scroll to today's section when page loads
 	onMount(() => {

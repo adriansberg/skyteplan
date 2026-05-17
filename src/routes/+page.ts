@@ -1,9 +1,10 @@
 import type { Load } from '@sveltejs/kit';
 import { getShootersByClub } from '$lib';
+import { DEFAULT_CLUB_ID } from '$lib/constants';
 
 export const load: Load = async ({ url }) => {
 	// Get club ID from query parameter or use default
-	const clubId = url.searchParams.get('c') || '10782';
+	const clubId = url.searchParams.get('c') || DEFAULT_CLUB_ID;
 	try {
 		const shooters = await getShootersByClub(clubId);
 		return {

@@ -311,17 +311,11 @@ const clubId = url.searchParams.get('c') || DEFAULT_CLUB_ID;
 | A2 | @vercel/analytics 1.x→1.6.1 is a non-breaking bump | Standard Stack | API changes could affect analytics calls — but package is unused in source anyway |
 | A3 | TypeScript 6 types:[] default doesn't break this project | Pitfall 2 | If @types/cookie or others are implicitly expected, yarn check would fail after TS6 upgrade |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **eslint 9.x vs 10.x**
-   - What we know: 10.x is the latest eslint; STATE.md targets eslint for patch bumps only
-   - What's unclear: Whether 10.x has changes to the flat config that would require eslint.config.js updates
-   - Recommendation: Stay on 9.39.4 for Phase 1; evaluate 10.x separately
+1. **eslint 9.x vs 10.x** — RESOLVED: Stay on 9.39.4 for Phase 1 (DEPS-01). 10.x may require eslint.config.js flat-config changes; not worth the risk in a cleanup phase. Evaluate 10.x separately.
 
-2. **adapter-vercel 6 Vercel deployment compatibility**
-   - What we know: adapter-vercel 6.3.3 supports @sveltejs/kit ^2.4.0; esbuild is still a dep (0.25.4)
-   - What's unclear: Whether Vercel's build infrastructure accepts the new adapter output format
-   - Recommendation: No code changes visible; risk is LOW — adapter upgrade is same major API surface
+2. **adapter-vercel 6 Vercel deployment compatibility** — RESOLVED: Accepted as LOW risk (01-04 plan). adapter-vercel 6.3.3 supports @sveltejs/kit ^2.4.0 with no visible API surface changes; no code changes required in svelte.config.js.
 
 ## Environment Availability
 

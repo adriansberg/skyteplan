@@ -24,7 +24,26 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
   3. Club ID `'10782'` appears in exactly one shared constant file; no other file contains the raw string
   4. External lsres.no link URL contains the current year from `new Date().getFullYear()`, not a hardcoded literal
   5. Deprecated formatter functions and duplicate pwa.ts logic are absent from the codebase
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+
+**Wave 1**
+- [ ] 01-01-PLAN.md — Cleanup pass: remove svelte-query, deprecated formatters, duplicate pwa.ts logic; centralize club ID constant; apply dynamic year to external link
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 01-02-PLAN.md — DEPS-01: patch/minor bumps (svelte 5.55.7, svelte-check, eslint, prettier, graphql-request, @vercel/analytics)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 01-03-PLAN.md — DEPS-02: @sveltejs/kit 2.22 → 2.59.1
+
+**Wave 4** *(blocked on Wave 3 completion)*
+- [ ] 01-04-PLAN.md — DEPS-03: Vite 7→8, vite-plugin-svelte 6→7, adapter-vercel 5→6 (single wave)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+- [ ] 01-05-PLAN.md — DEPS-04: TypeScript 5 → 6.0.3 (with tsconfig types-array contingency)
+
+**Cross-cutting constraints:**
+- `yarn check && yarn build` must pass after every wave — each dep upgrade is independently verified before the next begins
 
 ### Phase 2: Security & Tech Debt
 **Goal**: Auth token is server-only and all three routes have consistent, rune-based implementations
@@ -63,13 +82,12 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
   2. Installed PWA on iOS uses `viewport-fit=cover` and `black-translucent` status bar with no white gap at top or bottom
   3. Each production build generates a unique SW cache name derived from the git hash; the `activate` handler evicts all previous cache versions
 **Plans**: TBD
-**UI hint**: yes
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cleanup & Dependencies | 0/TBD | Not started | - |
+| 1. Cleanup & Dependencies | 0/5 | Not started | - |
 | 2. Security & Tech Debt | 0/TBD | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

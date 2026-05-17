@@ -1,4 +1,5 @@
 import { parseAsLocalTime } from './formatters';
+import type { Shooter, Event } from '$lib/graphql/types';
 
 /**
  * Check if an event has partial results (some series have results)
@@ -92,4 +93,66 @@ export function getEventStatus(event: {
 
 	// Otherwise it's upcoming
 	return 'upcoming';
+}
+
+export type EventWithShooter = Event & {
+	shooter: Shooter
+	subEvents?: (Event & { shooter: Shooter })[]
+}
+
+export function groupFeltEvents(shooters: Shooter[]): EventWithShooter[] {
+	const allEvents: EventWithShooter[] = []
+
+	shooters.forEach((shooter) => {
+		const processedEvents = new Set<string>()
+
+		shooter.events.forEach((event) => {
+			const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`
+			if (processedEvents.has(eventKey)) return
+
+			if (event.name === 'Felt') {
+				const relatedEvents = shooter.events.filter(
+					(e) =>
+						['Minne', 'Felthurtig', 'Stang'].includes(e.name) &&
+						e.shootingDateTime === event.shootingDateTime &&
+						e.targetNumber === event.targetNumber &&
+						e.relayNumber === event.relayNumber
+				)
+				if (relatedEvents.length > 0) {
+					allEvents.push({
+						...event,
+						shooter,
+						subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
+					})
+					relatedEvents.forEach((e) => {
+						processedEvents.add(
+							`${e.name}-${e.shootingDateTime}-${e.targetNumber}-${e.relayNumber}`
+						)
+					})
+				} else {
+					allEvents.push({ ...event, shooter })
+				}
+			} else {
+				const correspondingFelt = shooter.events.find(
+					(e) =>
+						e.name === 'Felt' &&
+						e.shootingDateTime === event.shootingDateTime &&
+						e.targetNumber === event.targetNumber &&
+						e.relayNumber === event.relayNumber
+				)
+				if (!correspondingFelt) {
+					allEvents.push({ ...event, shooter })
+				}
+			}
+			processedEvents.add(eventKey)
+		})
+	})
+
+	allEvents.sort(
+		(a, b) =>
+			parseAsLocalTime(a.shootingDateTime).getTime() -
+			parseAsLocalTime(b.shootingDateTime).getTime()
+	)
+
+	return allEvents
 }

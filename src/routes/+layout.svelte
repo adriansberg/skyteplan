@@ -1,14 +1,11 @@
 <script lang="ts">
 	import '../app.css';
 	import stordalenLogo from '$lib/assets/stordalen.jpg';
-	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import InstallPrompt from '$lib/components/InstallPrompt.svelte';
 	import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 	import RefreshButton from '$lib/components/RefreshButton.svelte';
-
-	const queryClient = new QueryClient();
 
 	let { children } = $props();
 
@@ -66,9 +63,7 @@
 	</div>
 </header>
 
-<QueryClientProvider client={queryClient}>
-	{@render children?.()}
-</QueryClientProvider>
+{@render children?.()}
 
 <!-- Pull to refresh functionality -->
 <PullToRefresh />

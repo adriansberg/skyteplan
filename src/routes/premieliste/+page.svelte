@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import type { ShooterWithDistinctions } from '$lib/graphql/types';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	let { data } = $props();
 	let shootersWithDistinctions: ShooterWithDistinctions[] = data.shootersWithDistinctions || [];
@@ -43,7 +43,7 @@
 				Medalje: [] as Array<{ name: string; count: number; shooters: string[] }>
 			};
 
-			const prizeMap = new Map<
+			const prizeMap = new SvelteMap<
 				string,
 				{ category: 'Gavepremie' | 'Beger' | 'Medalje'; shooters: string[] }
 			>();
@@ -125,7 +125,7 @@
 						<div class="mt-4">
 							<h4 class="mb-2 text-sm font-medium text-gray-700">Premier:</h4>
 							<div class="flex flex-wrap gap-2">
-								{#each shooter.distinctions as distinction}
+								{#each shooter.distinctions as distinction (distinction.organizationId)}
 									<span
 										class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"
 									>
@@ -161,7 +161,7 @@
 					</div>
 					{#if prizeSummary.Gavepremie.length > 0}
 						<div class="space-y-2">
-							{#each prizeSummary.Gavepremie as prize}
+							{#each prizeSummary.Gavepremie as prize (prize.name)}
 								<div class="flex items-center justify-between text-sm">
 									<span class="text-gray-700">{prize.name}</span>
 									<span
@@ -189,7 +189,7 @@
 					</div>
 					{#if prizeSummary.Beger.length > 0}
 						<div class="space-y-2">
-							{#each prizeSummary.Beger as prize}
+							{#each prizeSummary.Beger as prize (prize.name)}
 								<div class="flex items-center justify-between text-sm">
 									<span class="text-gray-700">{prize.name}</span>
 									<span
@@ -217,7 +217,7 @@
 					</div>
 					{#if prizeSummary.Medalje.length > 0}
 						<div class="space-y-2">
-							{#each prizeSummary.Medalje as prize}
+							{#each prizeSummary.Medalje as prize (prize.name)}
 								<div class="flex items-center justify-between text-sm">
 									<span class="text-gray-700">{prize.name}</span>
 									<span

@@ -40,7 +40,7 @@
 		<!-- Shooters List -->
 		{#if shooters.length > 0}
 			<div class="grid gap-4 sm:gap-6">
-				{#each shooters as shooter}
+				{#each shooters as shooter (shooter.organizationId)}
 					{@const eventsWithResults = shooter.events.filter((e) =>
 						e.series.every((s) => s.sum !== '')
 					)}
@@ -102,7 +102,7 @@
 										<!-- Always show all results -->
 										<div class="flex flex-wrap items-center gap-1">
 											{#if eventScores.length > 0}
-												{#each eventScores as eventScore}
+												{#each eventScores as eventScore (eventScore?.eventName)}
 													<span
 														class="rounded border border-green-300 bg-green-100 px-2 py-1 text-xs text-green-700"
 													>
@@ -121,7 +121,7 @@
 												<div>
 													<div class="mb-1 px-2 text-xs text-gray-600">Andre kommende:</div>
 													<div class="flex flex-wrap gap-1">
-														{#each upcomingEvents.slice(1) as upcomingEvent}
+														{#each upcomingEvents.slice(1) as upcomingEvent (`${upcomingEvent.name}-${upcomingEvent.shootingDateTime}`)}
 															<span
 																class="ml-2 rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
 															>
@@ -158,7 +158,7 @@
 						{#if shooter.events.length > 0}
 							<div class="p-3 sm:p-6">
 								<div class="space-y-3 sm:space-y-4">
-									{#each shooter.events as event}
+									{#each shooter.events as event (`${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`)}
 										<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4">
 											<!-- Mobile: Compact layout -->
 											<div class="space-y-3 sm:hidden">
@@ -222,7 +222,7 @@
 															<div>
 																<h5 class="mb-2 text-xs font-medium text-gray-900">Serier</h5>
 																<div class="space-y-2">
-																	{#each event.series as series}
+																	{#each event.series as series (series.name)}
 																		<div
 																			class="rounded p-2 {series.seriesType === 'SUB_SERIES'
 																				? 'my-4 border-2 border-blue-300 bg-blue-50'
@@ -249,7 +249,7 @@
 																				<div class="mt-2 border-t border-gray-100 pt-2">
 																					<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																					<div class="flex flex-wrap gap-1">
-																						{#each series.shots as shot}
+																						{#each series.shots as shot (shot.valueInt + shot.valueDec)}
 																							<span
 																								class="inline-block rounded bg-gray-100 px-1 py-0.5 text-xs text-gray-700"
 																							>
@@ -303,7 +303,7 @@
 														{#if event.series && event.series.length > 0}
 															<h5 class="mb-2 text-sm font-medium text-gray-900">Serier</h5>
 															<div class="space-y-2">
-																{#each event.series as series}
+																{#each event.series as series (series.name)}
 																	<div
 																		class="rounded p-3 {series.seriesType === 'SUB_SERIES'
 																			? 'my-4 border-2 border-blue-300 bg-blue-50'
@@ -332,7 +332,7 @@
 																			<div class="mt-2 border-t border-gray-100 pt-2">
 																				<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																				<div class="flex flex-wrap gap-1">
-																					{#each series.shots as shot}
+																					{#each series.shots as shot (shot.valueInt + shot.valueDec)}
 																						<span
 																							class="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700"
 																						>

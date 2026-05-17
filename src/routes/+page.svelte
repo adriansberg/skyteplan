@@ -12,6 +12,7 @@
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
 	import type { Shooter, Event } from '$lib/graphql/types';
 	import { onMount } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	export let data: PageData;
 
@@ -49,7 +50,7 @@
 
 				shooters.forEach((shooter) => {
 					// Track which events we've already processed to avoid duplicates
-					const processedEvents = new Set<string>();
+					const processedEvents = new SvelteSet<string>();
 
 					shooter.events.forEach((event) => {
 						const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`;
@@ -177,7 +178,7 @@
 			<!-- Schedule by Date -->
 			{#if Object.keys(groupedEvents).length > 0}
 				<div class="space-y-4 sm:space-y-8">
-					{#each Object.entries(groupedEvents) as [_, events]}
+					{#each Object.entries(groupedEvents) as [dateKey, events] (dateKey)}
 						{@const dateLabel = getDateLabel(events[0].shootingDateTime)}
 						{@const isToday = dateLabel === 'I dag'}
 						<div
@@ -199,7 +200,7 @@
 							<!-- Events for this date -->
 							<div class="p-3 sm:p-6">
 								<div class="space-y-3 sm:space-y-4">
-									{#each events as event}
+									{#each events as event (`${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`)}
 										{@const status = getEventStatus(event)}
 										{@const finalSeries =
 											event.series && event.series.length > 0
@@ -282,7 +283,7 @@
 														av {event.name}
 													</summary>
 													<div class="mt-3 space-y-2 border-l-2 border-blue-200 pl-3">
-														{#each event.subEvents as subEvent}
+														{#each event.subEvents as subEvent (`${subEvent.name}-${subEvent.shootingDateTime}-${subEvent.targetNumber}-${subEvent.relayNumber}`)}
 															{@const subFinalSeries =
 																subEvent.series && subEvent.series.length > 0
 																	? subEvent.series.find(
@@ -330,7 +331,7 @@
 														Vis detaljerte resultater
 													</summary>
 													<div class="mt-3 space-y-1">
-														{#each event.series as series}
+														{#each event.series as series (series.name)}
 															<div
 																class="rounded p-2 {series.seriesType === 'SUB_SERIES'
 																	? 'my-2 border-2 border-blue-300 bg-blue-50'

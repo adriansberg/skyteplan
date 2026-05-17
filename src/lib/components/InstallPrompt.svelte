@@ -2,8 +2,13 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
+	interface BeforeInstallPromptEvent extends Event {
+		prompt(): Promise<void>;
+		userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+	}
+
 	let showInstallPrompt = $state(false);
-	let deferredPrompt: Event | null = null;
+	let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
 	onMount(() => {
 		if (!browser) return;
@@ -11,7 +16,7 @@
 		// Listen for the install prompt
 		window.addEventListener('beforeinstallprompt', (e) => {
 			e.preventDefault();
-			deferredPrompt = e;
+			deferredPrompt = e as BeforeInstallPromptEvent;
 			showInstallPrompt = true;
 		});
 
@@ -30,10 +35,10 @@
 	function installApp() {
 		if (deferredPrompt) {
 			// Show the install prompt
-			(deferredPrompt as any).prompt();
+			deferredPrompt.prompt();
 
 			// Wait for the user to respond to the prompt
-			(deferredPrompt as any).userChoice.then((choiceResult: any) => {
+			deferredPrompt.userChoice.then((choiceResult) => {
 				if (choiceResult.outcome === 'accepted') {
 					console.log('User accepted the install prompt');
 				} else {

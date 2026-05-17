@@ -6,7 +6,7 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
 
 ## Phases
 
-- [ ] **Phase 1: Cleanup & Dependencies** - Remove dead code, upgrade deps in mandatory sequence
+- [x] **Phase 1: Cleanup & Dependencies** - Remove dead code, upgrade deps in mandatory sequence
 - [ ] **Phase 2: Security & Tech Debt** - Server-side GraphQL, rune migration, error handling
 - [ ] **Phase 3: UX Redesign** - Bottom tabs, outdoor palette, solid badges, sticky headers
 - [ ] **Phase 4: Polish** - Skeleton screens, iOS meta, automated SW cache versioning
@@ -31,7 +31,7 @@ Plans:
 - [x] 01-01-PLAN.md — Cleanup pass: remove svelte-query, deprecated formatters, duplicate pwa.ts logic; centralize club ID constant; apply dynamic year to external link
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 01-02-PLAN.md — DEPS-01: patch/minor bumps (svelte 5.55.7, svelte-check, eslint, prettier, graphql-request, @vercel/analytics)
+- [x] 01-02-PLAN.md — DEPS-01: patch/minor bumps (svelte 5.55.7, svelte-check, eslint, prettier, graphql-request, @vercel/analytics)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [x] 01-03-PLAN.md — DEPS-02: @sveltejs/kit 2.22 → 2.59.1
@@ -40,7 +40,7 @@ Plans:
 - [x] 01-04-PLAN.md — DEPS-03: Vite 7→8, vite-plugin-svelte 6→7, adapter-vercel 5→6 (single wave)
 
 **Wave 5** *(blocked on Wave 4 completion)*
-- [ ] 01-05-PLAN.md — DEPS-04: TypeScript 5 → 6.0.3 (with tsconfig types-array contingency)
+- [x] 01-05-PLAN.md — DEPS-04: TypeScript 5 → 6.0.3 (with tsconfig types-array contingency)
 
 **Cross-cutting constraints:**
 - `yarn check && yarn build` must pass after every wave — each dep upgrade is independently verified before the next begins
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cleanup & Dependencies | 3/5 | In Progress|  |
+| 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 0/TBD | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

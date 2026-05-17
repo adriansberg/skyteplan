@@ -28,7 +28,7 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
 Plans:
 
 **Wave 1**
-- [ ] 01-01-PLAN.md — Cleanup pass: remove svelte-query, deprecated formatters, duplicate pwa.ts logic; centralize club ID constant; apply dynamic year to external link
+- [x] 01-01-PLAN.md — Cleanup pass: remove svelte-query, deprecated formatters, duplicate pwa.ts logic; centralize club ID constant; apply dynamic year to external link
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 01-02-PLAN.md — DEPS-01: patch/minor bumps (svelte 5.55.7, svelte-check, eslint, prettier, graphql-request, @vercel/analytics)
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cleanup & Dependencies | 0/5 | Not started | - |
+| 1. Cleanup & Dependencies | 1/5 | In Progress|  |
 | 2. Security & Tech Debt | 0/TBD | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

@@ -7,16 +7,16 @@
 
 ### Cleanup
 
-- [ ] **CLEAN-01**: Unused `@sveltestack/svelte-query` removed from layout and package.json
-- [ ] **CLEAN-02**: Deprecated `formatNorwegianDateLocal` and `formatNorwegianTimeLocale` functions deleted from formatters.ts
-- [ ] **CLEAN-03**: Duplicate install-prompt logic in `src/lib/pwa.ts` deleted (InstallPrompt.svelte is sole owner)
-- [ ] **CLEAN-04**: Hardcoded club ID `'10782'` extracted to a single shared constant used by all three loaders
+- [x] **CLEAN-01**: Unused `@sveltestack/svelte-query` removed from layout and package.json
+- [x] **CLEAN-02**: Deprecated `formatNorwegianDateLocal` and `formatNorwegianTimeLocale` functions deleted from formatters.ts
+- [x] **CLEAN-03**: Duplicate install-prompt logic in `src/lib/pwa.ts` deleted (InstallPrompt.svelte is sole owner)
+- [x] **CLEAN-04**: Hardcoded club ID `'10782'` extracted to a single shared constant used by all three loaders
 
 ### Security
 
 - [ ] **SEC-01**: All GraphQL calls moved to `+page.server.ts` server-only loaders; `AUTH_TOKEN` read from `$env/static/private` and never present in client bundle
 - [ ] **SEC-02**: Club ID from `?c=` query param validated against `/^\d+$/` before passing to GraphQL query
-- [ ] **SEC-03**: External lsres.no link URL uses `new Date().getFullYear()` instead of hardcoded `2025`
+- [x] **SEC-03**: External lsres.no link URL uses `new Date().getFullYear()` instead of hardcoded `2025`
 
 ### Dependencies
 
@@ -70,13 +70,13 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLEAN-01 | Phase 1 | Pending |
-| CLEAN-02 | Phase 1 | Pending |
-| CLEAN-03 | Phase 1 | Pending |
-| CLEAN-04 | Phase 1 | Pending |
+| CLEAN-01 | Phase 1 | Complete |
+| CLEAN-02 | Phase 1 | Complete |
+| CLEAN-03 | Phase 1 | Complete |
+| CLEAN-04 | Phase 1 | Complete |
 | SEC-01 | Phase 2 | Pending |
 | SEC-02 | Phase 2 | Pending |
-| SEC-03 | Phase 1 | Pending |
+| SEC-03 | Phase 1 | Complete |
 | DEPS-01 | Phase 1 | Pending |
 | DEPS-02 | Phase 1 | Pending |
 | DEPS-03 | Phase 1 | Pending |

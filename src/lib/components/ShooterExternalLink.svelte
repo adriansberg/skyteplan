@@ -5,10 +5,11 @@
 	}
 
 	let { shooterName, class: className = '' }: Props = $props();
+	const year = new Date().getFullYear();
 </script>
 
 <a
-	href="https://2025.lsres.no/search/?s={encodeURIComponent(shooterName)}"
+	href="https://{year}.lsres.no/search/?s={encodeURIComponent(shooterName)}"
 	target="_blank"
 	rel="noopener noreferrer"
 	class="flex-shrink-0 text-gray-400 transition-colors hover:text-blue-600 {className}"

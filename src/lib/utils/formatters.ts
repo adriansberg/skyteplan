@@ -29,20 +29,6 @@ export function formatNorwegianDate(date: string): string {
 }
 
 /**
- * Format dates using local timezone (legacy method - may have timezone offset issues)
- * @param date - ISO date string
- * @returns Formatted date string
- * @deprecated Use formatNorwegianDate instead for consistent timezone handling
- */
-export function formatNorwegianDateLocal(date: string): string {
-	const d = new Date(date);
-	const day = d.getDate().toString().padStart(2, '0');
-	const month = (d.getMonth() + 1).toString().padStart(2, '0');
-	const year = d.getFullYear();
-	return `${day}.${month}.${year}`;
-}
-
-/**
  * Format time in Norwegian format (HH:MM)
  * @param date - ISO date string
  * @returns Formatted time string
@@ -52,16 +38,6 @@ export function formatNorwegianTime(date: string): string {
 	const hours = d.getHours().toString().padStart(2, '0');
 	const minutes = d.getMinutes().toString().padStart(2, '0');
 	return `${hours}:${minutes}`;
-}
-
-/**
- * Format time using locale string (legacy method - may have timezone offset issues)
- * @param date - ISO date string
- * @returns Formatted time string
- * @deprecated Use formatNorwegianTime instead for consistent timezone handling
- */
-export function formatNorwegianTimeLocale(date: string): string {
-	return new Date(date).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
 }
 
 /**

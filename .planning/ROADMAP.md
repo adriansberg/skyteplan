@@ -34,7 +34,7 @@ Plans:
 - [ ] 01-02-PLAN.md — DEPS-01: patch/minor bumps (svelte 5.55.7, svelte-check, eslint, prettier, graphql-request, @vercel/analytics)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 01-03-PLAN.md — DEPS-02: @sveltejs/kit 2.22 → 2.59.1
+- [x] 01-03-PLAN.md — DEPS-02: @sveltejs/kit 2.22 → 2.59.1
 
 **Wave 4** *(blocked on Wave 3 completion)*
 - [ ] 01-04-PLAN.md — DEPS-03: Vite 7→8, vite-plugin-svelte 6→7, adapter-vercel 5→6 (single wave)
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cleanup & Dependencies | 1/5 | In Progress|  |
+| 1. Cleanup & Dependencies | 2/5 | In Progress|  |
 | 2. Security & Tech Debt | 0/TBD | Not started | - |
 | 3. UX Redesign | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

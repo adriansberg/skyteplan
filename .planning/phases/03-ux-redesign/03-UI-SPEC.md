@@ -61,7 +61,7 @@ Declared values (multiples of 4):
 | Role | Size | Tailwind Size | Weight | Tailwind Weight | Line Height | Usage |
 |------|------|---------------|--------|-----------------|-------------|-------|
 | Body / data | 16px | `text-base` | 600 | `font-semibold` | 1.5 | All data text: shooter names, event names, scores |
-| Label / meta | 12px | `text-xs` | 500 | `font-medium` | 1.4 | Badge labels, metadata (Skive, Lag, class), timestamps |
+| Label / meta | 12px | `text-xs` | 600 | `font-semibold` | 1.4 | Badge labels, metadata (Skive, Lag, class), timestamps |
 | Heading | 20px | `text-xl` | 700 | `font-bold` | 1.25 | Date section headers, shooter name in detail cards |
 | Page title | 24px | `text-2xl` | 700 | `font-bold` | 1.2 | Page-level `<h1>` on each route |
 
@@ -70,8 +70,7 @@ Declared values (multiples of 4):
 - Series `sum` and `sumInner` score values
 - Shot value displays (`shot.valueInt.shot.valueDec`)
 
-**Weights in use: 2** — `font-semibold` (600) for data, `font-bold` (700) for headings.
-`font-medium` (500) is a third weight for small labels only; acceptable because it stays within the 2-primary-weight rule (600/700) while being used purely for subordinate metadata.
+**Weights in use: 2** — `font-semibold` (600) for all non-heading text, `font-bold` (700) for headings. Size contrast (12px vs 16px) provides sufficient visual hierarchy between label/meta and body/data roles.
 
 > Source: CONTEXT.md D-09; REQUIREMENTS.md UX-02
 

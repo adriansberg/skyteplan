@@ -77,7 +77,15 @@ Plans:
   2. All data text is minimum `text-base font-semibold`; times and scores use monospace; no gradients or box shadows appear anywhere
   3. Status badges are solid-fill pills: green pulse (Pågår), slate (Ferdig), amber (Kommende), gray (Møtte ikke)
   4. The schedule view has sticky date section headers; today's header shows "I dag"; the page auto-scrolls to today's section on load
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+**Wave 1**
+- [ ] 03-01-PLAN.md — UX-01: slim 40px top bar (logo + RefreshButton only), new `BottomTabBar.svelte` with three Norwegian text tabs, layout `pb-16` children wrapper
+- [ ] 03-02-PLAN.md — UX-03: solid-fill `EventStatusBadge` variants with Norwegian labels (Pågår/Ferdig/Kommende/Møtte ikke); ongoing keeps `animate-pulse`
+
+**Wave 2** *(blocked on Wave 1 completion — sticky offset depends on slim top bar height)*
+- [ ] 03-03-PLAN.md — UX-02 + UX-04: schedule sticky date headers at `top-10`, neutral palette + `font-mono` times/scores + `text-base font-semibold` data across all three route pages; remove shadows/gradients/emoji; Norwegian copy on skyttere page
 **UI hint**: yes
 
 ### Phase 4: Polish
@@ -97,5 +105,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
-| 3. UX Redesign | 0/TBD | Not started | - |
+| 3. UX Redesign | 0/3 | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |

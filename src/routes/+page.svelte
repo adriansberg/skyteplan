@@ -104,15 +104,15 @@
 						{@const isToday = dateLabel === 'I dag'}
 						<div
 							use:registerTodaySection={isToday}
-							class="scroll-mt-14 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:scroll-mt-20 sm:rounded-xl sm:shadow-lg"
+							class="scroll-mt-10"
 						>
 							<!-- Date Header -->
 							<div
-								class="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-3 sm:px-6 sm:py-4"
+								class="sticky top-10 z-30 bg-neutral-50 border-b border-neutral-200 px-3 py-3 sm:px-6 sm:py-4"
 							>
-								<h2 class="text-lg font-semibold text-gray-900 sm:text-xl">
+								<h2 class="text-xl font-bold text-neutral-900">
 									{dateLabel}
-									<span class="ml-1 text-xs font-normal text-gray-600 sm:text-sm">
+									<span class="ml-1 text-xs font-normal text-neutral-600">
 										({events.length} skytter{events.length !== 1 ? 'e' : ''})
 									</span>
 								</h2>
@@ -135,7 +135,7 @@
 												<!-- Main event header - always visible -->
 												<div class="flex items-start justify-between">
 													<div class="min-w-0 flex-1">
-														<h3 class="text-sm font-semibold text-gray-900 sm:text-lg">
+														<h3 class="text-base font-semibold text-gray-900 sm:text-lg">
 															{event.name}
 															{event.eventType === 'FINALE' ? ' (Finale)' : ''}
 															{#if event.subEvents && event.subEvents.length > 0}
@@ -167,18 +167,18 @@
 												<!-- Time and result in compact row -->
 												<div class="flex items-center justify-between">
 													<div class="text-gray-600">
-														<span>{formatNorwegianTime(event.checkinDateTime)}</span>
+														<span class="font-mono">{formatNorwegianTime(event.checkinDateTime)}</span>
 													</div>
 													<div class="text-right">
 														{#if status === 'completed' && finalScore && finalScore.trim() !== ''}
-															<div class="text-lg font-bold text-blue-600">{finalScore}</div>
+															<div class="text-lg font-bold text-blue-600 font-mono">{finalScore}</div>
 															{#if finalSeries && finalSeries.sumInner && event.name !== 'Felt'}
 																<div class="text-xs text-green-600">
 																	Sentrum: {finalSeries.sumInner}
 																</div>
 															{/if}
 														{:else if status === 'ongoing' && finalScore && finalScore.trim() !== ''}
-															<div class="text-sm font-medium text-blue-600">
+															<div class="text-sm font-medium text-blue-600 font-mono">
 																{finalScore}
 															</div>
 														{:else if status === 'ongoing'}
@@ -226,7 +226,7 @@
 																	<div class="flex flex-shrink-0 items-center gap-2">
 																		<!-- Sub-event result -->
 																		<div class="min-w-0 text-right">
-																			<div class="text-sm font-bold text-blue-600">
+																			<div class="text-sm font-bold text-blue-600 font-mono">
 																				{subFinalScore}
 																			</div>
 																			{#if subFinalSeries && subFinalSeries.sumInner}

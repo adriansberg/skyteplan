@@ -96,7 +96,6 @@
 	<!-- Content -->
 	{#if shootersWithDistinctions.length === 0}
 		<div class="rounded-lg bg-gray-50 p-6 text-center sm:p-8">
-			<div class="mb-4 text-4xl">🎯</div>
 			<h2 class="mb-2 text-lg font-semibold text-gray-900">Ingen premier funnet</h2>
 			<p class="text-gray-600">Det ser ut som om ingen skyttere har fått premie ennå.</p>
 			<p class="mt-2 text-sm text-gray-500">
@@ -107,7 +106,7 @@
 		<!-- Shooters with distinctions list -->
 		<div class="space-y-4">
 			{#each shootersWithDistinctions as shooter (shooter.organizationId)}
-				<div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+				<div class="rounded-lg border border-gray-200 bg-white p-4">
 					<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div class="flex-1">
 							<div class="flex items-center gap-2">
@@ -129,7 +128,7 @@
 									<span
 										class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"
 									>
-										🏆 {distinction.name}
+										{distinction.name}
 										{#if distinction.organizationEventId}
 											<span class="ml-1 text-yellow-600">
 												({getEventTypeName(distinction.organizationEventId)})
@@ -152,7 +151,6 @@
 				<!-- Gavepriser -->
 				<div class="rounded-lg border border-gray-200 bg-white p-4">
 					<div class="mb-4 flex items-center gap-2">
-						<span class="text-2xl">🎁</span>
 						<h3 class="text-lg font-semibold text-gray-900">Gavepremier</h3>
 						<span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
 							{prizeSummary.Gavepremie.length}
@@ -180,7 +178,6 @@
 				<!-- Begere -->
 				<div class="rounded-lg border border-gray-200 bg-white p-4">
 					<div class="mb-4 flex items-center gap-2">
-						<span class="text-2xl">🏆</span>
 						<h3 class="text-lg font-semibold text-gray-900">Begere</h3>
 						<span class="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
 							{prizeSummary.Beger.length}
@@ -208,7 +205,6 @@
 				<!-- Medaljer -->
 				<div class="rounded-lg border border-gray-200 bg-white p-4">
 					<div class="mb-4 flex items-center gap-2">
-						<span class="text-2xl">🥇</span>
 						<h3 class="text-lg font-semibold text-gray-900">Medaljer</h3>
 						<span class="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
 							{prizeSummary.Medalje.length}

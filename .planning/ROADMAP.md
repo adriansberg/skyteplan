@@ -97,7 +97,15 @@ Plans:
   1. All three routes show skeleton loading screens on initial data load instead of a blank white page
   2. Installed PWA on iOS uses `viewport-fit=cover` and `black-translucent` status bar with no white gap at top or bottom
   3. Each production build generates a unique SW cache name derived from the git hash; the `activate` handler evicts all previous cache versions
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+**Wave 1** *(parallel — no shared files)*
+- [ ] 04-01-PLAN.md — POL-02: iOS meta tags (viewport-fit=cover, black-translucent, #fafafa theme-color), CSS variable --top-bar-height, top bar safe-area padding, sticky header fix
+- [ ] 04-03-PLAN.md — POL-03: rename sw.js → sw.template.js with __CACHE_VERSION__ placeholder; inline Vite plugin injecting git hash at buildStart; .gitignore entry
+
+**Wave 2** *(blocked on 04-01 — both touch +page.svelte)*
+- [ ] 04-02-PLAN.md — POL-01: skeleton screens on all three routes using {#if navigating} from $app/state; inline markup per route, no shared component
 
 ## Progress
 
@@ -106,4 +114,4 @@ Plans:
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
 | 3. UX Redesign | 3/3 | Complete   | 2026-05-19 |
-| 4. Polish | 0/TBD | Not started | - |
+| 4. Polish | 0/3 | Not started | - |

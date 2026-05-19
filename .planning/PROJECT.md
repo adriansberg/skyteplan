@@ -8,6 +8,18 @@ A progressive web app for Stordalen Skytterlag members. Displays shooting schedu
 
 Shooters can instantly see today's schedule and their results on their phone at the range — no friction, no loading confusion.
 
+## Current Milestone: v3 Multi-Club
+
+**Goal:** App is deployable for any rifle club via wildcard subdomain routing and a static club config file — no club-specific code hardcoded.
+
+**Target features:**
+- App name + domain chosen; manifest.json, app.html, and README updated with generic branding
+- `src/lib/clubs.ts` — static map of subdomain → `{ clubId, name, logoPath }`
+- Server loaders resolve club from host header; unknown subdomain → Norwegian 404
+- Club logo + name in top bar (dynamic per subdomain)
+- `?c=` query param retired across all loaders
+- Generic app name replacing all "Stordalen Skytterlag" hardcoded strings
+
 ## Current State (v2)
 
 Shipped 2026-05-19. All v2 requirements complete.

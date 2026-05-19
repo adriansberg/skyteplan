@@ -7,6 +7,8 @@
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import type { PageData } from './$types';
 
+	import { navigating } from '$app/state'
+
 	let { data }: { data: PageData } = $props()
 
 	let shooters = $derived(data.shooters)
@@ -17,9 +19,11 @@
 	<title>Skyttere - Stordalen Skytterlag</title>
 </svelte:head>
 
-{#if !shooters && !error}
-	<div class="flex min-h-96 items-center justify-center">
-		<div class="text-lg text-gray-600">Laster inn skyttere...</div>
+{#if navigating || (!shooters && !error)}
+	<div class="container mx-auto px-2 py-4 pt-6">
+		{#each ['w-48', 'w-36', 'w-52', 'w-40', 'w-44', 'w-32'] as widthClass (widthClass)}
+			<div class="mb-3 h-14 {widthClass} animate-pulse rounded bg-neutral-200"></div>
+		{/each}
 	</div>
 {:else if error}
 	<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">

@@ -309,17 +309,11 @@ disabled in config but this phase has no security surface.
 | A2 | Wildcard Vercel DNS pattern `*.domain CNAME cname.vercel-dns.com` | BRAND-02 section | If Vercel changes DNS instructions, documentation note would be inaccurate; low impact since it's advisory |
 | A3 | README currently has no "Stordalen Skytterlag" user-facing content (verified by grep) | Complete Inventory | None — grep confirmed this [VERIFIED: grepped from source] |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **App name confirmation**
-   - What we know: "Skytterappen" is a reasonable generic Norwegian name
-   - What's unclear: Owner may have a preferred name or existing domain registration
-   - Recommendation: Planner should present the name choice as a user decision point before executing
+1. **App name confirmation** — RESOLVED: Proceed with "Skytterappen" as the default app name. Owner can override in a follow-up commit before Phase 6 goes live; Phase 5 documents the chosen name as the generic default.
 
-2. **Domain already registered?**
-   - What we know: BRAND-02 documents the domain as a prerequisite for Phase 6
-   - What's unclear: Whether a domain is already owned or needs to be purchased
-   - Recommendation: Note in docs that domain registration is a manual human action; do not block Phase 5 completion on it
+2. **Domain already registered?** — RESOLVED: Domain registration is a manual human step. Phase 5 documents the DNS prerequisite in README; it does not block on domain purchase. Owner completes registration before Phase 6 go-live.
 
 ## Environment Availability
 

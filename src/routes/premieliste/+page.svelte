@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
+	import { navigating } from '$app/state';
 	import type { ShooterWithDistinctions } from '$lib/graphql/types';
 	import { SvelteMap } from 'svelte/reactivity';
 
@@ -86,6 +87,18 @@
 	<meta name="description" content="Skyttere som har oppnådd premier" />
 </svelte:head>
 
+{#if navigating}
+	<div class="container mx-auto px-2 py-4 pt-6">
+		{#each Array(3) as _, i (i)}
+			<div class="mb-4 rounded-lg border border-neutral-200 bg-white p-4">
+				<div class="mb-3 h-6 w-40 animate-pulse rounded bg-neutral-200"></div>
+				{#each Array(3) as _, j (j)}
+					<div class="mb-2 h-5 w-full animate-pulse rounded bg-neutral-200"></div>
+				{/each}
+			</div>
+		{/each}
+	</div>
+{:else}
 <div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
 	<!-- Header -->
 	<div class="mb-4 sm:mb-6">
@@ -266,3 +279,4 @@
 		</div>
 	{/if}
 </div>
+{/if}

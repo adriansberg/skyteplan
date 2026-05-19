@@ -3,6 +3,7 @@
 ## Milestones
 
 - ✅ **v2 MVP Modernization** — Phases 1–4 (shipped 2026-05-19)
+- 📋 **v3 Multi-Club** — Phase 5 (planned)
 
 ## Phases
 
@@ -18,6 +19,24 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
 
 </details>
 
+### 📋 v3 Multi-Club (Planned)
+
+- [ ] Phase 5: Multi-Club Support
+
+**Goal:** App is deployable for any rifle club via subdomain routing and a static club config file. No club-specific code or branding hardcoded.
+
+**Requirements:** MC-01, MC-02, MC-03, MC-04, MC-05
+
+**Scope:**
+- `src/lib/clubs.ts` — static map of `subdomain → { clubId, name, logoPath }`
+- Wildcard subdomain routing: server loaders read `request.headers.get('host')`, extract subdomain, look up club
+- Club name + logo rendered in top bar (logo replaces current logo placeholder)
+- Unknown subdomain → Norwegian 404/landing page
+- `?c=` query param retired (subdomain is the config mechanism)
+- App name and domain TBD (see seed: app-name-domain)
+
+**Depends on:** Phase 4 (complete)
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -26,3 +45,4 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
 | 2. Security & Tech Debt | v2 | 3/3 | Complete | 2026-05-17 |
 | 3. UX Redesign | v2 | 3/3 | Complete | 2026-05-19 |
 | 4. Polish | v2 | 3/3 | Complete | 2026-05-19 |
+| 5. Multi-Club Support | v3 | 0/? | Planned | — |

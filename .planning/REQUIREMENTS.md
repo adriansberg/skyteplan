@@ -43,7 +43,7 @@
 
 - [ ] **POL-01**: Skeleton loading screens shown on initial data load across all three routes instead of blank white
 - [x] **POL-02**: iOS PWA meta tags set: `viewport-fit=cover`, `apple-mobile-web-app-status-bar-style: black-translucent`, `apple-mobile-web-app-capable: yes`
-- [ ] **POL-03**: Service worker cache name automated via Vite plugin injecting git hash at build time; `activate` handler evicts all caches except the current version
+- [x] **POL-03**: Service worker cache name automated via Vite plugin injecting git hash at build time; `activate` handler evicts all caches except the current version
 
 ## v2 Requirements
 
@@ -91,7 +91,7 @@
 | UX-04 | Phase 3 | Complete |
 | POL-01 | Phase 4 | Pending |
 | POL-02 | Phase 4 | Complete |
-| POL-03 | Phase 4 | Pending |
+| POL-03 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

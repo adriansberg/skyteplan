@@ -34,7 +34,7 @@
 
 ### UX Redesign
 
-- [ ] **UX-01**: Fixed bottom tab bar replaces top navigation; tabs: Skyteplan / Skyttere / Premieliste; 56px height + `env(safe-area-inset-bottom)` for iOS; touch targets ≥ 44px
+- [x] **UX-01**: Fixed bottom tab bar replaces top navigation; tabs: Skyteplan / Skyttere / Premieliste; 56px height + `env(safe-area-inset-bottom)` for iOS; touch targets ≥ 44px
 - [ ] **UX-02**: Outdoor-optimized color and typography applied globally: `neutral-50`/`neutral-900` base, `emerald-600` accent, minimum `text-base font-semibold` for data, monospace for times and scores, no gradients or box shadows
 - [ ] **UX-03**: Status badges replaced with solid-fill pills across all views: green pulse (Pågår), slate (Ferdig), amber (Kommende), gray (Møtte ikke)
 - [ ] **UX-04**: Schedule view has sticky date section headers; today's section header shows "I dag" label; page auto-scrolls to today's section on load
@@ -85,7 +85,7 @@
 | DEBT-02 | Phase 2 | Pending |
 | DEBT-03 | Phase 2 | Pending |
 | DEBT-04 | Phase 2 | Pending |
-| UX-01 | Phase 3 | Pending |
+| UX-01 | Phase 3 | Complete |
 | UX-02 | Phase 3 | Pending |
 | UX-03 | Phase 3 | Pending |
 | UX-04 | Phase 3 | Pending |

@@ -81,8 +81,8 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 03-01-PLAN.md — UX-01: slim 40px top bar (logo + RefreshButton only), new `BottomTabBar.svelte` with three Norwegian text tabs, layout `pb-16` children wrapper
-- [ ] 03-02-PLAN.md — UX-03: solid-fill `EventStatusBadge` variants with Norwegian labels (Pågår/Ferdig/Kommende/Møtte ikke); ongoing keeps `animate-pulse`
+- [x] 03-01-PLAN.md — UX-01: slim 40px top bar (logo + RefreshButton only), new `BottomTabBar.svelte` with three Norwegian text tabs, layout `pb-16` children wrapper
+- [x] 03-02-PLAN.md — UX-03: solid-fill `EventStatusBadge` variants with Norwegian labels (Pågår/Ferdig/Kommende/Møtte ikke); ongoing keeps `animate-pulse`
 
 **Wave 2** *(blocked on Wave 1 completion — sticky offset depends on slim top bar height)*
 - [ ] 03-03-PLAN.md — UX-02 + UX-04: schedule sticky date headers at `top-10`, neutral palette + `font-mono` times/scores + `text-base font-semibold` data across all three route pages; remove shadows/gradients/emoji; Norwegian copy on skyttere page
@@ -105,5 +105,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
-| 3. UX Redesign | 0/3 | Not started | - |
+| 3. UX Redesign | 2/3 | In Progress|  |
 | 4. Polish | 0/TBD | Not started | - |

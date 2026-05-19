@@ -104,11 +104,12 @@
 						{@const isToday = dateLabel === 'I dag'}
 						<div
 							use:registerTodaySection={isToday}
-							class="scroll-mt-10"
+							style="scroll-margin-top: var(--top-bar-height)"
 						>
 							<!-- Date Header -->
 							<div
-								class="sticky top-10 z-30 bg-neutral-50 border-b border-neutral-200 px-3 py-3 sm:px-6 sm:py-4"
+								class="sticky z-30 bg-neutral-50 border-b border-neutral-200 px-3 py-3 sm:px-6 sm:py-4"
+								style="top: var(--top-bar-height)"
 							>
 								<h2 class="text-xl font-bold text-neutral-900">
 									{dateLabel}

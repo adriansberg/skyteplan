@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+:root {
+	--top-bar-height: calc(2.5rem + env(safe-area-inset-top));
+}

@@ -101,7 +101,7 @@ Plans:
 Plans:
 
 **Wave 1** *(parallel — no shared files)*
-- [ ] 04-01-PLAN.md — POL-02: iOS meta tags (viewport-fit=cover, black-translucent, #fafafa theme-color), CSS variable --top-bar-height, top bar safe-area padding, sticky header fix
+- [x] 04-01-PLAN.md — POL-02: iOS meta tags (viewport-fit=cover, black-translucent, #fafafa theme-color), CSS variable --top-bar-height, top bar safe-area padding, sticky header fix
 - [ ] 04-03-PLAN.md — POL-03: rename sw.js → sw.template.js with __CACHE_VERSION__ placeholder; inline Vite plugin injecting git hash at buildStart; .gitignore entry
 
 **Wave 2** *(blocked on 04-01 — both touch +page.svelte)*
@@ -114,4 +114,4 @@ Plans:
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
 | 3. UX Redesign | 3/3 | Complete   | 2026-05-19 |
-| 4. Polish | 0/3 | Planned | - |
+| 4. Polish | 1/3 | In Progress|  |

@@ -114,4 +114,4 @@ Plans:
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
 | 3. UX Redesign | 3/3 | Complete   | 2026-05-19 |
-| 4. Polish | 0/3 | Not started | - |
+| 4. Polish | 0/3 | Planned | - |

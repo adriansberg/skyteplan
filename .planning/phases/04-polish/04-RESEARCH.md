@@ -452,22 +452,16 @@ The rest of sw.js is unchanged. The activate handler already evicts all caches w
 | A4 | `VERCEL_GIT_COMMIT_SHA` requires "Enable access to System Environment Variables" to be checked in Vercel project settings | Pitfall 2 | Fallback produces `stordalen-unknown` cache name; acceptable degradation |
 | A5 | `manifest.json` `theme_color` should also be updated to `#fafafa` to match | Pitfall 5 | Theme color discrepancy on some Android Chrome; cosmetic only |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **`buildStart` write ordering in Vite 8 (Rolldown)**
-   - What we know: `buildStart` is the earliest build hook after config resolution; static/public directory is copied after the bundle is generated
-   - What's unclear: Vite 8 uses Rolldown internally — the exact hook ordering is not explicitly documented in Vite 8 docs
-   - Recommendation: Test with `yarn build` locally. If sw.js is absent from `.vercel/output`, switch to `configResolved` hook with synchronous write, which runs even earlier.
+   - RESOLVED: Plan uses `configResolved` closure to capture mode, then `buildStart` to write `static/sw.js`. 04-03 Task 3 verifies the output file exists and contains the hash pattern after `yarn build`. If ordering ever fails, the verification step catches it immediately.
 
 2. **`mode` access in plugin `buildStart` in Vite 8**
-   - What we know: `configResolved(config)` sets `config.mode` reliably
-   - What's unclear: Whether `this.environment?.mode` works in Rolldown build hooks
-   - Recommendation: Use the `configResolved` closure pattern — it is version-agnostic and unambiguous.
+   - RESOLVED: Plan uses the `configResolved` closure pattern exclusively (`resolvedMode` variable). `this.environment?.mode` is not used anywhere — closure is version-agnostic and confirmed safe.
 
 3. **Premieliste `data.shootersWithDistinctions` on error path**
-   - What we know: On error, loader returns `{ shootersWithDistinctions: [], error: '...' }`. On success with no prizes, same shape but `error: null`.
-   - What's unclear: Whether adding `{#if navigating}` before the existing block correctly handles the error case when navigating TO this route while an error occurred on the previous visit.
-   - Recommendation: Add `{#if navigating}` as outermost guard; inside else, keep existing `{#if shootersWithDistinctions.length === 0}` empty-state block unchanged. Error state from loader is separate from navigating state.
+   - RESOLVED: 04-02 Task 3 adds `{#if navigating}` as outermost guard; the existing `{#if shootersWithDistinctions.length === 0}` empty-state block and error handling remain inside the `{:else}` branch, untouched. Error state from loader is orthogonal to navigating state.
 
 ## Environment Availability
 

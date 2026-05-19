@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stordalen-v2';
+const CACHE_NAME = '__CACHE_VERSION__';
 const STATIC_ASSETS = [
 	'/',
 	'/skyttere',
@@ -36,7 +36,7 @@ self.addEventListener('message', (event) => {
 	if (event.data && event.data.type === 'SKIP_WAITING') {
 		self.skipWaiting();
 	}
-	
+
 	if (event.data && event.data.type === 'REFRESH_CACHE') {
 		// Clear dynamic caches on refresh
 		event.waitUntil(
@@ -95,7 +95,7 @@ self.addEventListener('fetch', (event) => {
 					});
 					return response;
 				}
-				
+
 				// Not in cache, fetch from network
 				return fetch(request).then((fetchResponse) => {
 					if (fetchResponse.ok) {

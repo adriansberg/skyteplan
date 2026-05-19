@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v3
 milestone_name: Multi-Club
 status: planning
-last_updated: "2026-05-19T20:39:56.126Z"
+last_updated: "2026-05-19T00:00:00.000Z"
 last_activity: 2026-05-19
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,17 +17,21 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-17)
+See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Shooters can instantly see today's schedule and their results on their phone at the range — no friction, no loading confusion.
-**Current focus:** Phase 04 — complete
+**Current focus:** v3 Multi-Club — Phase 5 (Generic Branding) next
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: Not started
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-19 — Milestone v3 started
+Status: Roadmap created, ready to plan Phase 5
+Last activity: 2026-05-19 — v3 roadmap created (2 phases: Generic Branding, Multi-Club Routing)
+
+```
+Progress: [░░░░░░░░░░] 0% — 0/2 phases complete
+```
 
 ## Performance Metrics
 
@@ -49,13 +53,6 @@ Last activity: 2026-05-19 — Milestone v3 started
 - Trend: -
 
 *Updated after each plan completion*
-| Phase 01-cleanup-dependencies P01 | 10 | 3 tasks | 9 files |
-| Phase 01-cleanup-dependencies P03 | 5min | 1 tasks | 2 files |
-| Phase 01-cleanup-dependencies P04 | 2min | 1 tasks | 2 files |
-| Phase 01-cleanup-dependencies P05 | 25min | 1 tasks | 10 files |
-| Phase 03-ux-redesign P01 | 8 | 2 tasks | 2 files |
-| Phase 04-polish P01 | 8 | 2 tasks | 5 files |
-| Phase 04-polish P03 | 2min | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -64,14 +61,9 @@ Last activity: 2026-05-19 — Milestone v3 started
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Roadmap init: Dep upgrade order is mandatory — patch → kit 2.59 → Vite 8+vite-plugin-svelte 7+adapter-vercel 6 → TS 6. Do not batch Vite with TypeScript.
-- Roadmap init: Do not set `runes: true` globally — per-file only via `<svelte:options runes={true} />`.
-- Roadmap init: Vite `define` does not reach `static/sw.js` — use a Vite plugin writing sw.js from template at build time.
-- [Phase ?]: 01-01: Add export {} to pwa.ts — TypeScript requires at least one export for dynamic import() to treat file as module
-- [Phase ?]: @sveltejs/kit pinned to exact 2.59.1 as prerequisite for Wave 4 Vite 8 upgrade; wave isolation preserves bisectability
-- [Phase ?]: Wave 4: three-major Rolldown stack
-- [Phase ?]: theme-color set to #fafafa (neutral-50) to match top bar bg on Android Chrome
-- [Phase ?]: black-translucent iOS status bar + env(safe-area-inset-top) padding on top bar header
+- v3 roadmap: Split into Phase 5 (branding only) and Phase 6 (routing + config). BRAND-02 (domain registration) is a manual ops prerequisite, documented not coded.
+- v3 roadmap: CLUB-01 belongs in Phase 6, not Phase 5 — clubs.ts is routing config, not branding.
+- v3 roadmap: Phase 6 is UI-annotated (renders club name + logo in top bar).
 
 ### Pending Todos
 
@@ -79,11 +71,11 @@ None.
 
 ### Blockers/Concerns
 
-None.
+- BRAND-02: Domain registration is a manual step outside code. Must be done before Phase 6 goes live (wildcard DNS required for subdomain routing). Document chosen domain in README/PROJECT.md during Phase 5.
 
 ## Deferred Items
 
-Items acknowledged and deferred at milestone close on 2026-05-19:
+Items carried forward from v2 close (2026-05-19):
 
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
@@ -94,6 +86,6 @@ Items acknowledged and deferred at milestone close on 2026-05-19:
 
 ## Session Continuity
 
-Last session: 2026-05-19T22:06:00.000Z
-Stopped at: Phase 4 complete
+Last session: 2026-05-19 — v3 roadmap created
+Stopped at: Roadmap written, Phase 5 ready to plan
 Resume file: None

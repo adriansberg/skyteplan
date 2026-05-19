@@ -42,7 +42,7 @@ No future requirements identified for this milestone.
 |-------------|-------|--------|
 | BRAND-01 | Phase 5 | Pending |
 | BRAND-02 | Phase 5 | Pending |
-| CLUB-01 | Phase 5 | Pending |
+| CLUB-01 | Phase 6 | Pending |
 | CLUB-02 | Phase 6 | Pending |
 | ROUTE-01 | Phase 6 | Pending |
 | ROUTE-02 | Phase 6 | Pending |
@@ -55,4 +55,4 @@ No future requirements identified for this milestone.
 
 ---
 *Requirements defined: 2026-05-19*
-*Last updated: 2026-05-19 after initial definition*
+*Last updated: 2026-05-19 — traceability corrected (CLUB-01 moved Phase 5 → Phase 6)*

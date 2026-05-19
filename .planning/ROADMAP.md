@@ -8,7 +8,7 @@ Four phases modernize a working range-day PWA: strip dead code and upgrade the d
 
 - [x] **Phase 1: Cleanup & Dependencies** - Remove dead code, upgrade deps in mandatory sequence
 - [x] **Phase 2: Security & Tech Debt** - Server-side GraphQL, rune migration, error handling (completed 2026-05-17)
-- [ ] **Phase 3: UX Redesign** - Bottom tabs, outdoor palette, solid badges, sticky headers
+- [x] **Phase 3: UX Redesign** - Bottom tabs, outdoor palette, solid badges, sticky headers (completed 2026-05-19)
 - [ ] **Phase 4: Polish** - Skeleton screens, iOS meta, automated SW cache versioning
 
 ## Phase Details
@@ -85,7 +85,7 @@ Plans:
 - [x] 03-02-PLAN.md — UX-03: solid-fill `EventStatusBadge` variants with Norwegian labels (Pågår/Ferdig/Kommende/Møtte ikke); ongoing keeps `animate-pulse`
 
 **Wave 2** *(blocked on Wave 1 completion — sticky offset depends on slim top bar height)*
-- [ ] 03-03-PLAN.md — UX-02 + UX-04: schedule sticky date headers at `top-10`, neutral palette + `font-mono` times/scores + `text-base font-semibold` data across all three route pages; remove shadows/gradients/emoji; Norwegian copy on skyttere page
+- [x] 03-03-PLAN.md — UX-02 + UX-04: schedule sticky date headers at `top-10`, neutral palette + `font-mono` times/scores + `text-base font-semibold` data across all three route pages; remove shadows/gradients/emoji; Norwegian copy on skyttere page
 **UI hint**: yes
 
 ### Phase 4: Polish
@@ -105,5 +105,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Cleanup & Dependencies | 4/5 | In Progress|  |
 | 2. Security & Tech Debt | 3/3 | Complete   | 2026-05-17 |
-| 3. UX Redesign | 2/3 | In Progress|  |
+| 3. UX Redesign | 3/3 | Complete   | 2026-05-19 |
 | 4. Polish | 0/TBD | Not started | - |

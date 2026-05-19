@@ -19,12 +19,12 @@
 
 {#if !shooters && !error}
 	<div class="flex min-h-96 items-center justify-center">
-		<div class="text-lg text-gray-600">Loading shooters data...</div>
+		<div class="text-lg text-gray-600">Laster inn skyttere...</div>
 	</div>
 {:else if error}
 	<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
-		<h2 class="mb-2 text-xl font-semibold text-red-800">Error loading data:</h2>
-		<span class="text-red-600">Error: {error}</span>
+		<h2 class="mb-2 text-xl font-semibold text-red-800">Feil ved lasting av data:</h2>
+		<span class="text-red-600">Feil: {error}</span>
 	</div>
 {:else if shooters}
 	<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
@@ -62,11 +62,11 @@
 						.filter(Boolean)}
 
 					<details
-						class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md sm:rounded-xl sm:shadow-lg [&_summary::-webkit-details-marker]:hidden [&_summary::marker]:hidden"
+						class="overflow-hidden rounded-lg border border-neutral-200 bg-white sm:rounded-xl [&_summary::-webkit-details-marker]:hidden [&_summary::marker]:hidden"
 					>
 						<!-- Shooter Header -->
 						<summary
-							class="cursor-pointer border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-3 transition-colors hover:from-blue-100 hover:to-indigo-100 sm:px-6 sm:py-4"
+							class="cursor-pointer border-b border-neutral-200 bg-neutral-100 px-3 py-3 sm:px-6 sm:py-4"
 						>
 							<div class="flex items-start justify-between">
 								<div class="min-w-0 flex-1">
@@ -91,7 +91,7 @@
 													Neste: {nextEvent.name}
 													{nextEvent.eventType === 'FINALE' ? '(Finale)' : ''}
 												</span>
-												<span class="text-xs text-orange-600">
+												<span class="font-mono text-xs text-orange-600">
 													{formatNorwegianDate(nextEvent.checkinDateTime)} kl. {formatNorwegianTime(
 														nextEvent.checkinDateTime
 													)}
@@ -123,7 +123,7 @@
 													<div class="flex flex-wrap gap-1">
 														{#each upcomingEvents.slice(1) as upcomingEvent (`${upcomingEvent.name}-${upcomingEvent.shootingDateTime}`)}
 															<span
-																class="ml-2 rounded border border-orange-100 bg-orange-50 px-2 py-1 text-xs text-orange-600"
+																class="ml-2 rounded border border-orange-100 bg-orange-50 px-2 py-1 font-mono text-xs text-orange-600"
 															>
 																{upcomingEvent.name}: {formatNorwegianDate(
 																	upcomingEvent.checkinDateTime
@@ -172,7 +172,7 @@
 
 												<!-- Compact timing -->
 												<div class="text-xs text-gray-600">
-													<span>{formatNorwegianTime(event.checkinDateTime)}</span>
+													<span class="font-mono">{formatNorwegianTime(event.checkinDateTime)}</span>
 													<span class="text-gray-400"> • </span>
 													<span>{formatNorwegianDate(event.checkinDateTime)}</span>
 												</div>
@@ -184,7 +184,7 @@
 														<div class="flex items-center justify-between">
 															<span class="text-xs text-gray-500">Resultat:</span>
 															<div class="text-right">
-																<div class="text-sm font-bold text-blue-600">{lastSeries.sum}</div>
+																<div class="text-sm font-bold text-blue-600 font-mono">{lastSeries.sum}</div>
 																{#if event.name !== 'Felt'}
 																	<div class="text-xs text-green-600">
 																		Sentrum: {lastSeries.sumInner}
@@ -209,7 +209,7 @@
 														<div class="space-y-2 text-xs">
 															<div>
 																<span class="text-gray-500">Oppropstid:</span>
-																<div>
+																<div class="font-mono">
 																	{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
 																		event.checkinDateTime
 																	)}
@@ -234,7 +234,7 @@
 																			<div class="grid grid-cols-2 gap-2 text-xs">
 																				<div class="flex items-center gap-1">
 																					<span class="text-gray-500">Total:</span>
-																					<span class="font-bold text-blue-600">{series.sum}</span>
+																					<span class="font-bold text-blue-600 font-mono">{series.sum}</span>
 																				</div>
 																				{#if event.name !== 'Felt'}
 																					<div class="flex items-center gap-1">
@@ -290,7 +290,7 @@
 													<div class="space-y-2">
 														<div class="text-sm">
 															<div class="text-gray-500">Oppropstid:</div>
-															<div>
+															<div class="font-mono">
 																{formatNorwegianDate(event.checkinDateTime)}, kl. {formatNorwegianTime(
 																	event.checkinDateTime
 																)}
@@ -315,7 +315,7 @@
 																		<div class="grid grid-cols-2 justify-center gap-2 text-sm">
 																			<div class="flex items-center gap-2">
 																				<span class="text-gray-500">Total:</span>
-																				<span class="text-lg font-bold text-blue-600"
+																				<span class="text-lg font-bold text-blue-600 font-mono"
 																					>{series.sum}</span
 																				>
 																			</div>
@@ -346,7 +346,7 @@
 																{/each}
 															</div>
 														{:else}
-															<div class="text-sm text-gray-500 italic">No results yet</div>
+															<div class="text-sm text-gray-500 italic">Ingen resultater enda</div>
 														{/if}
 													</div>
 												</div>
@@ -357,7 +357,7 @@
 							</div>
 						{:else}
 							<div class="p-4 text-center text-gray-500 sm:p-6">
-								<p>No events scheduled</p>
+								<p>Ingen skytinger planlagt</p>
 							</div>
 						{/if}
 					</details>

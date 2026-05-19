@@ -14,7 +14,8 @@
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
-	import { onMount } from 'svelte';
+	import { onMount } from 'svelte'
+	import { navigating } from '$app/state';
 
 	let { data }: { data: PageData } = $props()
 
@@ -85,7 +86,14 @@
 <Splash bind:show={showSplash} />
 
 {#if !showSplash}
-	{#if error}
+	{#if navigating}
+		<div class="container mx-auto px-2 py-4 pt-6">
+			<div class="mb-4 h-7 w-40 animate-pulse rounded bg-neutral-200"></div>
+			{#each Array(4) as _, i (i)}
+				<div class="mb-3 h-24 w-full animate-pulse rounded bg-neutral-200"></div>
+			{/each}
+		</div>
+	{:else if error}
 		<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
 			<h2 class="mb-2 text-xl font-semibold text-red-800">Feil ved lasting av data:</h2>
 			<span class="text-red-600">Feil: {error}</span>

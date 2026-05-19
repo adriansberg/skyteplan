@@ -86,9 +86,14 @@ None.
 
 ## Deferred Items
 
+Items acknowledged and deferred at milestone close on 2026-05-19:
+
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
-| *(none)* | | | |
+| verification_gap | Phase 02: SEC-02 runtime fallback — `/?c=abc` loads default club data | human_needed | 2026-05-19 |
+| verification_gap | Phase 02: RefreshButton reactivity after invalidateAll() | human_needed | 2026-05-19 |
+| verification_gap | Phase 02: +error.svelte activation under real network failure | human_needed | 2026-05-19 |
+| verification_gap | Phase 02: Splash screen + auto-scroll with fresh sessionStorage | human_needed | 2026-05-19 |
 
 ## Session Continuity
 

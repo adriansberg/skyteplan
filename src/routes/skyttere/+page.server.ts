@@ -1,10 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { getShootersByClub } from '$lib/server/graphql/queries';
-import { DEFAULT_CLUB_ID } from '$lib/constants';
 
-export const load: PageServerLoad = async ({ url }) => {
-	const raw = url.searchParams.get('c') || DEFAULT_CLUB_ID;
-	const clubId = /^\d+$/.test(raw) ? raw : DEFAULT_CLUB_ID;
+export const load: PageServerLoad = async ({ locals }) => {
+	const { clubId } = locals.club;
 	try {
 		const shooters = await getShootersByClub(clubId);
 		return { shooters, clubId };

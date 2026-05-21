@@ -65,14 +65,16 @@ Source: existing layout classes (`px-4`, `h-8`, `pb-16`, `h-14`).
 
 ## Typography
 
+Two weights only: 400 (body + label) and 600 (heading + display). Labels at 12px are distinguished by size, not weight.
+
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 16px (text-base) | 400 (font-normal) | 1.5 |
-| Label | 12px (text-xs) | 500 (font-medium) | 1.25 |
+| Label | 12px (text-xs) | 400 (font-normal) | 1.25 |
 | Heading | 20px (text-xl) | 600 (font-semibold) | 1.2 |
 | Display | 28px (text-2xl) | 600 (font-semibold) | 1.2 |
 
-Source: existing components (`text-xs font-medium` in BottomTabBar, `text-xl font-semibold` in +error.svelte, `text-lg font-semibold` in error header).
+Source: existing components (`text-xs` in BottomTabBar, `text-xl font-semibold` in +error.svelte, `text-lg font-semibold` in error header). Note: existing BottomTabBar uses `font-medium` — executor should remap to `font-normal` to match this contract.
 
 Phase 6 does NOT introduce new typographic elements.
 

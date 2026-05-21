@@ -4,8 +4,8 @@ milestone: v3
 milestone_name: Multi-Club
 status: executing
 stopped_at: Phase 6 UI-SPEC approved
-last_updated: "2026-05-21T21:44:33.511Z"
-last_activity: 2026-05-21 -- Phase 06 planning complete
+last_updated: "2026-05-21T21:45:56.806Z"
+last_activity: 2026-05-21 -- Phase 06 execution started
 progress:
   total_phases: 2
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Shooters can instantly see today's schedule and their results on their phone at the range — no friction, no loading confusion.
-**Current focus:** v3 Multi-Club — Phase 6 (Multi-Club Routing) next
+**Current focus:** Phase 06 — multi-club-routing
 
 ## Current Position
 
-Phase: Phase 5 complete — Phase 6 not started
-Plan: —
-Status: Ready to execute
-Last activity: 2026-05-21 -- Phase 06 planning complete
+Phase: 06 (multi-club-routing) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 06
+Last activity: 2026-05-21 -- Phase 06 execution started
 
 ```
 Progress: [█████░░░░░] 50% — 1/2 phases complete

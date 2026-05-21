@@ -6,7 +6,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			club: ClubConfig
+			club: ClubConfig;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -1,7 +1,7 @@
 export interface ClubConfig {
-	clubId: string
-	name: string
-	logoPath: string
+	clubId: string;
+	name: string;
+	logoPath: string;
 }
 
 export const clubs: Record<string, ClubConfig> = {
@@ -10,4 +10,4 @@ export const clubs: Record<string, ClubConfig> = {
 		name: 'Stordalen Skytterlag',
 		logoPath: '/clubs/stordalen.jpg'
 	}
-}
+};

@@ -38,7 +38,7 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
 **Plans**: 2 plans
 Plans:
 - [ ] 05-01-PLAN.md — Rename all user-facing "Stordalen Skytterlag" / "Stordalen" strings to "Skytterappen" across PWA manifest, app.html, route titles, layout/error/splash alts, and the service-worker cache prefix (regenerate static/sw.js)
-- [ ] 05-02-PLAN.md — Replace default SvelteKit scaffold README with a project-specific README naming the app as "Skytterappen" and documenting the wildcard DNS + Vercel wildcard domain prerequisites for Phase 6 (BRAND-02)
+- [x] 05-02-PLAN.md — Replace default SvelteKit scaffold README with a project-specific README naming the app as "Skytterappen" and documenting the wildcard DNS + Vercel wildcard domain prerequisites for Phase 6 (BRAND-02)
 
 ### Phase 6: Multi-Club Routing
 **Goal**: Any configured rifle club can use the app under its own subdomain — club resolved server-side from host header, no query params, unknown subdomain gets a Norwegian error page
@@ -61,5 +61,5 @@ Plans:
 | 2. Security & Tech Debt | v2 | 3/3 | Complete | 2026-05-17 |
 | 3. UX Redesign | v2 | 3/3 | Complete | 2026-05-19 |
 | 4. Polish | v2 | 3/3 | Complete | 2026-05-19 |
-| 5. Generic Branding | v3 | 0/2 | Planned | — |
+| 5. Generic Branding | v3 | 1/2 | In Progress|  |
 | 6. Multi-Club Routing | v3 | 0/? | Not started | — |

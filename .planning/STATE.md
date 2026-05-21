@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v3
 milestone_name: Multi-Club
 status: executing
-stopped_at: Phase 5 complete — Phase 6 ready to plan
-last_updated: "2026-05-21T21:00:00.000Z"
-last_activity: 2026-05-21 -- Phase 5 execution complete (generic branding)
+stopped_at: Phase 6 UI-SPEC approved
+last_updated: "2026-05-21T21:44:33.511Z"
+last_activity: 2026-05-21 -- Phase 06 planning complete
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 2
+  total_plans: 5
   completed_plans: 2
-  percent: 50
+  percent: 40
 ---
 
 # Project State
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 Phase: Phase 5 complete — Phase 6 not started
 Plan: —
-Status: Ready to plan Phase 6
-Last activity: 2026-05-21 -- Phase 5 execution complete (generic branding)
+Status: Ready to execute
+Last activity: 2026-05-21 -- Phase 06 planning complete
 
 ```
 Progress: [█████░░░░░] 50% — 1/2 phases complete
@@ -87,6 +87,6 @@ Items carried forward from v2 close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-21 — Phase 5 Generic Branding executed
-Stopped at: Phase 5 complete, Phase 6 ready to plan
-Resume file: None
+Last session: 2026-05-21T21:20:02.768Z
+Stopped at: Phase 6 UI-SPEC approved
+Resume file: .planning/phases/06-multi-club-routing/06-UI-SPEC.md

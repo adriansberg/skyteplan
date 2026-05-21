@@ -21,7 +21,7 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
 
 ### 📋 v3 Multi-Club (Planned)
 
-- [ ] **Phase 5: Generic Branding** — Replace all hardcoded "Stordalen Skytterlag" strings; choose and document app name; document domain registration as a manual prerequisite
+- [x] **Phase 5: Generic Branding** — Replace all hardcoded "Stordalen Skytterlag" strings; choose and document app name; document domain registration as a manual prerequisite (completed 2026-05-21)
 - [ ] **Phase 6: Multi-Club Routing** — Implement clubs.ts config, resolve club from host header in all server loaders, render dynamic club name + logo in top bar, Norwegian 404 for unknown subdomain, retire ?c= param
 
 ## Phase Details
@@ -37,7 +37,7 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
   4. A documented note (in README or PROJECT.md) states the chosen domain and that wildcard DNS must be configured before Phase 6 goes live — no code change required to fulfill this
 **Plans**: 2 plans
 Plans:
-- [ ] 05-01-PLAN.md — Rename all user-facing "Stordalen Skytterlag" / "Stordalen" strings to "Skytterappen" across PWA manifest, app.html, route titles, layout/error/splash alts, and the service-worker cache prefix (regenerate static/sw.js)
+- [x] 05-01-PLAN.md — Rename all user-facing "Stordalen Skytterlag" / "Stordalen" strings to "Skytterappen" across PWA manifest, app.html, route titles, layout/error/splash alts, and the service-worker cache prefix (regenerate static/sw.js)
 - [x] 05-02-PLAN.md — Replace default SvelteKit scaffold README with a project-specific README naming the app as "Skytterappen" and documenting the wildcard DNS + Vercel wildcard domain prerequisites for Phase 6 (BRAND-02)
 
 ### Phase 6: Multi-Club Routing
@@ -61,5 +61,5 @@ Plans:
 | 2. Security & Tech Debt | v2 | 3/3 | Complete | 2026-05-17 |
 | 3. UX Redesign | v2 | 3/3 | Complete | 2026-05-19 |
 | 4. Polish | v2 | 3/3 | Complete | 2026-05-19 |
-| 5. Generic Branding | v3 | 1/2 | In Progress|  |
+| 5. Generic Branding | v3 | 2/2 | Complete   | 2026-05-21 |
 | 6. Multi-Club Routing | v3 | 0/? | Not started | — |

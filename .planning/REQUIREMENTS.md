@@ -9,7 +9,7 @@ Requirements for v3 Multi-Club milestone. Each maps to roadmap phases.
 
 ### Branding & Identity
 
-- [ ] **BRAND-01**: User sees a generic app name (not "Stordalen Skytterlag") in manifest.json, browser tab title, and README
+- [x] **BRAND-01**: User sees a generic app name (not "Stordalen Skytterlag") in manifest.json, browser tab title, and README
 - [x] **BRAND-02**: App domain is registered with wildcard subdomain support; clubs.ts subdomain keys match the domain pattern
 
 ### Club Configuration
@@ -40,7 +40,7 @@ No future requirements identified for this milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BRAND-01 | Phase 5 | Pending |
+| BRAND-01 | Phase 5 | Complete |
 | BRAND-02 | Phase 5 | Complete |
 | CLUB-01 | Phase 6 | Pending |
 | CLUB-02 | Phase 6 | Pending |

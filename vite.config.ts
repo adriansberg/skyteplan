@@ -15,7 +15,7 @@ function swVersionPlugin(): Plugin {
 			const template = readFileSync('static/sw.template.js', 'utf-8');
 			let version: string;
 			if (resolvedMode === 'development') {
-				version = 'stordalen-dev';
+				version = 'skytterappen-dev';
 			} else {
 				let hash: string;
 				try {
@@ -24,7 +24,7 @@ function swVersionPlugin(): Plugin {
 					const sha = process.env.VERCEL_GIT_COMMIT_SHA ?? 'unknown';
 					hash = sha.slice(0, 7);
 				}
-				version = 'stordalen-' + hash;
+				version = 'skytterappen-' + hash;
 			}
 			writeFileSync('static/sw.js', template.replace('__CACHE_VERSION__', version));
 		}

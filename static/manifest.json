@@ -1,7 +1,7 @@
 {
-	"name": "Stordalen Skytterlag",
-	"short_name": "Stordalen",
-	"description": "Skyteprogram og skyttere for Stordalen Skytterlag",
+	"name": "Skytterappen",
+	"short_name": "Skytterappen",
+	"description": "Skyteprogram og resultater for skytterlaget",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",

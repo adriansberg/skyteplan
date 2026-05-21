@@ -80,7 +80,7 @@
 </script>
 
 <svelte:head>
-	<title>Skyteplan - Stordalen Skytterlag</title>
+	<title>Skyteplan - Skytterappen</title>
 </svelte:head>
 
 <Splash bind:show={showSplash} />

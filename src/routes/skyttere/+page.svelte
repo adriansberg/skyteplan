@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>Skyttere - Stordalen Skytterlag</title>
+	<title>Skyttere - Skytterappen</title>
 </svelte:head>
 
 {#if navigating || (!shooters && !error)}

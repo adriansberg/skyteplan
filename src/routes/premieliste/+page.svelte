@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-	<title>Premieliste - Stordalen Skytterlag</title>
+	<title>Premieliste - Skytterappen</title>
 	<meta name="description" content="Skyttere som har oppnådd premier" />
 </svelte:head>
 

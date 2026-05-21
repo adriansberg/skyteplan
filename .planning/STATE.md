@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v3
 milestone_name: Multi-Club
 status: executing
-stopped_at: Roadmap written, Phase 5 ready to plan
-last_updated: "2026-05-21T20:40:54.973Z"
-last_activity: 2026-05-19 -- Phase 5 planning complete
+stopped_at: Phase 5 complete — Phase 6 ready to plan
+last_updated: "2026-05-21T21:00:00.000Z"
+last_activity: 2026-05-21 -- Phase 5 execution complete (generic branding)
 progress:
   total_phases: 2
   completed_phases: 1
@@ -21,17 +21,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Shooters can instantly see today's schedule and their results on their phone at the range — no friction, no loading confusion.
-**Current focus:** v3 Multi-Club — Phase 5 (Generic Branding) next
+**Current focus:** v3 Multi-Club — Phase 6 (Multi-Club Routing) next
 
 ## Current Position
 
-Phase: Not started
+Phase: Phase 5 complete — Phase 6 not started
 Plan: —
-Status: Ready to execute
-Last activity: 2026-05-19 -- Phase 5 planning complete
+Status: Ready to plan Phase 6
+Last activity: 2026-05-21 -- Phase 5 execution complete (generic branding)
 
 ```
-Progress: [██████████] 100%
+Progress: [█████░░░░░] 50% — 1/2 phases complete
 ```
 
 ## Performance Metrics
@@ -72,7 +72,7 @@ None.
 
 ### Blockers/Concerns
 
-- BRAND-02: Domain registration is a manual step outside code. Must be done before Phase 6 goes live (wildcard DNS required for subdomain routing). Document chosen domain in README/PROJECT.md during Phase 5.
+- BRAND-02: Domain registration is a manual step outside code. Must be done before Phase 6 goes live (wildcard DNS `*.<domain> CNAME cname.vercel-dns.com` + Vercel wildcard domain). Requirements documented in README.md Deployment Prerequisites section (Phase 5 deliverable).
 
 ## Deferred Items
 
@@ -87,6 +87,6 @@ Items carried forward from v2 close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-21T20:40:54.967Z
-Stopped at: Roadmap written, Phase 5 ready to plan
+Last session: 2026-05-21 — Phase 5 Generic Branding executed
+Stopped at: Phase 5 complete, Phase 6 ready to plan
 Resume file: None

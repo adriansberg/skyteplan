@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-	<title>Premieliste - Skytterappen</title>
+	<title>Premieliste - Skytterinfo</title>
 	<meta name="description" content="Skyttere som har oppnådd premier" />
 </svelte:head>
 

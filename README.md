@@ -1,4 +1,4 @@
-# Skytterappen
+# Skytterinfo
 
 PWA for Norwegian rifle shooting clubs — schedule, shooter results, and prize lists at the range.
 
@@ -40,8 +40,8 @@ yarn format       # Prettier
 
 Choose and register one of the following — **TBD (owner to confirm and register)**:
 
-- `skytterappen.no`
-- `skytterappen.app`
+- `skytterinfo.no`
+- `skytterinfo.app`
 
 ### Wildcard DNS
 
@@ -54,7 +54,7 @@ DNS record to add at your registrar:
 *.<domain>  CNAME  cname.vercel-dns.com
 ```
 
-Replace `<domain>` with the registered domain (e.g. `skytterappen.no`).
+Replace `<domain>` with the registered domain (e.g. `skytterinfo.no`).
 
 ### Vercel Wildcard Domain
 

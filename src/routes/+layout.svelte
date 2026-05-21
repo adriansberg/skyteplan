@@ -23,7 +23,7 @@
 	class="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4"
 	style="height: calc(2.5rem + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top)"
 >
-	<a href="/"><img src={stordalenLogo} alt="Skytterappen" class="h-8 w-auto" /></a>
+	<a href="/"><img src={stordalenLogo} alt="Skytterinfo" class="h-8 w-auto" /></a>
 	<RefreshButton />
 </header>
 

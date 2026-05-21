@@ -7,12 +7,12 @@
 
 	onMount(() => {
 		// Check if this is the first visit of this session
-		const hasSeenSplash = sessionStorage.getItem('skytterappen-splash-shown');
+		const hasSeenSplash = sessionStorage.getItem('skytterinfo-splash-shown');
 
 		if (!hasSeenSplash) {
 			show = true;
 			// Mark that user has seen the splash screen in this session
-			sessionStorage.setItem('skytterappen-splash-shown', 'true');
+			sessionStorage.setItem('skytterinfo-splash-shown', 'true');
 
 			// Hide splash after minimum time
 			const splashTimer = setTimeout(() => {
@@ -30,7 +30,7 @@
 		<div class="flex flex-col items-center space-y-6">
 			<img
 				src={stordalenLogo}
-				alt="Skytterappen"
+				alt="Skytterinfo"
 				class="animate-fade-in h-auto w-64 max-w-sm"
 			/>
 			<div class="flex items-center space-x-2">

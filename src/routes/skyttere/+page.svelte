@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>Skyttere - Skytterappen</title>
+	<title>Skyttere - Skytterinfo</title>
 </svelte:head>
 
 {#if navigating || (!shooters && !error)}

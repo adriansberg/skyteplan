@@ -1,6 +1,6 @@
 {
-	"name": "Skytterappen",
-	"short_name": "Skytterappen",
+	"name": "Skytterinfo",
+	"short_name": "Skytterinfo",
 	"description": "Skyteprogram og resultater for skytterlaget",
 	"start_url": "/",
 	"display": "standalone",

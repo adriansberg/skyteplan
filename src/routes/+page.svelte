@@ -80,7 +80,7 @@
 </script>
 
 <svelte:head>
-	<title>Skyteplan - Skytterappen</title>
+	<title>Skyteplan - Skytterinfo</title>
 </svelte:head>
 
 <Splash bind:show={showSplash} />

@@ -4,7 +4,12 @@
       "Bash(gsd-sdk query *)",
       "WebSearch",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(npx svelte-check *)",
+      "Bash(yarn lint *)",
+      "Bash(yarn check *)",
+      "Bash(yarn prettier *)",
+      "Bash(yarn run *)"
     ]
   }
 }

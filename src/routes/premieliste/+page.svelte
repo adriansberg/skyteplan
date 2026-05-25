@@ -89,194 +89,196 @@
 
 {#if navigating.to}
 	<div class="container mx-auto px-2 py-4 pt-6">
-		{#each Array(3) as _, i (i)}
+		{#each Array.from({ length: 3 }, (_, i) => i) as i (i)}
 			<div class="mb-4 rounded-lg border border-neutral-200 bg-white p-4">
 				<div class="mb-3 h-6 w-40 animate-pulse rounded bg-neutral-200"></div>
-				{#each Array(3) as _, j (j)}
+				{#each Array.from({ length: 3 }, (_, j) => j) as j (j)}
 					<div class="mb-2 h-5 w-full animate-pulse rounded bg-neutral-200"></div>
 				{/each}
 			</div>
 		{/each}
 	</div>
 {:else}
-<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
-	<!-- Header -->
-	<div class="mb-4 sm:mb-6">
-		<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Premieliste</h1>
-		<p class="mt-2 text-sm text-gray-600 sm:text-base">Skyttere som har oppnådd premier</p>
-	</div>
-
-	<!-- Content -->
-	{#if shootersWithDistinctions.length === 0}
-		<div class="rounded-lg bg-gray-50 p-6 text-center sm:p-8">
-			<h2 class="mb-2 text-lg font-semibold text-gray-900">Ingen premier funnet</h2>
-			<p class="text-gray-600">Det ser ut som om ingen skyttere har fått premie ennå.</p>
-			<p class="mt-2 text-sm text-gray-500">
-				Denne funksjonen vil vise skyttere med premier når data blir tilgjengelig.
-			</p>
+	<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
+		<!-- Header -->
+		<div class="mb-4 sm:mb-6">
+			<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Premieliste</h1>
+			<p class="mt-2 text-sm text-gray-600 sm:text-base">Skyttere som har oppnådd premier</p>
 		</div>
-	{:else}
-		<!-- Shooters with distinctions list -->
-		<div class="space-y-4">
-			{#each shootersWithDistinctions as shooter (shooter.organizationId)}
-				<div class="rounded-lg border border-gray-200 bg-white p-4">
-					<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-						<div class="flex-1">
-							<div class="flex items-center gap-2">
-								<h3 class="text-lg font-semibold text-gray-900">{shooter.name}</h3>
-								<ShooterExternalLink shooterName={shooter.name} />
-							</div>
-							<div class="mt-1 flex flex-wrap gap-2 text-sm text-gray-600">
-								<span>Klasse {shooter.defaultClassOrganizationId}</span>
+
+		<!-- Content -->
+		{#if shootersWithDistinctions.length === 0}
+			<div class="rounded-lg bg-gray-50 p-6 text-center sm:p-8">
+				<h2 class="mb-2 text-lg font-semibold text-gray-900">Ingen premier funnet</h2>
+				<p class="text-gray-600">Det ser ut som om ingen skyttere har fått premie ennå.</p>
+				<p class="mt-2 text-sm text-gray-500">
+					Denne funksjonen vil vise skyttere med premier når data blir tilgjengelig.
+				</p>
+			</div>
+		{:else}
+			<!-- Shooters with distinctions list -->
+			<div class="space-y-4">
+				{#each shootersWithDistinctions as shooter (shooter.organizationId)}
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<div class="flex-1">
+								<div class="flex items-center gap-2">
+									<h3 class="text-lg font-semibold text-gray-900">{shooter.name}</h3>
+									<ShooterExternalLink shooterName={shooter.name} />
+								</div>
+								<div class="mt-1 flex flex-wrap gap-2 text-sm text-gray-600">
+									<span>Klasse {shooter.defaultClassOrganizationId}</span>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<!-- Distinctions -->
-					{#if shooter.distinctions && shooter.distinctions.length > 0}
-						<div class="mt-4">
-							<h4 class="mb-2 text-sm font-medium text-gray-700">Premier:</h4>
-							<div class="flex flex-wrap gap-2">
-								{#each shooter.distinctions as distinction (distinction.organizationId)}
-									<span
-										class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"
-									>
-										{distinction.name}
-										{#if distinction.organizationEventId}
-											<span class="ml-1 text-yellow-600">
-												({getEventTypeName(distinction.organizationEventId)})
-											</span>
-										{/if}
-									</span>
+						<!-- Distinctions -->
+						{#if shooter.distinctions && shooter.distinctions.length > 0}
+							<div class="mt-4">
+								<h4 class="mb-2 text-sm font-medium text-gray-700">Premier:</h4>
+								<div class="flex flex-wrap gap-2">
+									{#each shooter.distinctions as distinction (distinction.organizationId)}
+										<span
+											class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"
+										>
+											{distinction.name}
+											{#if distinction.organizationEventId}
+												<span class="ml-1 text-yellow-600">
+													({getEventTypeName(distinction.organizationEventId)})
+												</span>
+											{/if}
+										</span>
+									{/each}
+								</div>
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</div>
+
+			<!-- Prize Summary Section -->
+			<div class="mt-8 border-t border-gray-200 pt-8">
+				<h2 class="mb-6 text-xl font-bold text-gray-900 sm:text-2xl">Sammendrag av premier</h2>
+
+				<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					<!-- Gavepriser -->
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<div class="mb-4 flex items-center gap-2">
+							<h3 class="text-lg font-semibold text-gray-900">Gavepremier</h3>
+							<span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
+								{prizeSummary.Gavepremie.length}
+								{prizeSummary.Gavepremie.length > 1 ? 'typer' : 'type'}
+							</span>
+						</div>
+						{#if prizeSummary.Gavepremie.length > 0}
+							<div class="space-y-2">
+								{#each prizeSummary.Gavepremie as prize (prize.name)}
+									<div class="flex items-center justify-between text-sm">
+										<span class="text-gray-700">{prize.name}</span>
+										<span
+											class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
+										>
+											{prize.count}
+										</span>
+									</div>
 								{/each}
 							</div>
-						</div>
-					{/if}
-				</div>
-			{/each}
-		</div>
-
-		<!-- Prize Summary Section -->
-		<div class="mt-8 border-t border-gray-200 pt-8">
-			<h2 class="mb-6 text-xl font-bold text-gray-900 sm:text-2xl">Sammendrag av premier</h2>
-
-			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				<!-- Gavepriser -->
-				<div class="rounded-lg border border-gray-200 bg-white p-4">
-					<div class="mb-4 flex items-center gap-2">
-						<h3 class="text-lg font-semibold text-gray-900">Gavepremier</h3>
-						<span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
-							{prizeSummary.Gavepremie.length}
-							{prizeSummary.Gavepremie.length > 1 ? 'typer' : 'type'}
-						</span>
+						{:else}
+							<p class="text-sm text-gray-500 italic">Ingen gavepremier</p>
+						{/if}
 					</div>
-					{#if prizeSummary.Gavepremie.length > 0}
-						<div class="space-y-2">
-							{#each prizeSummary.Gavepremie as prize (prize.name)}
-								<div class="flex items-center justify-between text-sm">
-									<span class="text-gray-700">{prize.name}</span>
-									<span
-										class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
-									>
-										{prize.count}
-									</span>
-								</div>
-							{/each}
-						</div>
-					{:else}
-						<p class="text-sm text-gray-500 italic">Ingen gavepremier</p>
-					{/if}
-				</div>
 
-				<!-- Begere -->
-				<div class="rounded-lg border border-gray-200 bg-white p-4">
-					<div class="mb-4 flex items-center gap-2">
-						<h3 class="text-lg font-semibold text-gray-900">Begere</h3>
-						<span class="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
-							{prizeSummary.Beger.length}
-							{prizeSummary.Beger.length > 1 ? 'typer' : 'type'}
-						</span>
-					</div>
-					{#if prizeSummary.Beger.length > 0}
-						<div class="space-y-2">
-							{#each prizeSummary.Beger as prize (prize.name)}
-								<div class="flex items-center justify-between text-sm">
-									<span class="text-gray-700">{prize.name}</span>
-									<span
-										class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
-									>
-										{prize.count}
-									</span>
-								</div>
-							{/each}
+					<!-- Begere -->
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<div class="mb-4 flex items-center gap-2">
+							<h3 class="text-lg font-semibold text-gray-900">Begere</h3>
+							<span
+								class="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800"
+							>
+								{prizeSummary.Beger.length}
+								{prizeSummary.Beger.length > 1 ? 'typer' : 'type'}
+							</span>
 						</div>
-					{:else}
-						<p class="text-sm text-gray-500 italic">Ingen begere</p>
-					{/if}
+						{#if prizeSummary.Beger.length > 0}
+							<div class="space-y-2">
+								{#each prizeSummary.Beger as prize (prize.name)}
+									<div class="flex items-center justify-between text-sm">
+										<span class="text-gray-700">{prize.name}</span>
+										<span
+											class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
+										>
+											{prize.count}
+										</span>
+									</div>
+								{/each}
+							</div>
+						{:else}
+							<p class="text-sm text-gray-500 italic">Ingen begere</p>
+						{/if}
+					</div>
+
+					<!-- Medaljer -->
+					<div class="rounded-lg border border-gray-200 bg-white p-4">
+						<div class="mb-4 flex items-center gap-2">
+							<h3 class="text-lg font-semibold text-gray-900">Medaljer</h3>
+							<span class="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+								{prizeSummary.Medalje.length}
+								{prizeSummary.Medalje.length > 1 ? 'typer' : 'type'}
+							</span>
+						</div>
+						{#if prizeSummary.Medalje.length > 0}
+							<div class="space-y-2">
+								{#each prizeSummary.Medalje as prize (prize.name)}
+									<div class="flex items-center justify-between text-sm">
+										<span class="text-gray-700">{prize.name}</span>
+										<span
+											class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
+										>
+											{prize.count}
+										</span>
+									</div>
+								{/each}
+							</div>
+						{:else}
+							<p class="text-sm text-gray-500 italic">Ingen medaljer</p>
+						{/if}
+					</div>
 				</div>
 
-				<!-- Medaljer -->
-				<div class="rounded-lg border border-gray-200 bg-white p-4">
-					<div class="mb-4 flex items-center gap-2">
-						<h3 class="text-lg font-semibold text-gray-900">Medaljer</h3>
-						<span class="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-							{prizeSummary.Medalje.length}
-							{prizeSummary.Medalje.length > 1 ? 'typer' : 'type'}
-						</span>
-					</div>
-					{#if prizeSummary.Medalje.length > 0}
-						<div class="space-y-2">
-							{#each prizeSummary.Medalje as prize (prize.name)}
-								<div class="flex items-center justify-between text-sm">
-									<span class="text-gray-700">{prize.name}</span>
-									<span
-										class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
-									>
-										{prize.count}
-									</span>
-								</div>
-							{/each}
+				<!-- Total Statistics -->
+				<div class="mt-6 rounded-lg bg-gray-50 p-4">
+					<h4 class="mb-2 font-medium text-gray-900">Totalt</h4>
+					<div class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
+						<div class="text-center">
+							<div class="text-lg font-bold text-blue-600">
+								{prizeSummary.Gavepremie.reduce((sum, p) => sum + p.count, 0)}
+							</div>
+							<div class="text-gray-600">Gavepremier</div>
 						</div>
-					{:else}
-						<p class="text-sm text-gray-500 italic">Ingen medaljer</p>
-					{/if}
-				</div>
-			</div>
-
-			<!-- Total Statistics -->
-			<div class="mt-6 rounded-lg bg-gray-50 p-4">
-				<h4 class="mb-2 font-medium text-gray-900">Totalt</h4>
-				<div class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
-					<div class="text-center">
-						<div class="text-lg font-bold text-blue-600">
-							{prizeSummary.Gavepremie.reduce((sum, p) => sum + p.count, 0)}
+						<div class="text-center">
+							<div class="text-lg font-bold text-yellow-600">
+								{prizeSummary.Beger.reduce((sum, p) => sum + p.count, 0)}
+							</div>
+							<div class="text-gray-600">Begere</div>
 						</div>
-						<div class="text-gray-600">Gavepremier</div>
-					</div>
-					<div class="text-center">
-						<div class="text-lg font-bold text-yellow-600">
-							{prizeSummary.Beger.reduce((sum, p) => sum + p.count, 0)}
+						<div class="text-center">
+							<div class="text-lg font-bold text-green-600">
+								{prizeSummary.Medalje.reduce((sum, p) => sum + p.count, 0)}
+							</div>
+							<div class="text-gray-600">Medaljer</div>
 						</div>
-						<div class="text-gray-600">Begere</div>
-					</div>
-					<div class="text-center">
-						<div class="text-lg font-bold text-green-600">
-							{prizeSummary.Medalje.reduce((sum, p) => sum + p.count, 0)}
+						<div class="text-center">
+							<div class="text-lg font-bold text-gray-900">
+								{Object.values(prizeSummary).reduce(
+									(total, category) => total + category.reduce((sum, p) => sum + p.count, 0),
+									0
+								)}
+							</div>
+							<div class="text-gray-600">Totalt</div>
 						</div>
-						<div class="text-gray-600">Medaljer</div>
-					</div>
-					<div class="text-center">
-						<div class="text-lg font-bold text-gray-900">
-							{Object.values(prizeSummary).reduce(
-								(total, category) => total + category.reduce((sum, p) => sum + p.count, 0),
-								0
-							)}
-						</div>
-						<div class="text-gray-600">Totalt</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	{/if}
-</div>
+		{/if}
+	</div>
 {/if}

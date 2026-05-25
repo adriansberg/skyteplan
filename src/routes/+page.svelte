@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		formatNorwegianDate,
-		formatNorwegianTime,
-		getDateLabel
-	} from '$lib/utils/formatters';
+	import { formatNorwegianDate, formatNorwegianTime, getDateLabel } from '$lib/utils/formatters';
 	import {
 		hasPartialResults,
 		getEventStatus,
@@ -14,16 +10,17 @@
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
-	import { onMount } from 'svelte'
+	import { onMount } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { navigating } from '$app/state';
 
-	let { data }: { data: PageData } = $props()
+	let { data }: { data: PageData } = $props();
 
-	let shooters = $derived(data.shooters)
-	let error = $derived(data.error)
+	let shooters = $derived(data.shooters);
+	let error = $derived(data.error);
 
-	let showSplash = $state(false)
-	let todaySectionElement = $state<HTMLElement | undefined>(undefined)
+	let showSplash = $state(false);
+	let todaySectionElement = $state<HTMLElement | undefined>(undefined);
 
 	// Svelte action to register the today section element
 	function registerTodaySection(element: HTMLElement, isToday: boolean) {
@@ -44,21 +41,21 @@
 
 	let groupedEvents = $derived(
 		(() => {
-			if (!shooters) return {} as Record<string, EventWithShooter[]>
-			const allEvents = groupFeltEvents(shooters)
-			const seen = new Set<string>()
-			const grouped: Record<string, EventWithShooter[]> = {}
+			if (!shooters) return {} as Record<string, EventWithShooter[]>;
+			const allEvents = groupFeltEvents(shooters);
+			const seen = new SvelteSet<string>();
+			const grouped: Record<string, EventWithShooter[]> = {};
 			allEvents.forEach((event) => {
-				const key = `${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`
-				if (seen.has(key)) return
-				seen.add(key)
-				const dateKey = formatNorwegianDate(event.shootingDateTime)
-				if (!grouped[dateKey]) grouped[dateKey] = []
-				grouped[dateKey].push(event)
-			})
-			return grouped
+				const key = `${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`;
+				if (seen.has(key)) return;
+				seen.add(key);
+				const dateKey = formatNorwegianDate(event.shootingDateTime);
+				if (!grouped[dateKey]) grouped[dateKey] = [];
+				grouped[dateKey].push(event);
+			});
+			return grouped;
 		})()
-	)
+	);
 
 	// Auto-scroll to today's section when page loads
 	onMount(() => {
@@ -93,7 +90,7 @@
 	{#if navigating.to}
 		<div class="container mx-auto px-2 py-4 pt-6">
 			<div class="mb-4 h-7 w-40 animate-pulse rounded bg-neutral-200"></div>
-			{#each Array(4) as _, i (i)}
+			{#each Array.from({ length: 4 }, (_, i) => i) as i (i)}
 				<div class="mb-3 h-24 w-full animate-pulse rounded bg-neutral-200"></div>
 			{/each}
 		</div>
@@ -120,7 +117,7 @@
 						>
 							<!-- Date Header -->
 							<div
-								class="sticky z-30 bg-neutral-50 border-b border-neutral-200 px-3 py-3 sm:px-6 sm:py-4"
+								class="sticky z-30 border-b border-neutral-200 bg-neutral-50 px-3 py-3 sm:px-6 sm:py-4"
 								style="top: var(--top-bar-height)"
 							>
 								<h2 class="text-xl font-bold text-neutral-900">
@@ -180,18 +177,22 @@
 												<!-- Time and result in compact row -->
 												<div class="flex items-center justify-between">
 													<div class="text-gray-600">
-														<span class="font-mono">{formatNorwegianTime(event.checkinDateTime)}</span>
+														<span class="font-mono"
+															>{formatNorwegianTime(event.checkinDateTime)}</span
+														>
 													</div>
 													<div class="text-right">
 														{#if status === 'completed' && finalScore && finalScore.trim() !== ''}
-															<div class="text-lg font-bold text-blue-600 font-mono">{finalScore}</div>
+															<div class="font-mono text-lg font-bold text-blue-600">
+																{finalScore}
+															</div>
 															{#if finalSeries && finalSeries.sumInner && event.name !== 'Felt'}
 																<div class="text-xs text-green-600">
 																	Sentrum: {finalSeries.sumInner}
 																</div>
 															{/if}
 														{:else if status === 'ongoing' && finalScore && finalScore.trim() !== ''}
-															<div class="text-sm font-medium text-blue-600 font-mono">
+															<div class="font-mono text-sm font-medium text-blue-600">
 																{finalScore}
 															</div>
 														{:else if status === 'ongoing'}
@@ -239,7 +240,7 @@
 																	<div class="flex flex-shrink-0 items-center gap-2">
 																		<!-- Sub-event result -->
 																		<div class="min-w-0 text-right">
-																			<div class="text-sm font-bold text-blue-600 font-mono">
+																			<div class="font-mono text-sm font-bold text-blue-600">
 																				{subFinalScore}
 																			</div>
 																			{#if subFinalSeries && subFinalSeries.sumInner}

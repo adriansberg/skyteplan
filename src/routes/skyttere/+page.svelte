@@ -7,12 +7,12 @@
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import type { PageData } from './$types';
 
-	import { navigating } from '$app/state'
+	import { navigating } from '$app/state';
 
-	let { data }: { data: PageData } = $props()
+	let { data }: { data: PageData } = $props();
 
-	let shooters = $derived(data.shooters)
-	let error = $derived(data.error)
+	let shooters = $derived(data.shooters);
+	let error = $derived(data.error);
 </script>
 
 <svelte:head>
@@ -176,7 +176,8 @@
 
 												<!-- Compact timing -->
 												<div class="text-xs text-gray-600">
-													<span class="font-mono">{formatNorwegianTime(event.checkinDateTime)}</span>
+													<span class="font-mono">{formatNorwegianTime(event.checkinDateTime)}</span
+													>
 													<span class="text-gray-400"> • </span>
 													<span>{formatNorwegianDate(event.checkinDateTime)}</span>
 												</div>
@@ -188,7 +189,9 @@
 														<div class="flex items-center justify-between">
 															<span class="text-xs text-gray-500">Resultat:</span>
 															<div class="text-right">
-																<div class="text-sm font-bold text-blue-600 font-mono">{lastSeries.sum}</div>
+																<div class="font-mono text-sm font-bold text-blue-600">
+																	{lastSeries.sum}
+																</div>
 																{#if event.name !== 'Felt'}
 																	<div class="text-xs text-green-600">
 																		Sentrum: {lastSeries.sumInner}
@@ -238,7 +241,9 @@
 																			<div class="grid grid-cols-2 gap-2 text-xs">
 																				<div class="flex items-center gap-1">
 																					<span class="text-gray-500">Total:</span>
-																					<span class="font-bold text-blue-600 font-mono">{series.sum}</span>
+																					<span class="font-mono font-bold text-blue-600"
+																						>{series.sum}</span
+																					>
 																				</div>
 																				{#if event.name !== 'Felt'}
 																					<div class="flex items-center gap-1">
@@ -253,7 +258,7 @@
 																				<div class="mt-2 border-t border-gray-100 pt-2">
 																					<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																					<div class="flex flex-wrap gap-1">
-																						{#each series.shots as shot (shot.valueInt + shot.valueDec)}
+																						{#each series.shots as shot, shi (`${shot.valueInt}.${shot.valueDec}-${shi}`)}
 																							<span
 																								class="inline-block rounded bg-gray-100 px-1 py-0.5 text-xs text-gray-700"
 																							>
@@ -319,7 +324,7 @@
 																		<div class="grid grid-cols-2 justify-center gap-2 text-sm">
 																			<div class="flex items-center gap-2">
 																				<span class="text-gray-500">Total:</span>
-																				<span class="text-lg font-bold text-blue-600 font-mono"
+																				<span class="font-mono text-lg font-bold text-blue-600"
 																					>{series.sum}</span
 																				>
 																			</div>
@@ -336,7 +341,7 @@
 																			<div class="mt-2 border-t border-gray-100 pt-2">
 																				<div class="mb-1 text-xs text-gray-500">Skudd:</div>
 																				<div class="flex flex-wrap gap-1">
-																					{#each series.shots as shot (shot.valueInt + shot.valueDec)}
+																					{#each series.shots as shot, shi (`${shot.valueInt}.${shot.valueDec}-${shi}`)}
 																						<span
 																							class="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700"
 																						>

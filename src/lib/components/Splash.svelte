@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import stordalenLogo from '$lib/assets/stordalen.jpg';
+
 
 	let { show = $bindable(false) } = $props()
 	let minimumSplashTime = 1500;
@@ -29,7 +29,7 @@
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-white">
 		<div class="flex flex-col items-center space-y-6">
 			<img
-				src={stordalenLogo}
+				src="/clubs/stordalen.jpg"
 				alt="Skytterinfo"
 				class="animate-fade-in h-auto w-64 max-w-sm"
 			/>

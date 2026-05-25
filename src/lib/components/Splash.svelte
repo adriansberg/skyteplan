@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-
-	let { show = $bindable(false) } = $props()
+	let { show = $bindable(false) } = $props();
 	let minimumSplashTime = 1500;
 
 	onMount(() => {

@@ -96,19 +96,19 @@ export function getEventStatus(event: {
 }
 
 export type EventWithShooter = Event & {
-	shooter: Shooter
-	subEvents?: (Event & { shooter: Shooter })[]
-}
+	shooter: Shooter;
+	subEvents?: (Event & { shooter: Shooter })[];
+};
 
 export function groupFeltEvents(shooters: Shooter[]): EventWithShooter[] {
-	const allEvents: EventWithShooter[] = []
+	const allEvents: EventWithShooter[] = [];
 
 	shooters.forEach((shooter) => {
-		const processedEvents = new Set<string>()
+		const processedEvents = new Set<string>();
 
 		shooter.events.forEach((event) => {
-			const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`
-			if (processedEvents.has(eventKey)) return
+			const eventKey = `${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`;
+			if (processedEvents.has(eventKey)) return;
 
 			if (event.name === 'Felt') {
 				const relatedEvents = shooter.events.filter(
@@ -117,20 +117,20 @@ export function groupFeltEvents(shooters: Shooter[]): EventWithShooter[] {
 						e.shootingDateTime === event.shootingDateTime &&
 						e.targetNumber === event.targetNumber &&
 						e.relayNumber === event.relayNumber
-				)
+				);
 				if (relatedEvents.length > 0) {
 					allEvents.push({
 						...event,
 						shooter,
 						subEvents: relatedEvents.map((e) => ({ ...e, shooter }))
-					})
+					});
 					relatedEvents.forEach((e) => {
 						processedEvents.add(
 							`${e.name}-${e.shootingDateTime}-${e.targetNumber}-${e.relayNumber}`
-						)
-					})
+						);
+					});
 				} else {
-					allEvents.push({ ...event, shooter })
+					allEvents.push({ ...event, shooter });
 				}
 			} else {
 				const correspondingFelt = shooter.events.find(
@@ -139,20 +139,20 @@ export function groupFeltEvents(shooters: Shooter[]): EventWithShooter[] {
 						e.shootingDateTime === event.shootingDateTime &&
 						e.targetNumber === event.targetNumber &&
 						e.relayNumber === event.relayNumber
-				)
+				);
 				if (!correspondingFelt) {
-					allEvents.push({ ...event, shooter })
+					allEvents.push({ ...event, shooter });
 				}
 			}
-			processedEvents.add(eventKey)
-		})
-	})
+			processedEvents.add(eventKey);
+		});
+	});
 
 	allEvents.sort(
 		(a, b) =>
 			parseAsLocalTime(a.shootingDateTime).getTime() -
 			parseAsLocalTime(b.shootingDateTime).getTime()
-	)
+	);
 
-	return allEvents
+	return allEvents;
 }

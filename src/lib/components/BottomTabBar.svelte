@@ -7,7 +7,7 @@
 </script>
 
 <nav
-	class="fixed bottom-0 left-0 right-0 z-50 flex h-14 border-t border-neutral-200 bg-neutral-50"
+	class="fixed right-0 bottom-0 left-0 z-50 flex h-14 border-t border-neutral-200 bg-neutral-50"
 	style="padding-bottom: env(safe-area-inset-bottom)"
 >
 	<a

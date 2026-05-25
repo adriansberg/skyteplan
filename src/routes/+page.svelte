@@ -46,8 +46,12 @@
 		(() => {
 			if (!shooters) return {} as Record<string, EventWithShooter[]>
 			const allEvents = groupFeltEvents(shooters)
+			const seen = new Set<string>()
 			const grouped: Record<string, EventWithShooter[]> = {}
 			allEvents.forEach((event) => {
+				const key = `${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`
+				if (seen.has(key)) return
+				seen.add(key)
 				const dateKey = formatNorwegianDate(event.shootingDateTime)
 				if (!grouped[dateKey]) grouped[dateKey] = []
 				grouped[dateKey].push(event)

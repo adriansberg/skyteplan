@@ -3,7 +3,7 @@ const STATIC_ASSETS = [
 	'/',
 	'/skyttere',
   '/premieliste',
-	'/stordalen.jpg',
+	'/clubs/stordalen.jpg',
 	'/favicon.ico'
 ];
 

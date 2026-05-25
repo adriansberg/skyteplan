@@ -10,13 +10,13 @@
 	"scope": "/",
 	"icons": [
 		{
-			"src": "/stordalen.jpg",
+			"src": "/clubs/stordalen.jpg",
 			"sizes": "192x192",
 			"type": "image/jpeg",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "/stordalen.jpg",
+			"src": "/clubs/stordalen.jpg",
 			"sizes": "512x512",
 			"type": "image/jpeg",
 			"purpose": "any maskable"

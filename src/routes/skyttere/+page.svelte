@@ -106,7 +106,7 @@
 										<!-- Always show all results -->
 										<div class="flex flex-wrap items-center gap-1">
 											{#if eventScores.length > 0}
-												{#each eventScores as eventScore (eventScore?.eventName)}
+												{#each eventScores as eventScore, esi (`${eventScore?.eventName}-${esi}`)}
 													<span
 														class="rounded border border-green-300 bg-green-100 px-2 py-1 text-xs text-green-700"
 													>

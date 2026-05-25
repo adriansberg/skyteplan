@@ -5,7 +5,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 
 	let { data } = $props();
-	let shootersWithDistinctions: ShooterWithDistinctions[] = data.shootersWithDistinctions || [];
+	let shootersWithDistinctions = $derived<ShooterWithDistinctions[]>(data.shootersWithDistinctions ?? []);
 
 	// Function to get event type name from organizationEventId
 	function getEventTypeName(organizationEventId: string): string {

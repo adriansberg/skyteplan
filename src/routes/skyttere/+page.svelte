@@ -226,7 +226,7 @@
 															<div>
 																<h5 class="mb-2 text-xs font-medium text-gray-900">Serier</h5>
 																<div class="space-y-2">
-																	{#each event.series as series (series.name)}
+																	{#each event.series as series, si (`${series.name}-${si}`)}
 																		<div
 																			class="rounded p-2 {series.seriesType === 'SUB_SERIES'
 																				? 'my-4 border-2 border-blue-300 bg-blue-50'
@@ -307,7 +307,7 @@
 														{#if event.series && event.series.length > 0}
 															<h5 class="mb-2 text-sm font-medium text-gray-900">Serier</h5>
 															<div class="space-y-2">
-																{#each event.series as series (series.name)}
+																{#each event.series as series, si (`${series.name}-${si}`)}
 																	<div
 																		class="rounded p-3 {series.seriesType === 'SUB_SERIES'
 																			? 'my-4 border-2 border-blue-300 bg-blue-50'

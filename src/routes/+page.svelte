@@ -86,7 +86,7 @@
 <Splash bind:show={showSplash} />
 
 {#if !showSplash}
-	{#if navigating}
+	{#if navigating.to}
 		<div class="container mx-auto px-2 py-4 pt-6">
 			<div class="mb-4 h-7 w-40 animate-pulse rounded bg-neutral-200"></div>
 			{#each Array(4) as _, i (i)}

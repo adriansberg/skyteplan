@@ -87,7 +87,7 @@
 	<meta name="description" content="Skyttere som har oppnådd premier" />
 </svelte:head>
 
-{#if navigating}
+{#if navigating.to}
 	<div class="container mx-auto px-2 py-4 pt-6">
 		{#each Array(3) as _, i (i)}
 			<div class="mb-4 rounded-lg border border-neutral-200 bg-white p-4">

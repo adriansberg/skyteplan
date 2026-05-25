@@ -19,7 +19,7 @@
 	<title>Skyttere - Skytterinfo</title>
 </svelte:head>
 
-{#if navigating || (!shooters && !error)}
+{#if navigating.to || (!shooters && !error)}
 	<div class="container mx-auto px-2 py-4 pt-6">
 		{#each ['w-48', 'w-36', 'w-52', 'w-40', 'w-44', 'w-32'] as widthClass (widthClass)}
 			<div class="mb-3 h-14 {widthClass} animate-pulse rounded bg-neutral-200"></div>

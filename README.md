@@ -2,87 +2,100 @@
 
 PWA for Norwegian rifle shooting clubs — schedule, shooter results, and prize lists at the range.
 
+Installable on iOS and Android. Designed for outdoor use: clean layout, fast load, no friction.
+
 ## Stack
 
-- SvelteKit 2.x — full-stack framework, routing, SSR/CSR
+- SvelteKit 2.x — full-stack framework, routing, SSR
 - Svelte 5.x (runes) — component model (`$props`, `$derived`, `$state`)
-- TypeScript 5.x — all source in `src/`
-- TailwindCSS 4.x — utility CSS via `@tailwindcss/vite`
-- Vite 7.x — dev server and bundler
-- graphql-request 7.x — lightweight GraphQL client
-- Node 22.x — runtime
-- Yarn — package manager
-- Vercel (`@sveltejs/adapter-vercel`) — deployment target
+- TypeScript 5.x
+- TailwindCSS 4.x via `@tailwindcss/vite`
+- Vite 7.x
+- graphql-request 7.x
+- Node 22.x / Yarn
+- Vercel (`@sveltejs/adapter-vercel`)
+
+## Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Schedule — events grouped by date, auto-scrolls to today |
+| `/skyttere` | Shooters — per-shooter event list with collapsible result detail |
+| `/premieliste` | Prize list — distinctions per shooter + prize summary |
+
+## Multi-Club Routing
+
+Each club gets its own subdomain (e.g. `stordalen.skytterinfo.no`). The subdomain is resolved server-side in `src/hooks.server.ts` and injected into `event.locals.club`. Unknown subdomains return a Norwegian 404.
+
+Club config lives in `src/lib/clubs.ts`:
+
+```ts
+export const clubs: Record<string, ClubConfig> = {
+  stordalen: {
+    clubId: '10782',
+    name: 'Stordalen Skytterlag',
+    logoPath: '/clubs/stordalen.jpg'
+  }
+}
+```
+
+Add a new club by adding an entry here and dropping its logo in `static/clubs/`.
 
 ## Data Source
 
-External read-only GraphQL API at `leonls.kongsberg-ts.no`. The API shape is owned by an
-external operator — cannot add batching, change query structure, or modify schema without
-owner cooperation. All queries are in `src/lib/graphql/queries.ts`.
+Read-only GraphQL API at `leonls.kongsberg-ts.no`. The API shape is owned by an external operator — queries are in `src/lib/server/graphql/queries.ts`.
 
 ## Development
+
+### Environment
+
+Create `.env.local`:
+
+```
+AUTH_TOKEN=<bearer token for leonls.kongsberg-ts.no>
+VITE_DEV_CLUB=stordalen
+```
+
+`VITE_DEV_CLUB` sets which club slug to resolve when running on localhost. Set it to any key defined in `src/lib/clubs.ts`.
+
+### Commands
 
 ```sh
 yarn install      # install dependencies
 yarn dev          # start dev server
 yarn build        # production build
-yarn check        # type-check (svelte-check + tsc)
-yarn lint         # ESLint
-yarn format       # Prettier
+yarn run check    # type-check (svelte-check)
+yarn lint         # Prettier + ESLint
 ```
 
-## Deployment Prerequisites
+## Deployment (Vercel)
 
-> These are MANUAL human steps outside code. Phase 5 documents the requirements;
-> Phase 6 ships the routing code that depends on them being in place.
-
-### Domain
-
-Choose and register one of the following — **TBD (owner to confirm and register)**:
-
-- `skytterinfo.no`
-- `skytterinfo.app`
-
-### Wildcard DNS
-
-Configure a wildcard DNS record so every subdomain routes to the same Vercel deployment.
-This must be in place before Phase 6 goes live.
-
-DNS record to add at your registrar:
-
-```
-*.<domain>  CNAME  cname.vercel-dns.com
-```
-
-Replace `<domain>` with the registered domain (e.g. `skytterinfo.no`).
-
-### Vercel Wildcard Domain
-
-In the Vercel dashboard → project → Domains → Add, enter `*.<domain>` as a wildcard
-domain on the project. Vercel requires this in addition to the DNS record.
-
-### Phase 6 Dependency
-
-Phase 6 introduces `src/lib/clubs.ts` mapping subdomain → club configuration. The subdomain
-keys in `clubs.ts` must match the DNS pattern (e.g. a `stordalen` subdomain key requires
-`stordalen.<domain>` DNS to resolve). Register the domain and configure wildcard DNS before
-Phase 6 ships.
+1. Set `AUTH_TOKEN` environment variable in the Vercel dashboard.
+2. Register a domain and add a wildcard DNS record:
+   ```
+   *.<domain>  CNAME  cname.vercel-dns.com
+   ```
+3. Add `*.<domain>` as a wildcard domain in Vercel → project → Domains.
+4. Each club subdomain must match a key in `src/lib/clubs.ts`.
 
 ## Project Structure
 
-### Routes
-
-- `/` — schedule page; groups shooter events by date, auto-scrolls to today
-- `/skyttere` — shooters page; per-shooter event list with collapsible result detail
-- `/premieliste` — prize list page; distinctions per shooter + prize summary
-
-Each route has a paired `+page.ts` loader that fetches from the GraphQL API and passes
-data down via the `data` prop. No global store — all data flows downward from `load`.
-
-### Key Directories
-
-- `src/lib/graphql/` — GraphQL client singleton, query functions, domain types
-- `src/lib/components/` — reusable UI components (status badge, refresh button, install prompt, etc.)
-- `src/lib/utils/` — pure utility functions: Norwegian date/time formatting, event status logic
-- `src/routes/` — SvelteKit page templates and loaders
-- `static/` — service worker (`sw.js`), PWA manifest, icons
+```
+src/
+  hooks.server.ts           # resolves club from subdomain per request
+  lib/
+    clubs.ts                # club config map (subdomain → clubId, name, logo)
+    server/graphql/         # GraphQL client, queries, types (server-only)
+    components/             # reusable UI components
+    utils/                  # date/time formatting, event status logic
+  routes/
+    +layout.server.ts       # passes locals.club to layout
+    +layout.svelte          # nav, PWA init, club logo in top bar
+    +page.server.ts         # schedule loader
+    skyttere/               # shooters page
+    premieliste/            # prize list page
+static/
+  clubs/                    # club logo images
+  sw.js                     # service worker (cache-first static, network-first API)
+  manifest.json             # PWA manifest
+```

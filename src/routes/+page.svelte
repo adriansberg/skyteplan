@@ -265,7 +265,7 @@
 														Vis detaljerte resultater
 													</summary>
 													<div class="mt-3 space-y-1">
-														{#each event.series as series (series.name)}
+														{#each event.series as series, si (`${series.name}-${si}`)}
 															<div
 																class="rounded p-2 {series.seriesType === 'SUB_SERIES'
 																	? 'my-2 border-2 border-blue-300 bg-blue-50'

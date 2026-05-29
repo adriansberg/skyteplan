@@ -5,7 +5,7 @@ export interface ClubConfig {
 }
 
 export const clubs: Record<string, ClubConfig> = {
-	stordalen: {
+	ls: {
 		clubId: '10782',
 		name: 'Stordalen Skytterlag',
 		logoPath: '/clubs/stordalen.jpg'

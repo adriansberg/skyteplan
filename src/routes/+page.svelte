@@ -10,6 +10,9 @@
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
+	import Skeleton from '$lib/components/Skeleton.svelte';
+	import ErrorBlock from '$lib/components/ErrorBlock.svelte';
+	import PageShell from '$lib/components/PageShell.svelte';
 	import { onMount } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { navigating } from '$app/state';
@@ -22,7 +25,6 @@
 	let showSplash = $state(false);
 	let todaySectionElement = $state<HTMLElement | undefined>(undefined);
 
-	// Svelte action to register the today section element
 	function registerTodaySection(element: HTMLElement, isToday: boolean) {
 		if (isToday) {
 			todaySectionElement = element;
@@ -57,25 +59,21 @@
 		})()
 	);
 
-	// Auto-scroll to today's section when page loads
 	onMount(() => {
-		// Wait for splash screen to finish and DOM to be ready
 		const checkAndScroll = () => {
 			if (!showSplash && todaySectionElement) {
-				// Small delay to ensure proper rendering
+				const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 				setTimeout(() => {
 					todaySectionElement?.scrollIntoView({
-						behavior: 'smooth',
+						behavior: reducedMotion ? 'instant' : 'smooth',
 						block: 'start'
 					});
 				}, 300);
 			} else {
-				// If splash is still showing, check again after a short delay
 				setTimeout(checkAndScroll, 100);
 			}
 		};
 
-		// Initial check after a short delay
 		setTimeout(checkAndScroll, 100);
 	});
 </script>
@@ -88,26 +86,17 @@
 
 {#if !showSplash}
 	{#if navigating.to}
-		<div class="container mx-auto px-2 py-4 pt-6">
-			<div class="mb-4 h-7 w-40 animate-pulse rounded bg-neutral-200"></div>
-			{#each Array.from({ length: 4 }, (_, i) => i) as i (i)}
-				<div class="mb-3 h-24 w-full animate-pulse rounded bg-neutral-200"></div>
-			{/each}
+		<div class="px-4 py-6 pt-8">
+			<Skeleton lines={4} variant="card" />
 		</div>
 	{:else if error}
-		<div class="m-6 rounded-lg border border-red-200 bg-red-50 p-6">
-			<h2 class="mb-2 text-xl font-semibold text-red-800">Feil ved lasting av data:</h2>
-			<span class="text-red-600">Feil: {error}</span>
+		<div class="px-4 py-6">
+			<ErrorBlock message={String(error)} />
 		</div>
 	{:else if shooters}
-		<div class="container mx-auto px-2 py-4 pt-6 sm:px-4 sm:py-6 sm:pt-8">
-			<div class="mb-4 sm:mb-6">
-				<h1 class="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">Skyteplan</h1>
-			</div>
-
-			<!-- Schedule by Date -->
+		<PageShell title="Skyteplan">
 			{#if Object.keys(groupedEvents).length > 0}
-				<div class="space-y-4 sm:space-y-8">
+				<div class="space-y-8">
 					{#each Object.entries(groupedEvents) as [dateKey, events] (dateKey)}
 						{@const dateLabel = getDateLabel(events[0].shootingDateTime)}
 						{@const isToday = dateLabel === 'I dag'}
@@ -115,189 +104,176 @@
 							use:registerTodaySection={isToday}
 							style="scroll-margin-top: var(--top-bar-height)"
 						>
-							<!-- Date Header -->
+							<!-- Date header — distinct bg from top bar -->
 							<div
-								class="sticky z-30 border-b border-neutral-200 bg-neutral-50 px-3 py-3 sm:px-6 sm:py-4"
+								class="sticky z-30 border-b border-frame bg-bg px-4 py-3"
 								style="top: var(--top-bar-height)"
 							>
-								<h2 class="text-xl font-bold text-neutral-900">
+								<h2 class="font-heading text-xl font-bold text-fg">
 									{dateLabel}
-									<span class="ml-1 text-xs font-normal text-neutral-600">
+									<span class="ml-2 text-sm font-normal text-fg-muted">
 										({events.length} skytter{events.length !== 1 ? 'e' : ''})
 									</span>
 								</h2>
 							</div>
 
-							<!-- Events for this date -->
-							<div class="p-3 sm:p-6">
-								<div class="space-y-3 sm:space-y-4">
-									{#each events as event (`${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`)}
-										{@const status = getEventStatus(event)}
-										{@const finalSeries =
-											event.series && event.series.length > 0
-												? event.series[event.series.length - 1]
-												: null}
-										{@const finalScore = finalSeries?.sum?.toString() || null}
+							<div class="space-y-3 px-4 pt-4 sm:space-y-4">
+								{#each events as event (`${event.shooter.organizationId}-${event.name}-${event.shootingDateTime}-${event.targetNumber}-${event.relayNumber}`)}
+									{@const status = getEventStatus(event)}
+									{@const finalSeries =
+										event.series && event.series.length > 0
+											? event.series[event.series.length - 1]
+											: null}
+									{@const finalScore = finalSeries?.sum?.toString() || null}
 
-										<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4">
-											<!-- Mobile-first compact layout -->
-											<div class="space-y-3">
-												<!-- Main event header - always visible -->
-												<div class="flex items-start justify-between">
-													<div class="min-w-0 flex-1">
-														<h3 class="text-base font-semibold text-gray-900 sm:text-lg">
-															{event.name}
-															{event.eventType === 'FINALE' ? ' (Finale)' : ''}
-															{#if event.subEvents && event.subEvents.length > 0}
-																<span class="ml-1 text-xs text-gray-500">
-																	(+{event.subEvents.length})
-																</span>
-															{/if}
-														</h3>
-														<div class="flex items-center gap-2">
-															<p class="truncate text-base font-medium text-gray-600">
-																{event.shooter.name}
-															</p>
-															<ShooterExternalLink shooterName={event.shooter.name} />
-														</div>
-														<div class="flex items-center gap-2 text-xs text-gray-500">
-															<span>{event.shooter.defaultClassOrganizationId}</span>
-															<span>•</span>
-															<span>Skive {event.targetNumber}</span>
-															<span>•</span>
-															<span>Lag {event.relayNumber}</span>
-														</div>
+									<div class="rounded-xl bg-surface p-4 sm:p-5">
+										<div class="space-y-3">
+											<!-- Event header -->
+											<div class="flex items-start justify-between gap-2">
+												<div class="min-w-0 flex-1">
+													<h3 class="text-base font-semibold text-fg sm:text-lg">
+														{event.name}{event.eventType === 'FINALE'
+															? ' (Finale)'
+															: ''}{#if event.subEvents && event.subEvents.length > 0}<span
+																class="ml-1 text-sm font-normal text-fg-muted"
+																>(+{event.subEvents.length})</span
+															>{/if}
+													</h3>
+													<div class="flex items-center gap-2">
+														<p class="truncate text-base font-medium text-fg-muted">
+															{event.shooter.name}
+														</p>
+														<ShooterExternalLink shooterName={event.shooter.name} />
 													</div>
-													<!-- Status badge -->
-													<div class="ml-2 flex-shrink-0">
-														<EventStatusBadge {event} />
+													<div class="flex items-center gap-2 text-sm text-fg-muted">
+														<span>{event.shooter.defaultClassOrganizationId}</span>
+														<span>·</span>
+														<span>Skive {event.targetNumber}</span>
+														<span>·</span>
+														<span>Lag {event.relayNumber}</span>
 													</div>
 												</div>
-
-												<!-- Time and result in compact row -->
-												<div class="flex items-center justify-between">
-													<div class="text-gray-600">
-														<span class="font-mono"
-															>{formatNorwegianTime(event.checkinDateTime)}</span
-														>
-													</div>
-													<div class="text-right">
-														{#if status === 'completed' && finalScore && finalScore.trim() !== ''}
-															<div class="font-mono text-lg font-bold text-blue-600">
-																{finalScore}
-															</div>
-															{#if finalSeries && finalSeries.sumInner && event.name !== 'Felt'}
-																<div class="text-xs text-green-600">
-																	Sentrum: {finalSeries.sumInner}
-																</div>
-															{/if}
-														{:else if status === 'ongoing' && finalScore && finalScore.trim() !== ''}
-															<div class="font-mono text-sm font-medium text-blue-600">
-																{finalScore}
-															</div>
-														{:else if status === 'ongoing'}
-															<div class="text-xs text-yellow-600 italic">Pågår...</div>
-														{:else if status === 'did_not_start'}
-															<div class="text-xs text-gray-400 italic">Ikke skutt</div>
-														{:else}
-															<div class="text-xs text-gray-400 italic">Ikke startet</div>
-														{/if}
-													</div>
+												<div class="ml-2 shrink-0">
+													<EventStatusBadge {event} />
 												</div>
 											</div>
 
-											<!-- Sub-events (Minne, Felthurtig, Stang) -->
-											{#if event.subEvents && event.subEvents.length > 0}
-												<details class="mt-3">
-													<summary
-														class="cursor-pointer text-sm text-blue-600 select-none hover:text-blue-800"
-													>
-														Vis {event.subEvents.length} del{event.subEvents.length !== 1
-															? 'er'
-															: ''}
-														av {event.name}
-													</summary>
-													<div class="mt-3 space-y-2 border-l-2 border-blue-200 pl-3">
-														{#each event.subEvents as subEvent (`${subEvent.name}-${subEvent.shootingDateTime}-${subEvent.targetNumber}-${subEvent.relayNumber}`)}
-															{@const subFinalSeries =
-																subEvent.series && subEvent.series.length > 0
-																	? subEvent.series.find(
-																			(s) =>
-																				s.seriesType === 'SUB_SERIES' &&
-																				s.sum &&
-																				s.sum.toString().trim() !== ''
-																		) || subEvent.series[subEvent.series.length - 1]
-																	: null}
-															{@const subFinalScore = subFinalSeries?.sum?.toString() || null}
-
-															<div class="rounded border bg-white p-2">
-																<div class="flex justify-between">
-																	<div class="min-w-0 flex-1">
-																		<h4 class="truncate text-sm font-medium text-gray-800">
-																			{subEvent.name}
-																		</h4>
-																	</div>
-																	<div class="flex flex-shrink-0 items-center gap-2">
-																		<!-- Sub-event result -->
-																		<div class="min-w-0 text-right">
-																			<div class="font-mono text-sm font-bold text-blue-600">
-																				{subFinalScore}
-																			</div>
-																			{#if subFinalSeries && subFinalSeries.sumInner}
-																				<div class="text-xs text-green-600">
-																					{subFinalSeries.sumInner}
-																				</div>
-																			{/if}
-																		</div>
-																	</div>
-																</div>
-															</div>
-														{/each}
-													</div>
-												</details>
-											{/if}
-
-											<!-- Detailed results for completed main events -->
-											{#if hasPartialResults(event)}
-												<details class="mt-3">
-													<summary
-														class="cursor-pointer text-sm text-blue-600 select-none hover:text-blue-800"
-													>
-														Vis detaljerte resultater
-													</summary>
-													<div class="mt-3 space-y-1">
-														{#each event.series as series, si (`${series.name}-${si}`)}
-															<div
-																class="rounded p-2 {series.seriesType === 'SUB_SERIES'
-																	? 'my-2 border-2 border-blue-300 bg-blue-50'
-																	: 'border border-gray-200 bg-white'}"
-															>
-																<div class="flex items-center justify-between">
-																	<span class="truncate text-sm font-medium">{series.name}</span>
-																	<div class="flex flex-shrink-0 gap-3 text-xs">
-																		<span>Total: <strong>{series.sum}</strong></span>
-																		{#if event.name !== 'Felt'}
-																			<span>Sentrum: <strong>{series.sumInner}</strong></span>
-																		{/if}
-																	</div>
-																</div>
-															</div>
-														{/each}
-													</div>
-												</details>
-											{/if}
+											<!-- Time + result row -->
+											<div class="flex items-center justify-between">
+												<span class="font-mono text-sm text-fg-muted">
+													{formatNorwegianTime(event.checkinDateTime)}
+												</span>
+												<div class="text-right">
+													{#if status === 'completed' && finalScore && finalScore.trim() !== ''}
+														<div class="font-mono text-lg font-bold text-primary">
+															{finalScore}
+														</div>
+														{#if finalSeries && finalSeries.sumInner && event.name !== 'Felt'}
+															<div class="text-ok text-sm">Sentrum: {finalSeries.sumInner}</div>
+														{/if}
+													{:else if status === 'ongoing' && finalScore && finalScore.trim() !== ''}
+														<div class="font-mono text-base font-medium text-primary">
+															{finalScore}
+														</div>
+													{:else if status === 'ongoing'}
+														<div class="text-live text-sm italic">Pågår...</div>
+													{:else if status === 'did_not_start'}
+														<div class="text-sm text-fg-muted italic">Ikke skutt</div>
+													{:else}
+														<div class="text-sm text-fg-muted italic">Ikke startet</div>
+													{/if}
+												</div>
+											</div>
 										</div>
-									{/each}
-								</div>
+
+										<!-- Sub-events -->
+										{#if event.subEvents && event.subEvents.length > 0}
+											<details class="mt-3">
+												<summary
+													class="cursor-pointer text-sm text-primary select-none hover:underline active:opacity-70"
+												>
+													Vis {event.subEvents.length} del{event.subEvents.length !== 1 ? 'er' : ''}
+													av {event.name}
+												</summary>
+												<div class="mt-3 space-y-2 border-l-2 border-frame pl-3">
+													{#each event.subEvents as subEvent (`${subEvent.name}-${subEvent.shootingDateTime}-${subEvent.targetNumber}-${subEvent.relayNumber}`)}
+														{@const subFinalSeries =
+															subEvent.series && subEvent.series.length > 0
+																? subEvent.series.find(
+																		(s) =>
+																			s.seriesType === 'SUB_SERIES' &&
+																			s.sum &&
+																			s.sum.toString().trim() !== ''
+																	) || subEvent.series[subEvent.series.length - 1]
+																: null}
+														{@const subFinalScore = subFinalSeries?.sum?.toString() || null}
+														<div class="rounded-lg bg-bg p-2">
+															<div class="flex justify-between">
+																<h4 class="truncate text-sm font-medium text-fg">
+																	{subEvent.name}
+																</h4>
+																<div class="shrink-0 text-right">
+																	<div class="font-mono text-sm font-bold text-primary">
+																		{subFinalScore}
+																	</div>
+																	{#if subFinalSeries && subFinalSeries.sumInner}
+																		<div class="text-ok text-xs">{subFinalSeries.sumInner}</div>
+																	{/if}
+																</div>
+															</div>
+														</div>
+													{/each}
+												</div>
+											</details>
+										{/if}
+
+										<!-- Detailed series results -->
+										{#if hasPartialResults(event)}
+											<details class="mt-3">
+												<summary
+													class="cursor-pointer text-sm text-primary select-none hover:underline active:opacity-70"
+												>
+													Vis detaljerte resultater
+												</summary>
+												<div class="mt-3 space-y-1">
+													{#each event.series as series, si (`${series.name}-${si}`)}
+														<div
+															class="rounded-lg p-2 {series.seriesType === 'SUB_SERIES'
+																? 'border-2 border-primary/30 bg-primary/5'
+																: 'bg-bg'}"
+														>
+															<div class="flex items-center justify-between">
+																<span class="truncate text-sm font-medium text-fg"
+																	>{series.name}</span
+																>
+																<div class="flex shrink-0 gap-3 text-sm">
+																	<span class="text-fg-muted"
+																		>Total: <strong class="text-fg">{series.sum}</strong></span
+																	>
+																	{#if event.name !== 'Felt'}
+																		<span class="text-fg-muted"
+																			>Sentrum: <strong class="text-ok">{series.sumInner}</strong
+																			></span
+																		>
+																	{/if}
+																</div>
+															</div>
+														</div>
+													{/each}
+												</div>
+											</details>
+										{/if}
+									</div>
+								{/each}
 							</div>
 						</div>
 					{/each}
 				</div>
 			{:else}
-				<div class="py-8 text-center sm:py-12">
-					<p class="text-gray-500">Ingen skytinger funnet</p>
+				<div class="py-12 text-center">
+					<p class="text-fg-muted">Ingen skytinger funnet</p>
 				</div>
 			{/if}
-		</div>
+		</PageShell>
 	{/if}
 {/if}

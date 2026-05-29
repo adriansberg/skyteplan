@@ -1,6 +1,65 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@300;400;500;600;700&display=swap');
+
+/* ---- Design tokens: light mode ---- */
 :root {
+	color-scheme: light dark;
+
 	--top-bar-height: calc(2.5rem + env(safe-area-inset-top));
+
+	--ds-primary: #dc2626;
+	--ds-on-primary: #ffffff;
+	--ds-bg: #fef2f2;
+	--ds-surface: #ffffff;
+	--ds-fg: #7f1d1d;
+	--ds-fg-muted: #57534e;
+	--ds-frame: #fecaca;
+}
+
+/* ---- Dark mode token overrides ---- */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ds-primary: #f87171;
+		--ds-on-primary: #ffffff;
+		--ds-bg: #0c0a09;
+		--ds-surface: #1c1917;
+		--ds-fg: #fafaf9;
+		--ds-fg-muted: #a8a29e;
+		--ds-frame: #292524;
+	}
+}
+
+/* ---- Tailwind utilities from design tokens ---- */
+@theme inline {
+	--font-sans: 'Barlow', system-ui, sans-serif;
+	--font-heading: 'Barlow Condensed', system-ui, sans-serif;
+
+	--color-primary: var(--ds-primary);
+	--color-on-primary: var(--ds-on-primary);
+	--color-bg: var(--ds-bg);
+	--color-surface: var(--ds-surface);
+	--color-fg: var(--ds-fg);
+	--color-fg-muted: var(--ds-fg-muted);
+	--color-frame: var(--ds-frame);
+}
+
+/* ---- Global focus ring ---- */
+*:focus-visible {
+	outline: 2px solid var(--ds-primary);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* ---- Reduced-motion safety net ---- */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }

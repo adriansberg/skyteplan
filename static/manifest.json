@@ -4,8 +4,8 @@
 	"description": "Skyteprogram og resultater for skytterlaget",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#ffffff",
-	"theme_color": "#fafafa",
+	"background_color": "#fef2f2",
+	"theme_color": "#dc2626",
 	"orientation": "portrait",
 	"scope": "/",
 	"icons": [
@@ -13,13 +13,13 @@
 			"src": "/clubs/stordalen.jpg",
 			"sizes": "192x192",
 			"type": "image/jpeg",
-			"purpose": "any maskable"
+			"purpose": "any"
 		},
 		{
 			"src": "/clubs/stordalen.jpg",
 			"sizes": "512x512",
 			"type": "image/jpeg",
-			"purpose": "any maskable"
+			"purpose": "any"
 		}
 	],
 	"categories": ["sports", "lifestyle"],

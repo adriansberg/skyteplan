@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+	import { Download, X } from '@lucide/svelte';
 
 	interface BeforeInstallPromptEvent extends Event {
 		prompt(): Promise<void>;
@@ -13,41 +14,29 @@
 	onMount(() => {
 		if (!browser) return;
 
-		// Listen for the install prompt
 		window.addEventListener('beforeinstallprompt', (e) => {
 			e.preventDefault();
 			deferredPrompt = e as BeforeInstallPromptEvent;
 			showInstallPrompt = true;
 		});
 
-		// Hide prompt after installation
 		window.addEventListener('appinstalled', () => {
 			showInstallPrompt = false;
 			deferredPrompt = null;
 		});
 
-		// Check if already installed (standalone mode)
 		if (window.matchMedia('(display-mode: standalone)').matches) {
 			showInstallPrompt = false;
 		}
 	});
 
 	function installApp() {
-		if (deferredPrompt) {
-			// Show the install prompt
-			deferredPrompt.prompt();
-
-			// Wait for the user to respond to the prompt
-			deferredPrompt.userChoice.then((choiceResult) => {
-				if (choiceResult.outcome === 'accepted') {
-					console.log('User accepted the install prompt');
-				} else {
-					console.log('User dismissed the install prompt');
-				}
-				deferredPrompt = null;
-				showInstallPrompt = false;
-			});
-		}
+		if (!deferredPrompt) return;
+		deferredPrompt.prompt();
+		deferredPrompt.userChoice.then(() => {
+			deferredPrompt = null;
+			showInstallPrompt = false;
+		});
 	}
 
 	function dismissPrompt() {
@@ -57,35 +46,35 @@
 
 {#if showInstallPrompt}
 	<div
-		class="fixed right-4 bottom-4 left-4 z-50 mx-auto max-w-sm rounded-lg bg-gray-800 p-4 text-white shadow-lg"
+		class="fixed right-4 left-4 z-50 mx-auto max-w-sm rounded-xl bg-stone-900 p-4 shadow-lg dark:bg-stone-800"
+		style="bottom: calc(4rem + env(safe-area-inset-bottom) + 0.75rem)"
 	>
 		<div class="flex items-start gap-3">
 			<div class="flex-1">
-				<h3 class="font-semibold">Installer appen</h3>
-				<p class="mt-1 text-sm text-gray-300">
-					Legg til Stordalen på hjemskjermen for rask tilgang
+				<h3 class="font-semibold text-stone-50">Installer appen</h3>
+				<p class="mt-1 text-sm text-stone-400">
+					Legg til Skytterinfo på hjemskjermen for rask tilgang
 				</p>
 			</div>
-			<button onclick={dismissPrompt} class="text-gray-400 hover:text-white" aria-label="Lukk">
-				<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-					<path
-						fill-rule="evenodd"
-						d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+			<button
+				onclick={dismissPrompt}
+				class="text-stone-400 transition-colors hover:text-stone-200 active:text-stone-200"
+				aria-label="Lukk"
+			>
+				<X size={20} aria-hidden="true" />
 			</button>
 		</div>
 		<div class="mt-3 flex gap-2">
 			<button
 				onclick={installApp}
-				class="flex-1 rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+				class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white transition-colors hover:opacity-90 active:opacity-80"
 			>
+				<Download size={14} aria-hidden="true" />
 				Installer
 			</button>
 			<button
 				onclick={dismissPrompt}
-				class="rounded border border-gray-600 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700"
+				class="rounded-lg border border-stone-700 px-3 py-2 text-sm font-medium text-stone-300 transition-colors hover:bg-stone-800 active:bg-stone-700"
 			>
 				Ikke nå
 			</button>

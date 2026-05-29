@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="nb" style="color-scheme: light dark">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
@@ -18,17 +18,22 @@
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/clubs/stordalen.jpg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+		<!-- Google Fonts preconnect -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
 		<!-- PWA Manifest -->
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
 
 		<!-- iOS Specific Meta Tags -->
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="apple-mobile-web-app-title" content="Skytterinfo" />
 
-		<!-- Theme Color -->
-		<meta name="theme-color" content="#fafafa" />
-		<meta name="msapplication-TileColor" content="#1f2937" />
+		<!-- Theme Color (light + dark) -->
+		<meta name="theme-color" content="#fef2f2" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0c0a09" media="(prefers-color-scheme: dark)" />
+		<meta name="msapplication-TileColor" content="#dc2626" />
 
 		%sveltekit.head%
 	</head>

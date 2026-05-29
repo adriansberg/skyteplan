@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { Calendar, Users, Trophy } from '@lucide/svelte';
 
 	const isSchedulePage = $derived(page.url.pathname === '/');
 	const isShootersPage = $derived(page.url.pathname === '/skyttere');
@@ -7,31 +8,37 @@
 </script>
 
 <nav
-	class="fixed right-0 bottom-0 left-0 z-50 flex h-14 border-t border-neutral-200 bg-neutral-50"
+	class="fixed right-0 bottom-0 left-0 z-50 flex h-14 border-t border-frame bg-surface"
 	style="padding-bottom: env(safe-area-inset-bottom)"
 >
 	<a
 		href="/"
-		class="flex flex-1 flex-col items-center justify-center border-t-2 text-xs font-medium {isSchedulePage
-			? 'border-emerald-600 text-emerald-600'
-			: 'border-transparent text-neutral-500'}"
+		aria-current={isSchedulePage ? 'page' : undefined}
+		class="flex flex-1 flex-col items-center justify-center gap-0.5 border-t-2 text-xs font-medium transition-colors duration-200 {isSchedulePage
+			? 'border-primary text-primary'
+			: 'border-transparent text-fg-muted hover:text-fg active:text-primary'}"
 	>
+		<Calendar size={18} aria-hidden="true" />
 		Skyteplan
 	</a>
 	<a
 		href="/skyttere"
-		class="flex flex-1 flex-col items-center justify-center border-t-2 text-xs font-medium {isShootersPage
-			? 'border-emerald-600 text-emerald-600'
-			: 'border-transparent text-neutral-500'}"
+		aria-current={isShootersPage ? 'page' : undefined}
+		class="flex flex-1 flex-col items-center justify-center gap-0.5 border-t-2 text-xs font-medium transition-colors duration-200 {isShootersPage
+			? 'border-primary text-primary'
+			: 'border-transparent text-fg-muted hover:text-fg active:text-primary'}"
 	>
+		<Users size={18} aria-hidden="true" />
 		Skyttere
 	</a>
 	<a
 		href="/premieliste"
-		class="flex flex-1 flex-col items-center justify-center border-t-2 text-xs font-medium {isPremielistePage
-			? 'border-emerald-600 text-emerald-600'
-			: 'border-transparent text-neutral-500'}"
+		aria-current={isPremielistePage ? 'page' : undefined}
+		class="flex flex-1 flex-col items-center justify-center gap-0.5 border-t-2 text-xs font-medium transition-colors duration-200 {isPremielistePage
+			? 'border-primary text-primary'
+			: 'border-transparent text-fg-muted hover:text-fg active:text-primary'}"
 	>
+		<Trophy size={18} aria-hidden="true" />
 		Premieliste
 	</a>
 </nav>

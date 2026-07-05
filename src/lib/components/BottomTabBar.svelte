@@ -4,7 +4,6 @@
 	const isSchedulePage = $derived(page.url.pathname === '/');
 	const isShootersPage = $derived(page.url.pathname === '/skyttere');
 	const isPremielistePage = $derived(page.url.pathname === '/premieliste');
-	const isFacebookPage = $derived(page.url.pathname === '/facebook');
 </script>
 
 <nav
@@ -34,13 +33,5 @@
 			: 'border-transparent text-neutral-500'}"
 	>
 		Premieliste
-	</a>
-	<a
-		href="/facebook"
-		class="flex flex-1 flex-col items-center justify-center border-t-2 text-xs font-medium {isFacebookPage
-			? 'border-emerald-600 text-emerald-600'
-			: 'border-transparent text-neutral-500'}"
-	>
-		Facebook
 	</a>
 </nav>

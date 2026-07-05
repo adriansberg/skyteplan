@@ -107,22 +107,13 @@
 					class="w-full resize-y rounded-md border border-neutral-300 bg-white p-3 font-mono text-sm text-neutral-800"
 					value={morningText}
 				></textarea>
-				<div class="mt-2 flex gap-2">
-					<button
-						type="button"
-						onclick={() => handleCopy(morningText, 'morning')}
-						class="flex-1 rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
-					>
-						{copied === 'morning' ? 'Kopiert ✓' : 'Kopier'}
-					</button>
-					<button
-						type="button"
-						onclick={() => handleShare(morningText, 'morning')}
-						class="flex-1 rounded-lg border border-emerald-600 px-4 py-2 font-medium text-emerald-700 active:bg-emerald-50"
-					>
-						Del
-					</button>
-				</div>
+				<button
+					type="button"
+					onclick={() => handleShare(morningText, 'morning')}
+					class="mt-2 w-full rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
+				>
+					{copied === 'morning' ? 'Kopiert ✓' : 'Del'}
+				</button>
 			</section>
 
 			<!-- Results post -->
@@ -134,22 +125,13 @@
 					class="w-full resize-y rounded-md border border-neutral-300 bg-white p-3 font-mono text-sm text-neutral-800"
 					value={resultsText}
 				></textarea>
-				<div class="mt-2 flex gap-2">
-					<button
-						type="button"
-						onclick={() => handleCopy(resultsText, 'results')}
-						class="flex-1 rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
-					>
-						{copied === 'results' ? 'Kopiert ✓' : 'Kopier'}
-					</button>
-					<button
-						type="button"
-						onclick={() => handleShare(resultsText, 'results')}
-						class="flex-1 rounded-lg border border-emerald-600 px-4 py-2 font-medium text-emerald-700 active:bg-emerald-50"
-					>
-						Del
-					</button>
-				</div>
+				<button
+					type="button"
+					onclick={() => handleShare(resultsText, 'results')}
+					class="mt-2 w-full rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
+				>
+					{copied === 'results' ? 'Kopiert ✓' : 'Del'}
+				</button>
 			</section>
 		</div>
 	{/if}

@@ -17,11 +17,11 @@ Installable on iOS and Android. Designed for outdoor use: clean layout, fast loa
 
 ## Routes
 
-| Route          | Description                                                      |
-| -------------- | ---------------------------------------------------------------- |
-| `/`            | Schedule — events grouped by date, auto-scrolls to today         |
-| `/skyttere`    | Shooters — per-shooter event list with collapsible result detail |
-| `/premieliste` | Prize list — distinctions per shooter + prize summary            |
+| Route | Description |
+|-------|-------------|
+| `/` | Schedule — events grouped by date, auto-scrolls to today |
+| `/skyttere` | Shooters — per-shooter event list with collapsible result detail |
+| `/premieliste` | Prize list — distinctions per shooter + prize summary |
 
 ## Multi-Club Routing
 
@@ -31,12 +31,12 @@ Club config lives in `src/lib/clubs.ts`:
 
 ```ts
 export const clubs: Record<string, ClubConfig> = {
-	stordalen: {
-		clubId: '10782',
-		name: 'Stordalen Skytterlag',
-		logoPath: '/clubs/stordalen.jpg'
-	}
-};
+  stordalen: {
+    clubId: '10782',
+    name: 'Stordalen Skytterlag',
+    logoPath: '/clubs/stordalen.jpg'
+  }
+}
 ```
 
 Add a new club by adding an entry here and dropping its logo in `static/clubs/`.

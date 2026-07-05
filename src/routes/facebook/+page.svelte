@@ -47,18 +47,6 @@
 			// Clipboard blocked (e.g. insecure context) — user can still select the text manually.
 		}
 	}
-
-	async function handleShare(text: string, which: string) {
-		if (navigator.share) {
-			try {
-				await navigator.share({ title: 'Skyteplan', text });
-			} catch {
-				// User cancelled the share sheet — no action needed.
-			}
-		} else {
-			handleCopy(text, which);
-		}
-	}
 </script>
 
 <svelte:head>
@@ -109,10 +97,10 @@
 				></textarea>
 				<button
 					type="button"
-					onclick={() => handleShare(morningText, 'morning')}
+					onclick={() => handleCopy(morningText, 'morning')}
 					class="mt-2 w-full rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
 				>
-					{copied === 'morning' ? 'Kopiert ✓' : 'Del'}
+					{copied === 'morning' ? 'Kopiert ✓' : 'Kopier'}
 				</button>
 			</section>
 
@@ -127,10 +115,10 @@
 				></textarea>
 				<button
 					type="button"
-					onclick={() => handleShare(resultsText, 'results')}
+					onclick={() => handleCopy(resultsText, 'results')}
 					class="mt-2 w-full rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white active:bg-emerald-700"
 				>
-					{copied === 'results' ? 'Kopiert ✓' : 'Del'}
+					{copied === 'results' ? 'Kopiert ✓' : 'Kopier'}
 				</button>
 			</section>
 		</div>

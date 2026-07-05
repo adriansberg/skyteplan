@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v2 MVP Modernization** — Phases 1–4 (shipped 2026-05-19)
-- 📋 **v3 Multi-Club** — Phases 5–6 (planned)
+- ✅ **v3 Multi-Club** — Phases 5–6 (code-complete 2026-05-26; go-live pending BRAND-02 domain registration)
 
 ## Phases
 
@@ -19,10 +19,10 @@ Full archive: `.planning/milestones/v2-ROADMAP.md`
 
 </details>
 
-### 📋 v3 Multi-Club (Planned)
+### ✅ v3 Multi-Club (Code-complete 2026-05-26)
 
 - [x] **Phase 5: Generic Branding** — Replace all hardcoded "Stordalen Skytterlag" strings; choose and document app name; document domain registration as a manual prerequisite (completed 2026-05-21)
-- [ ] **Phase 6: Multi-Club Routing** — Implement clubs.ts config, resolve club from host header in all server loaders, render dynamic club name + logo in top bar, Norwegian 404 for unknown subdomain, retire ?c= param
+- [x] **Phase 6: Multi-Club Routing** — Implement clubs.ts config, resolve club from host header in all server loaders, render dynamic club name + logo in top bar, Norwegian 404 for unknown subdomain, retire ?c= param (completed 2026-05-26)
 
 ## Phase Details
 
@@ -103,4 +103,4 @@ Plans:
 | 3. UX Redesign | v2 | 3/3 | Complete | 2026-05-19 |
 | 4. Polish | v2 | 3/3 | Complete | 2026-05-19 |
 | 5. Generic Branding | v3 | 2/2 | Complete   | 2026-05-21 |
-| 6. Multi-Club Routing | v3 | 0/? | Not started | — |
+| 6. Multi-Club Routing | v3 | 3/3 | Complete | 2026-05-26 |

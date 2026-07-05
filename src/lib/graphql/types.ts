@@ -1,6 +1,9 @@
 export type Shot = {
 	valueInt: string;
 	valueDec: string;
+	x?: number;
+	y?: number;
+	visualId?: number;
 };
 
 export type Series = {
@@ -15,6 +18,7 @@ export type Series = {
 export type Event = {
 	name: string;
 	eventType: 'MAIN' | 'FINALE';
+	svgScoringCard: boolean;
 	className: string;
 	checkinDateTime: string;
 	shootingDateTime: string;

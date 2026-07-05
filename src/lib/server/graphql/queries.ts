@@ -23,6 +23,7 @@ export async function getShootersByClub(clubId: string) {
 					events {
 						name
 						eventType
+						svgScoringCard
 						className
 						checkinDateTime
 						shootingDateTime
@@ -38,6 +39,9 @@ export async function getShootersByClub(clubId: string) {
 							shots {
 								valueInt
 								valueDec
+								x
+								y
+								visualId
 							}
 						}
 					}

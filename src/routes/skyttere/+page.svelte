@@ -5,6 +5,7 @@
 		parseAsLocalTime
 	} from '$lib/utils/formatters';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
+	import ScoringCard from '$lib/components/ScoringCard.svelte';
 	import type { PageData } from './$types';
 
 	import { navigating } from '$app/state';
@@ -360,6 +361,8 @@
 													</div>
 												</div>
 											</div>
+
+											<ScoringCard {event} shooterOrgId={shooter.organizationId} />
 										</div>
 									{/each}
 								</div>

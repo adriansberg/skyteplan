@@ -72,6 +72,28 @@ Plans:
 
 - [ ] 06-03-PLAN.md — UI wiring + verification: +layout.svelte consumes data.club, +error.svelte uses static favicon fallback, human-verify three subdomain scenarios
 
+## Backlog
+
+### Phase 999.1: Facebook post drafting (semi-manual, text-only) (BACKLOG)
+
+**Goal:** Club member can generate ready-to-post Facebook text in the app and post it manually — no auto-posting, no Meta app review, no server token, no cron. Keeps a human gate on partial/late API data and fits the current all-client-loader architecture.
+
+**Scope (decided during ideation):**
+- New route generates shareable **plain text** (no images — added manually if wanted) with copy-to-clipboard + `navigator.share()`.
+- Two post types: (1) **morning post** listing today's shooters grouped by relay/time; (2) **end-of-day summary** of all results.
+- Build post-text composition as a **pure function** so a future automation upgrade (Vercel Cron + `+server.ts` + Page Access Token) can reuse it without rewrite.
+- Reuses existing `+page.ts` club-by-id loaders, `formatters.ts`, and `getEventStatus()`.
+
+**Why semi-manual (rejected alternatives):**
+- Fully automated cron posting requires Meta app review + business verification (weeks) + a server-side Page token, and risks auto-publishing partial/late results. Not worth it for a small club.
+- "Day closes" has no server trigger in manual mode — end-of-day summary is whatever a member opens after the last relay. Acceptable; only cron gives true timed posting (future upgrade path).
+
+**Requirements:** TBD
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with /gsd:review-backlog when ready)
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |

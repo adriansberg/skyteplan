@@ -74,7 +74,9 @@ Plans:
 
 ## Backlog
 
-### Phase 999.1: Facebook post drafting (semi-manual, text-only) (BACKLOG)
+### Phase 999.1: Facebook post drafting (semi-manual, text-only) (✅ IMPLEMENTED 2026-07-05)
+
+**Status:** Built ad-hoc. New `/facebook` route + `src/lib/utils/facebookPost.ts` pure composers (`composeMorningPost`, `composeResultsPost`, `getScheduleDays`, `formatDayLabel`), date picker, copy + `navigator.share`, bottom-nav tab. Automation path (cron/token) intentionally deferred.
 
 **Goal:** Club member can generate ready-to-post Facebook text in the app and post it manually — no auto-posting, no Meta app review, no server token, no cron. Keeps a human gate on partial/late API data and fits the current all-client-loader architecture.
 
@@ -89,10 +91,10 @@ Plans:
 - "Day closes" has no server trigger in manual mode — end-of-day summary is whatever a member opens after the last relay. Acceptable; only cron gives true timed posting (future upgrade path).
 
 **Requirements:** TBD
-**Plans:** 0 plans
+**Plans:** built directly (no formal plan)
 
 Plans:
-- [ ] TBD (promote with /gsd:review-backlog when ready)
+- [x] Implemented directly 2026-07-05
 
 ## Progress
 

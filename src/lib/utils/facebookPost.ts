@@ -110,7 +110,8 @@ export function composeMorningPost(shooters: Shooter[], clubName: string, day: D
 	lines.push('');
 	lines.push('Lykke til! 🎯');
 	lines.push('');
-	lines.push('Følg resultatene live: https://ls.stordalen.live');
+	lines.push('Se resultater her: https://ls.stordalen.live');
+	lines.push('Se livevisning her: https://live.kongsbergtargets.com/');
 	return lines.join('\n');
 }
 

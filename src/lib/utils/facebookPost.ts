@@ -81,29 +81,26 @@ export function composeMorningPost(shooters: Shooter[], clubName: string, day: D
 		return `Ingen skyttere satt opp ${norwegianDay(day)}.`;
 	}
 
-	const byRelay = new Map<number, EventWithShooter[]>();
-	for (const event of events) {
-		const arr = byRelay.get(event.relayNumber) ?? [];
-		arr.push(event);
-		byRelay.set(event.relayNumber, arr);
-	}
-	const relays = [...byRelay.keys()].sort((a, b) => a - b);
+	const sorted = [...events].sort((a, b) => {
+		const timeDiff =
+			parseAsLocalTime(a.shootingDateTime).getTime() -
+			parseAsLocalTime(b.shootingDateTime).getTime();
+		if (timeDiff !== 0) return timeDiff;
+		if (a.relayNumber !== b.relayNumber) return a.relayNumber - b.relayNumber;
+		return a.targetNumber - b.targetNumber;
+	});
 
 	const lines: string[] = [];
 	lines.push(`🎯 ${clubName} — skyteplan ${norwegianDay(day)}`);
 	lines.push('');
 	lines.push(`Dagens skyttere (${events.length}):`);
+	lines.push('');
 
-	for (const relay of relays) {
-		const relayEvents = byRelay.get(relay)!.sort((a, b) => a.targetNumber - b.targetNumber);
-		lines.push('');
-		lines.push(`Lag ${relay} — kl. ${formatNorwegianTime(relayEvents[0].shootingDateTime)}`);
-		for (const event of relayEvents) {
-			const cls = classOf(event);
-			lines.push(
-				`• ${event.shooter.name}${cls ? ` (${cls})` : ''} — ${event.name}, skive ${event.targetNumber}`
-			);
-		}
+	for (const event of sorted) {
+		const cls = classOf(event);
+		lines.push(
+			`• kl. ${formatNorwegianTime(event.shootingDateTime)} — ${event.shooter.name}${cls ? ` (${cls})` : ''} — ${event.name}, skive ${event.targetNumber}, Lag ${event.relayNumber}`
+		);
 	}
 
 	lines.push('');

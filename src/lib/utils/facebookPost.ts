@@ -54,7 +54,11 @@ function eventsForDay(shooters: Shooter[], day: Date): EventWithShooter[] {
 }
 
 function classOf(event: EventWithShooter): string {
-	return event.className || event.shooter.defaultClassOrganizationId || '';
+	// Prefer the short code ("V65", "SK2"); fall back to className with the
+	// "Klasse " prefix stripped.
+	return (
+		event.shooter.defaultClassOrganizationId || event.className.replace(/^Klasse\s+/i, '') || ''
+	);
 }
 
 function finalScoreOf(event: EventWithShooter): string | null {
@@ -99,12 +103,14 @@ export function composeMorningPost(shooters: Shooter[], clubName: string, day: D
 	for (const event of sorted) {
 		const cls = classOf(event);
 		lines.push(
-			`• kl. ${formatNorwegianTime(event.shootingDateTime)} — ${event.shooter.name}${cls ? ` (${cls})` : ''} — ${event.name}, skive ${event.targetNumber}, Lag ${event.relayNumber}`
+			`• kl. ${formatNorwegianTime(event.shootingDateTime)} — ${event.shooter.name}${cls ? ` (${cls})` : ''} — ${event.name}, skive ${event.targetNumber}, lag ${event.relayNumber}`
 		);
 	}
 
 	lines.push('');
 	lines.push('Lykke til! 🎯');
+	lines.push('');
+	lines.push('Følg resultatene live: https://ls.stordalen.live');
 	return lines.join('\n');
 }
 

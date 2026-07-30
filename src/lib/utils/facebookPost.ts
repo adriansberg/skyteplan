@@ -95,7 +95,7 @@ export function composeMorningPost(shooters: Shooter[], clubName: string, day: D
 	});
 
 	const lines: string[] = [];
-	lines.push(`🎯 ${clubName} — skyteplan ${norwegianDay(day)}`);
+	lines.push(`🎯 Skyteplan ${norwegianDay(day)}`);
 	lines.push('');
 	lines.push(`Dagens skyttere (${events.length}):`);
 	lines.push('');
@@ -135,7 +135,7 @@ export function composeResultsPost(shooters: Shooter[], clubName: string, day: D
 	}
 
 	const lines: string[] = [];
-	lines.push(`🎯 ${clubName} — resultater ${norwegianDay(day)}`);
+	lines.push(`🎯 Resultater ${norwegianDay(day)}`);
 
 	for (const [discipline, events] of byDiscipline) {
 		events.sort((a, b) => scoreValue(finalScoreOf(b)) - scoreValue(finalScoreOf(a)));

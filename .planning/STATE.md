@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 Phase: 06 (multi-club-routing) — COMPLETE
 Status: All phases complete. Milestone v3 code-complete.
-Last activity: 2026-05-26 -- Phase 06 complete
+Last activity: 2026-07-31 - Completed quick task 260731-ppc: Fix bottom nav bar spacing and scroll-with-page bugs in installed PWA
 
 ```
 Progress: [██████████] 100% — 2/2 phases complete
@@ -72,6 +72,12 @@ None.
 ### Blockers/Concerns
 
 - BRAND-02: Domain registration is a manual step outside code. Must be done before Phase 6 goes live (wildcard DNS `*.<domain> CNAME cname.vercel-dns.com` + Vercel wildcard domain). Requirements documented in README.md Deployment Prerequisites section (Phase 5 deliverable).
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260731-ppc | Fix bottom nav bar spacing and scroll-with-page bugs in installed PWA | 2026-07-31 | ac73897 | [260731-ppc-fix-bottom-nav-bar-spacing-and-scroll-wi](./quick/260731-ppc-fix-bottom-nav-bar-spacing-and-scroll-wi/) |
 
 ## Deferred Items
 

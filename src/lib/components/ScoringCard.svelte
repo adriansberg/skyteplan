@@ -10,10 +10,12 @@
 	// SVG mode: one rendered svg string per eligible series (aligned by index).
 	let svgs = $state<(string | null)[] | null>(null);
 
+	const flagEnabled = import.meta.env.VITE_SCORING_CARD === 'true';
+
 	const isSvg = $derived(event.svgScoringCard);
 	const eligible = $derived(isSvg ? svgEligibleSeries(event) : []);
 	const pngUrl = $derived(!isSvg ? pngCardUrl(event, shooterOrgId) : null);
-	const available = $derived(hasCard(event, shooterOrgId));
+	const available = $derived(flagEnabled && hasCard(event, shooterOrgId));
 
 	async function loadSvgs() {
 		if (svgs || loading) return;

@@ -145,14 +145,34 @@ export function composeResultsPost(shooters: Shooter[], clubName: string, day: D
 			const cls = classOf(event);
 			const inner = innerScoreOf(event);
 			lines.push(
-				`• ${event.shooter.name}${cls ? ` (${cls})` : ''}: ${finalScoreOf(event)}${inner ? ` (sentrum ${inner})` : ''}`
+				`• ${event.shooter.name}${cls ? ` (${cls})` : ''}: ${finalScoreOf(event)}${inner ? ` (${inner}*)` : ''}${subScoreLine(event)}`
 			);
 		}
 	}
 
 	lines.push('');
 	lines.push('Gratulerer til alle! 🎉');
+	lines.push('');
+	lines.push('Se resultater her: https://ls.stordalen.live');
 	return lines.join('\n');
+}
+
+/**
+ * For a grouped "Felt" event, append its sub-discipline scores
+ * (Minne, Stang, Felthurtig) — e.g. " — Minne 57, Stang 19, Felthurtig 11.51".
+ */
+function subScoreLine(event: EventWithShooter): string {
+	if (!event.subEvents || event.subEvents.length === 0) return '';
+	const order = ['Minne', 'Stang', 'Felthurtig'];
+	const parts = event.subEvents
+		.slice()
+		.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name))
+		.map((sub) => {
+			const score = finalScoreOf(sub);
+			return score ? `${sub.name} ${score}` : null;
+		})
+		.filter((p): p is string => p !== null);
+	return parts.length ? ` — ${parts.join(', ')}` : '';
 }
 
 /** Parse a score string to a number for sorting; non-numeric scores sort last. */

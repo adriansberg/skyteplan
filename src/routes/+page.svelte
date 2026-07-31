@@ -10,6 +10,7 @@
 	import Splash from '$lib/components/Splash.svelte';
 	import ShooterExternalLink from '$lib/components/ShooterExternalLink.svelte';
 	import EventStatusBadge from '$lib/components/EventStatusBadge.svelte';
+	import ScoringCard from '$lib/components/ScoringCard.svelte';
 	import { onMount } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { navigating } from '$app/state';
@@ -286,6 +287,8 @@
 													</div>
 												</details>
 											{/if}
+
+											<ScoringCard {event} shooterOrgId={event.shooter.organizationId} />
 										</div>
 									{/each}
 								</div>

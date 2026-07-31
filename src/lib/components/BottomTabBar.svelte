@@ -7,8 +7,8 @@
 </script>
 
 <nav
-	class="fixed right-0 bottom-0 left-0 z-50 flex h-14 border-t border-neutral-200 bg-neutral-50"
-	style="padding-bottom: env(safe-area-inset-bottom)"
+	class="fixed right-0 bottom-0 left-0 z-50 flex border-t border-neutral-200 bg-neutral-50"
+	style="height: calc(3.5rem + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom)"
 >
 	<a
 		href="/"

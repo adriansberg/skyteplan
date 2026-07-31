@@ -26,7 +26,7 @@
 	<RefreshButton />
 </header>
 
-<div class="pb-16">
+<div class="pb-[calc(3.5rem+env(safe-area-inset-bottom))]">
 	{@render children?.()}
 </div>
 
